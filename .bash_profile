@@ -26,6 +26,8 @@ function get_ssh_key {
     done
   else
     # Populate private keys from LastPass and add to ssh agent
+    echo "AddKeysToAgent yes" > "${HOME}"/.ssh/config
+    echo "ForwardX11 yes" >> "${HOME}"/.ssh/config
     for LP_ID in $(lpass ls --format %an LP_login | sed '1d'); do
       lpass show "${LP_ID}" --field=pri > "${HOME}/.ssh/${LP_ID}"
       chmod 600 "${HOME}/.ssh/${LP_ID}"
