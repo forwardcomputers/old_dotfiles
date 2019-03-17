@@ -1,5 +1,6 @@
 
 .cache/
+.circleci/
 .docker/
 history
 .kodi
