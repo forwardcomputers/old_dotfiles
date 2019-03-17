@@ -4,10 +4,8 @@
 .docker/
 history
 .kodi
-LICENSE
 lpass
 pulse
-README.md
 .ssh/
 .uuid
 Xauthority
