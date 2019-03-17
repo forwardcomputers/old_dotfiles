@@ -1,0 +1,58 @@
+
+# Synology
+@eaDIR
+
+# Linux
+*~
+.fuse_hidden*
+*.log
+.nfs*
+Session.vim
+/snap/.snapcraft/
+*.swp
+.Trash-*
+.uuid
+Xauthority
+.Xauthority
+
+# Windows
+*.cab
+[Dd]esktop.ini
+ehthumbs.db
+ehthumbs_vista.db
+*.lnk
+*.msi
+*.msix
+*.msm
+*.msp
+$RECYCLE.BIN/
+*.stackdump
+Thumbs.db
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# OSX
+._*
+.apdisk
+.AppleDB
+.AppleDesktop
+.AppleDouble
+.com.apple.timemachine.donotpresent
+.DocumentRevisions-V100
+.DS_Store
+.DS_Store?
+.fseventsd
+Icon
+.LSOverdrive
+Network Trash Folder
+secring.*
+.Spotlight-V100
+Temporary Items
+.TemporaryItems
+Thumbs.db
+.Trashes
+.VolumeIcon.icns
+TemporaryItems
