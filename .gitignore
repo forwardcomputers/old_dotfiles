@@ -1,3 +1,10 @@
 
-link/.config/X11/Xauthority
-link/.local/share/fonts/.uuid
+.cache
+.docker
+.kodi
+lpass
+pulse
+.ssh
+.uuid
+Xauthority
+
