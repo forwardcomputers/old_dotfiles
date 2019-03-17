@@ -8,3 +8,10 @@
 
 [//]: # (BlockEnd)
 
+````
+git clone https://github.com/forwardcomputers/dotfiles.git tmp
+mv tmp/.git .
+rm -rf tmp
+git reset --hard
+git remote set-url origin ssh://git@github.com/forwardcomputers/dotfiles.git
+````
