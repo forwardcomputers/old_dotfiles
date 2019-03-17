@@ -1,11 +1,11 @@
 
-.cache
-.docker
+.cache/
+.docker/
 history
 .kodi
 lpass
 pulse
-.ssh
+.ssh/
 .uuid
 Xauthority
 
