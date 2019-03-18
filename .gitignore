@@ -1,10 +1,15 @@
 
+.bash_history
 .cache/
 .circleci/
+.dbus/
 .docker/
 history
+google-chrome/
 .kodi
+.local/share/
 lpass
+.pki/
 pulse
 .ssh/
 .uuid
