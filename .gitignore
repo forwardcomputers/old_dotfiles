@@ -6,12 +6,14 @@
 .docker/
 history
 google-chrome/
+items.sqlite3
 .kodi
 .local/share/
 lpass
 OneDrive/
 .pki/
 pulse
+refresh_token
 .ssh/
 .uuid
 .viminfo
