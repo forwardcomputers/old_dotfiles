@@ -5,6 +5,7 @@
 
 # If not running interactively, don't do anything
 [[ $- != *i* || $(id -un) = "duser" ]] && return
+#[[ $- != *i* ]] && return
 #
 # Start ssh agent function
 function start_agent {
