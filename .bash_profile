@@ -4,8 +4,8 @@
 # set -x
 
 # If not running interactively, don't do anything
-[[ $- != *i* || $(id -un) = "duser" ]] && return
-#[[ $- != *i* ]] && return
+#[[ $- != *i* || $(id -un) = "duser" ]] && return
+[[ $- != *i* ]] && return
 #
 # Start ssh agent function
 function start_agent {
@@ -84,6 +84,7 @@ else
   export XDG_CONFIG_HOME="${HOME}/.config"
   export XDG_DATA_HOME="${HOME}/.local/share"
 fi
+if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.168.1.40/os/lpass); fi
 # Prompt colors
 i=0;
 for color in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE '' DEFAULT; do
@@ -171,7 +172,7 @@ fi
 . "$XDG_CONFIG_HOME/git/gitprompt.sh"
 export GIT_PS1_SHOWDIRTYSTATE=true
 export GIT_PS1_SHOWUNTRACKEDFILES=true
-export GIT_PS1_SHOWCOLORHINTS=1
+export GIT_PS1_SHOWCOLORHINTS=true
 export GIT_PS1_SHOWUPSTREAM="auto"
 # PS1="${debian_chroot:+($debian_chroot)}"
 # PS1+="${userStyle}\u"
@@ -185,14 +186,15 @@ export GIT_PS1_SHOWUPSTREAM="auto"
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
      debian_chroot=$(cat /etc/debian_chroot)
  fi
-export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s): ${PWD}\007"'
-case "$TERM" in
-screen*|xterm*|rxvt*|urxvt*)
-    export PS1='${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]$(__git_ps1 " (%s)")\$ '
-    ;;
-*)
-    ;;
-esac
+#export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s): ${PWD}\007"'
+export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}${userStyle}\u${CO_RESET}@${hostStyle}\h${CO_RESET}:${FG_BLUE}\w${CO_RESET}" "\$ "'
+#case "$TERM" in
+#screen*|xterm*|rxvt*|urxvt*)
+#    export PS1='${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]$(__git_ps1 " (%s)")\$ '
+#    ;;
+#*)
+#    ;;
+#esac
 #
 #
 # For VMware
@@ -426,8 +428,8 @@ if [ -f /etc/lsb-release ] || [ "${OSTYPE}" = "Darwin" ]; then
     . /etc/bash_completion
   fi
   # git completions
-  if [ -f "$XDG_CONFIG_HOME/git/git-completion.bash" ]; then
-    . "$XDG_CONFIG_HOME/git/git-completion.bash"
+  if [ -f /usr/share/bash-completion/completions/git ]; then
+    . /usr/share/bash-completion/completions/git
   fi
   #
   # Source SSH settings, if applicable
