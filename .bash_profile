@@ -360,7 +360,7 @@ if [ -f /etc/lsb-release ] || [ "${OSTYPE}" = "Darwin" ]; then
       split-window -v -p 25 \;
       select-pane -t 1 '
  # VSCode directory
- ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code
+ if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
   #
   if [ "${OSTYPE}" = "Darwin" ]; then
     # Use keychain for ssh logins
@@ -407,10 +407,12 @@ if [ -f /etc/lsb-release ] || [ "${OSTYPE}" = "Darwin" ]; then
     # ls - show long format most recently modified last
     alias lt='ls -latr'
   else
-    # Kodi directory
-    ln -sfn /media/filer/os/data/Kodi "${HOME}"/.kodi
-    # startx config directory
-    alias startx='startx "$XDG_CONFIG_HOME/X11/xinitrc"'
+    if [[ ! -f "/.dockerenv" ]]; then 
+      # Kodi directory
+      ln -sfn /media/filer/os/data/Kodi "${HOME}"/.kodi
+      # startx config directory
+      alias startx='startx "$XDG_CONFIG_HOME/X11/xinitrc"'
+    fi
     # Update the repos and do an upgrade
     [ -x "$(command -v apt)" ] && alias update='apt update && apt -y upgrade'
     # Show top 5 CPU hogs
