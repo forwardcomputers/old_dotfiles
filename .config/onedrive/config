@@ -1,3 +1,0 @@
-sync_dir = "~/OneDrive"
-skip_file = ".*|~*|thumbs.db|Games/*.iso"
-skip_dir = ".*|Music|Movies/FullHD"
