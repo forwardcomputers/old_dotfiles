@@ -359,13 +359,15 @@ if [ -f /etc/lsb-release ] || [ "${OSTYPE}" = "Darwin" ]; then
       tmux -f "$XDG_CONFIG_HOME/tmux/tmux.conf" new-session -A -s $USER \;
       split-window -v -p 25 \;
       select-pane -t 1 '
+ # VSCode directory
+ ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code
   #
   if [ "${OSTYPE}" = "Darwin" ]; then
     # Use keychain for ssh logins
     # shellcheck disable=SC1003
     grep -q "^UseKeychain" "${HOME}/.ssh/config" || sed -i '1iUseKeychain yes\' "${HOME}/.ssh/config"
     # Kodi directory
-    ln -sfn /media/filer/os/data/Kodi ~/Library/Application\ Support/Kodi
+    ln -sfn /media/filer/os/data/Kodi "${HOME}"/Library/Application\ Support/Kodi
     # Enable subpixel font rendering on non-Apple LCDs
     # Reference: https://github.com/kevinSuttle/macOS-Defaults/issues/17#issuecomment-266633501
     defaults write NSGlobalDomain AppleFontSmoothing -int 1
@@ -406,7 +408,7 @@ if [ -f /etc/lsb-release ] || [ "${OSTYPE}" = "Darwin" ]; then
     alias lt='ls -latr'
   else
     # Kodi directory
-    ln -sfn /media/filer/os/data/Kodi ~/.kodi
+    ln -sfn /media/filer/os/data/Kodi "${HOME}"/.kodi
     # startx config directory
     alias startx='startx "$XDG_CONFIG_HOME/X11/xinitrc"'
     # Update the repos and do an upgrade
