@@ -1,3 +1,21 @@
 
-link/.config/X11/Xauthority
-link/.local/share/fonts/.uuid
+.bash_history
+.cache/
+.circleci/
+.dbus/
+.docker/
+history
+google-chrome/
+items.sqlite3
+.kodi
+.local/share/
+lpass
+OneDrive/
+.pki/
+pulse
+refresh_token
+.ssh/
+.uuid
+.viminfo
+Xauthority
+
