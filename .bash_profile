@@ -23,7 +23,7 @@ start_agent () {
 get_ssh_key () {
   # Add existing private keys to ssh agent
   SSH_ADD_OPT=""
-  if [ "${OSTYPE}" = "Darwin" ]; then SSH_ADD_OPT="-K"; fi
+  if [[ "${OSTYPE}" == "Darwin" ]]; then SSH_ADD_OPT="-K"; fi
   if ls "${HOME}"/.ssh/LP* 1> /dev/null 2>&1; then
     for LP_ID in "${HOME}"/.ssh/LP*; do
       LP_ID=${LP_ID#$HOME/.ssh/}
@@ -72,7 +72,7 @@ export MANPAGER='less -X'
 # Shared data directory
 export SHARE='/media/filer/os/lnx/data'
 # ls color, order & XDG options
-if [ "${OSTYPE}" = "Darwin" ]; then
+if [[ "${OSTYPE}" == "Darwin" ]]; then
   export colorflag="-G"
   export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
   export dirsfirst=''
@@ -94,7 +94,7 @@ if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.
 # Prompt colors
 i=0;
 for color in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE '' DEFAULT; do
-	if [ -n "$color" ]; then
+	if [[ -n "$color" ]]; then
 		printf -v "FG_$color" $'\e[%dm' $((90 + i))
 		printf -v "BG_$color" $'\e[%dm' $((40 + i))
 	fi
@@ -160,13 +160,13 @@ alias firefox-esr='make --directory=/media/filer/os/lnx/apps/docker/firefox-esr 
 alias torbrowser='make --directory=/media/filer/os/lnx/apps/docker/torbrowser run > /dev/null'
 #
 # Highlight the user name when logged in as root.
-if [ "${USER}" = "root" ]; then
+if [[ "${USER}" == "root" ]]; then
 	userStyle="${FG_RED}"
 else
 	userStyle="${FG_GREEN}"
 fi
 # Highlight the hostname when connected via SSH.
-if [ -n "${SSH_TTY}" ]; then
+if [[ -n "${SSH_TTY}" ]]; then
 	hostStyle="${CO_BOLD}${FG_RED}"
 else
 	hostStyle="${FG_GREEN}"
@@ -187,7 +187,7 @@ export GIT_PS1_SHOWUPSTREAM="auto"
 # PS1+="${CO_RESET}"
 # PS1+='$(__git_ps1 " (%s) ")'
 # PS1+="${CO_RESET}\\$ "
-if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+if [[ -z "${debian_chroot:-}" && -r /etc/debian_chroot ]]; then
      debian_chroot=$(cat /etc/debian_chroot)
  fi
 #export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s): ${PWD}\007"'
@@ -203,7 +203,7 @@ export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}${userStyle}
 #
 # For VMware
 #
-if [ -d /sys/devices/virtual/dmi/id ]; then
+if [[ -d /sys/devices/virtual/dmi/id ]]; then
   if [[ $(< /sys/devices/virtual/dmi/id/sys_vendor) == "VMware, Inc." ]]; then
     # Disable OpenGL 3.3 support to have OpenGL 2.1 support. This may be useful to work around application bugs (such as incorrect use of the OpenGL 3.x core profile).
     export SVGA_VGPU10=0
@@ -213,7 +213,7 @@ fi
 #
 # For Synology
 #
-if [ -f /etc/synoinfo.conf ]; then
+if [[ -f /etc/synoinfo.conf ]]; then
   export SHARE='/volume1/share/os/lnx/data'
   # cd alias
   alias -- -='cd -'
@@ -256,7 +256,7 @@ fi
 #
 # For OpenWrt
 #
-if [ -f /etc/openwrt_release ]; then
+if [[ -f /etc/openwrt_release ]]; then
   # cd alias
   alias -='cd -'
   # Update the repos and do an upgrade
@@ -270,11 +270,11 @@ fi
 #
 # For Linux
 #
-if [ -f /etc/lsb-release ] || [ "${OSTYPE}" = "Darwin" ]; then
+if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
   # Set up lastpass
   export GNUPGHOME="$XDG_DATA_HOME/gnupg"
   export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
-  if [ -z "$TMUX" ]; then
+  if [[ -z "$TMUX" ]]; then
     lpass status --quiet || lpass login --trust --force "${FULLNAME}"
   fi
   # Set up the console
@@ -366,7 +366,7 @@ if [ -f /etc/lsb-release ] || [ "${OSTYPE}" = "Darwin" ]; then
  # VSCode directory
  if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
   #
-  if [ "${OSTYPE}" = "Darwin" ]; then
+  if [[ "${OSTYPE}" == "Darwin" ]]; then
     # Use keychain for ssh logins
     # shellcheck disable=SC1003
     grep -q "^UseKeychain" "${HOME}/.ssh/config" || sed -i '1iUseKeychain yes\' "${HOME}/.ssh/config"
@@ -418,36 +418,36 @@ if [ -f /etc/lsb-release ] || [ "${OSTYPE}" = "Darwin" ]; then
       alias startx='startx "$XDG_CONFIG_HOME/X11/xinitrc"'
     fi
     # Update the repos and do an upgrade
-    [ -x "$(command -v apt)" ] && alias update='apt update && apt -y upgrade'
+    [[ -x "$(command -v apt)" ]] && alias update='apt update && apt -y upgrade'
     # Show top 5 CPU hogs
     alias hogs="ps -eo pid,%cpu,user,command --sort -%cpu | awk 'NR<=6'"
     # ls - show long format most recently modified last
     alias lt='ls -latr --time-style=long-iso'
     # Follow the system logfile
-    [ -x "$(command -v journalctl)" ] && alias logf='journalctl -f'
+    [[ -x "$(command -v journalctl)" ]] && alias logf='journalctl -f'
   fi
 #
   # Bash completions
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
+  if [[ -f /usr/share/bash-completion/bash_completion ]]; then
     . /usr/share/bash-completion/bash_completion
-  elif [ -f /usr/local/etc/bash_completion ]; then
+  elif [[ -f /usr/local/etc/bash_completion ]]; then
     . /usr/local/etc/bash_completion
-  elif [ -f /etc/bash_completion ]; then
+  elif [[ -f /etc/bash_completion ]]; then
     . /etc/bash_completion
   fi
   # git completions
-  if [ -f /usr/share/bash-completion/completions/git ]; then
+  if [[ -f /usr/share/bash-completion/completions/git ]]; then
     . /usr/share/bash-completion/completions/git
   fi
   #
   # Source SSH settings, if applicable
-  if [ -f /usr/bin/ssh-add ]; then
+  if [[ -f /usr/bin/ssh-add ]]; then
     # Populate authorized_keys with public key
-    if [ ! -f "${HOME}/.ssh/authorized_keys" ]; then
+    if [[ ! -f "${HOME}/.ssh/authorized_keys" ]]; then
       lpass show LP_ROOT_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
       chmod 600 "${HOME}/.ssh/authorized_keys"
     fi
-    if [ -f "${SSH_ENV}" ]; then
+    if [[ -f "${SSH_ENV}" ]]; then
         . "${SSH_ENV}" > /dev/null
         # check if ssh-agent is running
         ps "${SSH_AGENT_PID}" | grep ssh-agent$ > /dev/null || {
