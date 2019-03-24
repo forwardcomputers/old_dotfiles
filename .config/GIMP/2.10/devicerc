@@ -4,6 +4,8 @@
     (icon-name "gimp-cursor")
     (name "Core Pointer")
     (tool-options "GimpCropOptions"
+        (desired-fixed-size-height 0.000000)
+        (desired-fixed-size-width 0.000000)
         (tool "gimp-crop-tool"))
     (use-fg-bg no)
     (use-brush no)
