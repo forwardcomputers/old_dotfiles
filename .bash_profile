@@ -7,14 +7,19 @@
 #[[ $- != *i* || $(id -un) = "duser" ]] && return
 [[ $- != *i* ]] && return
 #
+# Is command a docker app
+command_not_found_handle () {
+  if [[ -d /media/filer/os/dockerfiles/"${1}" ]]; then
+    /media/filer/os/dockerfiles/dapp.sh run "${1}"
+}
 # Start ssh agent function
-function start_agent {
+start_agent () {
   /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
   chmod 600 "${SSH_ENV}"
   . "${SSH_ENV}" > /dev/null
   get_ssh_key
 }
-function get_ssh_key {
+get_ssh_key () {
   # Add existing private keys to ssh agent
   SSH_ADD_OPT=""
   if [ "${OSTYPE}" = "Darwin" ]; then SSH_ADD_OPT="-K"; fi
@@ -39,7 +44,7 @@ function get_ssh_key {
     done
   fi
 }
-function add_key_to_ssh_agent {
+add_key_to_ssh_agent () {
   expect 2>/dev/null <<EOF >/dev/null
   spawn ssh-add ${SSH_ADD_OPT} ${LP_KEY_NAME}
   expect "Enter passphrase"
@@ -140,14 +145,12 @@ alias rebash='exec ${SHELL} -l'
 # Reset garbled screen
 alias garbled='echo -e "\033c"'
 # Docker alias
+alias dapp="/media/filer/os/dockerfiles/dapp.sh"
 alias dk='docker'
-alias dkps='dk ps'  # List running Docker containers
-alias dkpsa='dk ps -a'  # List all Docker containers
-alias dki='dk images'  # List Docker images
-alias dkrmac='dk rm $(docker ps -a -q)'  # Delete all Docker containers
-alias dkip='dk image prune -a -f'
-alias dkvp='dk volume prune -f'
-alias dksp='dk system prune -a -f'
+alias dkc='dk containers'  # List running Docker containers
+alias dkca='dk containers -a'  # List all Docker containers
+alias dki='dk image ls'  # List Docker images
+alias dkrmac='dk rm $(dk containers -a -q)'  # Delete all Docker containers
 # shellcheck disable=SC2142
 alias refresh="dki | awk '(NR>1) && (\$2!~/none/) {print \$1\":\"\$2}' | xargs -L1 docker pull" # Refresh Docker images
 alias chrome='make --directory=/media/filer/os/lnx/apps/docker/chrome run > /dev/null'
