@@ -148,8 +148,8 @@ alias garbled='echo -e "\033c"'
 # Docker alias
 alias dapp="/media/filer/os/dockerfiles/dapp.sh"
 alias dk='docker'
-alias dkc='dk container'  # List running Docker containers
-alias dkca='dk container -a'  # List all Docker containers
+alias dkc='dk container ls'  # List running Docker containers
+alias dkca='dk container ls -a'  # List all Docker containers
 alias dki='dk image ls'  # List Docker images
 alias dkrmac='dk rm $(dk container -a -q)'  # Delete all Docker containers
 # shellcheck disable=SC2142
