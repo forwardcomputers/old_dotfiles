@@ -151,7 +151,8 @@ alias dk='docker'
 alias dkc='dk container ls'  # List running Docker containers
 alias dkca='dk container ls -a'  # List all Docker containers
 alias dki='dk image ls'  # List Docker images
-alias dkrmac='dk rm $(dk container ls -a -q)'  # Delete all Docker containers
+alias dkrmca='dk container rm $(dk container ls -a -q)'  # Delete all Docker containers
+alias dkrmia='dk image rm $(dk images --filter dangling=true -q)'  # Delete dangling Docker images
 # shellcheck disable=SC2142
 alias refresh="dki | awk '(NR>1) && (\$2!~/none/) {print \$1\":\"\$2}' | xargs -L1 docker pull" # Refresh Docker images
 alias chrome='make --directory=/media/filer/os/lnx/apps/docker/chrome run > /dev/null'

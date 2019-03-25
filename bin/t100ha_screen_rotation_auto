@@ -73,8 +73,8 @@ do
                            cut -d" " -f6)
     new_rotation="normal"
 
-    accel_x=$(cat /sys/bus/iio/devices/iio\:device0/in_accel_x_raw)
-    accel_y=$(cat /sys/bus/iio/devices/iio\:device0/in_accel_y_raw)
+    accel_x=$(cat /sys/bus/iio/devices/iio\:device4/in_accel_x_raw)
+    accel_y=$(cat /sys/bus/iio/devices/iio\:device4/in_accel_y_raw)
 
     if [[ $accel_y -gt $(abs $accel_x) ]]
     then
