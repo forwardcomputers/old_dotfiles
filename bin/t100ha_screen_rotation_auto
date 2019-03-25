@@ -69,39 +69,30 @@ input_devices=$(xinput --list | grep SIS | \
 # Check the accelerometers and adjust screen and inputs.
 while true
 do
-    current_rotation=$(xrandr -q --verbose | grep $screen_output | \
+    new_rotation=$(xrandr -q --verbose | grep $screen_output | \
                            cut -d" " -f6)
-    new_rotation="normal"
 
     accel_x=$(cat /sys/bus/iio/devices/iio\:device4/in_accel_x_raw)
     accel_y=$(cat /sys/bus/iio/devices/iio\:device4/in_accel_y_raw)
 
     if [[ $accel_y -gt $(abs $accel_x) ]]
     then
-        new_rotation="normal"
-        coord_transf_matrix="1 0 0 0 1 0 0 0 1"
+        coord_transf_matrix="-1 0 1 0 -1 1 0 0 1"
     elif [[ $accel_x -gt $(abs $accel_y) ]]
     then
-        new_rotation="left"
         coord_transf_matrix="0 -1 1 1 0 0 0 0 1"
     elif [[ $accel_y -lt 0 ]] && [[ $(abs $accel_y) -gt $accel_x ]]
     then
-        new_rotation="inverted"
-        coord_transf_matrix="-1 0 1 0 -1 1 0 0 1"
+        coord_transf_matrix="1 0 0 0 1 0 0 0 1"
     else
-         new_rotation="right"
          coord_transf_matrix="0 1 0 -1 0 1 0 0 1"
     fi
 
-    if [[ $new_rotation != $current_rotation ]]
-    then
-        xrandr --output $screen_output --rotate $new_rotation
-        for input in ${input_devices[@]}
-        do
-            xinput set-prop $input 'Coordinate Transformation Matrix' \
-                   $coord_transf_matrix
-        done
-    fi
+    for input in ${input_devices[@]}
+      do
+          xinput set-prop $input 'Coordinate Transformation Matrix' \
+                 $coord_transf_matrix
+      done
 
     sleep $accel_time_check
 done
