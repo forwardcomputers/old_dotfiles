@@ -3,11 +3,15 @@
 .cache/
 .circleci/
 .config/Code/
+.config/dbus/
+.config/ibus/
 code
 .dbus/
 .docker/
 history
+.gnupg/
 google-chrome/
+.ICEauthority
 items.sqlite3
 .kodi
 .local/share/
