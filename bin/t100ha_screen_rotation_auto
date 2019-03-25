@@ -24,13 +24,6 @@
 # Time interval in seconds for the accelerometers check.
 accel_time_check=3
 
-
-# Absolute value function.
-abs(){
-    [ $1 -lt 0 ] && echo $((-$1)) || echo $1
-}
-
-
 # Display usage if wrong input arguments are supplied.
 if [[ $# -ne 0 ]]
 then
@@ -62,37 +55,23 @@ screen_output=$(xrandr | grep -w connected | cut -d" " -f1)
 #
 # Note that the "ASUS Base Station" entry appears two times but only
 # the last one is required.
-input_devices=$(xinput --list | grep SIS | \
-                    sed 's/.*id=\([0-9]*\).*/\1/')
+input_device=$(xinput --list | grep SIS | sed 's/.*id=\([0-9]*\).*/\1/')
 
 
 # Check the accelerometers and adjust screen and inputs.
 while true
 do
-    new_rotation=$(xrandr -q --verbose | grep $screen_output | \
-                           cut -d" " -f6)
+    new_rotation=$(xrandr -q --verbose | grep $screen_output | cut -d" " -f6)
 
-    accel_x=$(cat /sys/bus/iio/devices/iio\:device4/in_accel_x_raw)
-    accel_y=$(cat /sys/bus/iio/devices/iio\:device4/in_accel_y_raw)
+    case "${new_rotation}" in
+      "normal")   coord_transf_matrix="1 0 0 0 1 0 0 0 1" ;;
+      "left")     coord_transf_matrix="0 -1 1 1 0 0 0 0 1" ;;
+      "inverted") coord_transf_matrix="-1 0 1 0 -1 1 0 0 1" ;;
+      "right")    coord_transf_matrix="0 1 0 -1 0 1 0 0 1" ;;
+      *) ;;
+    esac
 
-    if [[ $accel_y -gt $(abs $accel_x) ]]
-    then
-        coord_transf_matrix="-1 0 1 0 -1 1 0 0 1"
-    elif [[ $accel_x -gt $(abs $accel_y) ]]
-    then
-        coord_transf_matrix="0 -1 1 1 0 0 0 0 1"
-    elif [[ $accel_y -lt 0 ]] && [[ $(abs $accel_y) -gt $accel_x ]]
-    then
-        coord_transf_matrix="1 0 0 0 1 0 0 0 1"
-    else
-         coord_transf_matrix="0 1 0 -1 0 1 0 0 1"
-    fi
+    xinput set-prop "${input_device}" 'Coordinate Transformation Matrix' $coord_transf_matrix
 
-    for input in ${input_devices[@]}
-      do
-          xinput set-prop $input 'Coordinate Transformation Matrix' \
-                 $coord_transf_matrix
-      done
-
-    sleep $accel_time_check
+    sleep "${accel_time_check}"
 done
