@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/ali/bin/t100ha_screen_rotation_auto
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name[en_CA]=Touchscreen input
+Name=Touchscreen input
+Comment[en_CA]=
+Comment=
