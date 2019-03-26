@@ -2,9 +2,14 @@
 .bash_history
 .cache/
 .circleci/
-.config/Code/
-.config/dbus/
-.config/ibus/
+.config/
+!.config/code/
+!.config/git/
+!.config/i3/
+!.config/redshift/
+!.config/tmux/
+!.config/vim/
+!.config/X11
 code
 .dbus/
 .docker/

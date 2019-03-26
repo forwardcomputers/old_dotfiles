@@ -4,6 +4,4 @@
 #
 ## Executed by startx (run your window manager from here)
 
-exec xautolock -time 15 -locker "i3lock --color=000000 --ignore-empty-password" &
-exec tilda --hidden &
 exec i3
