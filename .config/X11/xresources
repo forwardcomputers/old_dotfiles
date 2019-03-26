@@ -1,0 +1,54 @@
+! to match gnome-terminal "Linux console" scheme
+! foreground/background
+*background: #000000
+*foreground: #ffffff
+! black
+*color0  : #000000
+*color8  : #555555
+! red
+*color1  : #AA0000
+*color9  : #FF5555
+! green
+*color2  : #00AA00
+*color10 : #55FF55
+! yellow
+*color3  : #AA5500
+*color11 : #FFFF55
+! blue
+*color4  : #0000AA
+*color12 : #5555FF
+! magenta
+*color5  : #AA00AA
+*color13 : #FF55FF
+! cyan
+*color6  : #00AAAA
+*color14 : #55FFFF
+! white
+*color7  : #AAAAAA
+*color15 : #FFFFFF
+!
+URxvt.depth:                32
+URxvt.geometry:             120x30
+URxvt.fading:               0
+URxvt.loginShell:           true
+URxvt.saveLines:            65536
+URxvt.internalBorder:       3
+URxvt.lineSpace:            0
+
+URxvt.tabbed.tabbedex-rs-prefix: %
+URxvt.tabbedex.tab-fg: 7
+URxvt.tabbedex.tabbar-fg: 7
+URxvt.tabbedex.autohide: false
+URxvt.tabbedex.new-button: true
+
+URxvt.iso14755: true
+URxvt.iso14755_52: true
+URxvt*letterSpace: -1
+
+! scrollbar style - rxvt (default), plain (most compact), next, or xterm
+URxvt.scrollstyle: rxvt
+
+URxvt*font: xft:Monospace:pixelsize=14
+
+URxvt.perl-lib: .config/urxvt
+!URxvt.perl-ext-common:  matcher,tabbedex,searchable-scrollback<M-s>
