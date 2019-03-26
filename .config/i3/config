@@ -9,19 +9,18 @@ font pango:Material Design Icons 8, monospace 8
 #
 # startup programs
 exec_always --no-startup-id xrdb -merge $XDG_CONFIG_HOME/X11/xresources
-exec --no-startup-id dunst
-exec --no-startup-id xautolock -time 15 -locker "i3lock --color=000000 --ignore-empty-password" &
+exec_always --no-startup-id dunst
+exec_always --no-startup-id xautolock -corners +--- -cornerdelay 1 -time 15 -locker "i3lock --color=000000 --ignore-empty-password"
 
 #
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 #
 #bindsym $mod+d exec dmenu_run
-bindsym $mod+d exec "rofi -modi window,drun,run,combi -show combi -sidebar-mode"
+bindsym $mod+d exec "rofi -modi window,drun,combi -show combi -sidebar-mode"
 bindsym $mod+F4 kill
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 #
 bindsym $mod+Return exec i3-sensible-terminal
 #
@@ -64,27 +63,28 @@ bindsym $mod+Shift+space floating toggle
 for_window [class="Ardour"] floating enable
 for_window [class="Audacity"] floating enable
 for_window [class="Blender"] floating enable
-for_window [class="Code"] floating enable
-for_window [class="Firefox"] floating enable
+for_window [class="Code"] move container to workspace $ws3, workspace $ws3, floating enable, focus
+for_window [class="Firefox"] move container to workspace $ws2, workspace $ws2, floating enable, focus
 for_window [class="Gimp"] floating enable
-for_window [class="google-chrome"] floating enable
-for_window [class="Google-chrome"] floating enable
+for_window [class="google-chrome"] move container to workspace $ws2, workspace $ws2, floating enable, focus
+for_window [class="Google-chrome"] move container to workspace $ws2, workspace $ws2, floating enable, focus
 for_window [class="Inkscape"] floating enable
 for_window [class="KDEnlive"] floating enable
 for_window [class="Openshot"] floating enable
 for_window [class="Pitivi"] floating enable
 for_window [class="Shotcut"] floating enable
-for_window [class="Tor Browser"] floating enable
+for_window [class="Tor Browser"] move container to workspace $ws2, workspace $ws2, floating enable, focus
 for_window [class="vlc"] floating enable
 for_window [class="Wireshark"] floating enable
 
 assign [class="Firefox"] $ws2
 assign [class="Google-chrome"] $ws2
 assign [class="Tor Browser"] $ws2
+assign [class="Code"] $ws3
 
 set $ws1 "1: Terminal"
 set $ws2 "2: Web"
-set $ws3 "3: "
+set $ws3 "3: Code"
 set $ws4 "4: "
 set $ws5 "5: "
 set $ws6 "6: "

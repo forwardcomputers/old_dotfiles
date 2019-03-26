@@ -23,6 +23,7 @@ items.sqlite3
 .kodi
 .local/share/
 lpass
+.mozilla/
 OneDrive/
 .pki/
 pulse
