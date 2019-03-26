@@ -9,7 +9,9 @@
 !.config/redshift/
 !.config/tmux/
 !.config/vim/
-!.config/X11
+!.config/X11/
+!.config/user-dirs.dirs
+!.config/wgetrc
 code
 .dbus/
 .docker/
