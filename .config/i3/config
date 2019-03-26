@@ -60,38 +60,36 @@ bindsym $mod+$alt+f fullscreen toggle
 bindsym $mod+Shift+space floating toggle
 
 # Floating apps
-for_window [class="Ardour"] floating enable
-for_window [class="Audacity"] floating enable
-for_window [class="Blender"] floating enable
+for_window [class="Ardour"] move container to workspace $ws6, workspace $ws6, floating enable, focus
+for_window [class="Audacity"] move container to workspace $ws6, workspace $ws6, floating enable, focus
+for_window [class="Blender"] move container to workspace $ws5, workspace $ws5, floating enable, focus
 for_window [class="Code"] move container to workspace $ws3, workspace $ws3, floating enable, focus
 for_window [class="Firefox"] move container to workspace $ws2, workspace $ws2, floating enable, focus
-for_window [class="Gimp"] floating enable
+for_window [class="Gimp"] move container to workspace $ws7, workspace $ws7, floating enable, focus
 for_window [class="google-chrome"] move container to workspace $ws2, workspace $ws2, floating enable, focus
 for_window [class="Google-chrome"] move container to workspace $ws2, workspace $ws2, floating enable, focus
-for_window [class="Inkscape"] floating enable
-for_window [class="KDEnlive"] floating enable
-for_window [class="Openshot"] floating enable
-for_window [class="Pitivi"] floating enable
-for_window [class="Shotcut"] floating enable
+for_window [title="htop"] move container to workspace $ws10, workspace $ws10, floating enable, focus
+for_window [class="Inkscape"] move container to workspace $ws7, workspace $ws7, floating enable, focus
+for_window [class="KDEnlive"] move container to workspace $ws5, workspace $ws5, floating enable, focus
+for_window [title="mc"] move container to workspace $ws10, workspace $ws10, floating enable, focus
+for_window [class="Openshot"] move container to workspace $ws5, workspace $ws5, floating enable, focus
+for_window [class="Pitivi"] move container to workspace $ws5, workspace $ws5, floating enable, focus
+for_window [class="Shotcut"] move container to workspace $ws5, workspace $ws5, floating enable, focus
 for_window [class="Tor Browser"] move container to workspace $ws2, workspace $ws2, floating enable, focus
-for_window [class="vlc"] floating enable
-for_window [class="Wireshark"] floating enable
-
-assign [class="Firefox"] $ws2
-assign [class="Google-chrome"] $ws2
-assign [class="Tor Browser"] $ws2
-assign [class="Code"] $ws3
+for_window [class="vim"] move container to workspace $ws3, workspace $ws3, floating enable, focus
+for_window [class="vlc"] move container to workspace $ws5, workspace $ws5, floating enable, focus
+for_window [class="Wireshark"] move container to workspace $ws10, workspace $ws10, floating enable, focus
 
 set $ws1 "1: Terminal"
 set $ws2 "2: Web"
 set $ws3 "3: Code"
 set $ws4 "4: "
-set $ws5 "5: "
-set $ws6 "6: "
-set $ws7 "7: "
+set $ws5 "5: Video"
+set $ws6 "6: Audio"
+set $ws7 "7: Graphics"
 set $ws8 "8: "
 set $ws9 "9: "
-set $ws10 "10: "
+set $ws10 "10: Tools"
 # switch to workspace
 bindsym $mod+1 workspace $ws1
 bindsym $mod+2 workspace $ws2
