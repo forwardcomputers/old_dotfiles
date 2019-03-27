@@ -9,7 +9,7 @@ set $term urxvt
 font pango:Material Design Icons 8, monospace 8
 #
 # startup programs
-exec_always --no-startup-id xrdb -merge $XDG_CONFIG_HOME/X11/xresources && $term
+exec --no-startup-id xrdb -merge $XDG_CONFIG_HOME/X11/xresources && $term
 exec_always --no-startup-id dunst
 exec_always --no-startup-id xautolock -corners +--- -cornerdelay 1 -time 15 -locker "i3lock --color=000000 --ignore-empty-password"
 exec_always --no-startup-id redshift -c $XDG_CONFIG_HOME/redshift/redshift.conf
