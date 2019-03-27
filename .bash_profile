@@ -369,10 +369,7 @@ if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
   #     send-keys -t $USER:2.1 "ssh hass" C-m \;\
   #     select-window -t $USER:1 \;\
   #     select-pane -t 1 '
-  alias tm='tmux attach -t $USER ||
-      tmux -f "$XDG_CONFIG_HOME/tmux/tmux.conf" new-session -A -s $USER \;
-      split-window -v -p 25 \;
-      select-pane -t 1 '
+  alias tm='tmux -f "$XDG_CONFIG_HOME/tmux/tmux.conf" new-session -AD -s $USER'
  # VSCode directory
  if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
   #
