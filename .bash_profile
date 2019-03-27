@@ -304,7 +304,7 @@ if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
   # tmux options
   export TMUX_TMPDIR="$XDG_RUNTIME_DIR"
   # i3 options
-  export TERMINAL=xfce4-terminal
+  export TERMINAL=urxvt
   export VISUAL=leafpad
   # XDG exports
   export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion
