@@ -11,6 +11,8 @@
 command_not_found_handle () {
   if [[ -d /media/filer/os/dockerfiles/"${1}" ]]; then
     /media/filer/os/dockerfiles/dapp.sh run "${1}"
+  else
+    return 127
   fi
 }
 # Start ssh agent function
