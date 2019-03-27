@@ -8,12 +8,23 @@
 [[ $- != *i* ]] && return
 #
 # Is command a docker app
-eval "original_$(declare -f command_not_found_handle)"
 command_not_found_handle () {
   if [[ -d /media/filer/os/dockerfiles/"${1}" ]]; then
     /media/filer/os/dockerfiles/dapp.sh run "${1}"
+  else
+    if [ -x /usr/lib/command-not-found ]; then
+        /usr/lib/command-not-found -- "$1";
+        return $?;
+    else
+        if [ -x /usr/share/command-not-found/command-not-found ]; then
+            /usr/share/command-not-found/command-not-found -- "$1";
+            return $?;
+        else
+            printf "%s: command not found\n" "$1" 1>&2;
+            return 127;
+        fi;
+    fi
   fi
-  original_command_not_found_handle
 }
 # Start ssh agent function
 start_agent () {
