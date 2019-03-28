@@ -25,29 +25,20 @@ bindsym $mod+Shift+r restart
 #
 bindsym $mod+Return exec $term
 #
-# change focus
-bindsym $mod+h focus left
-bindsym $mod+j focus down
-bindsym $mod+k focus up
-bindsym $mod+l focus right
-bindsym $mod+Left focus left
-bindsym $mod+Down focus down
-bindsym $mod+Up focus up
-bindsym $mod+Right focus right
-#
-# move focused window
-bindsym $mod+Control+Shift+h move left
-bindsym $mod+Control+Shift+j move down
-bindsym $mod+Cintrol+Shift+k move up
-bindsym $mod+Control+Shift+l move right
-bindsym $mod+Control+Shift+Left move left
-bindsym $mod+Control+Shift+Down move down
-bindsym $mod+Control+Shift+Up move up
-bindsym $mod+Control+Shift+Right move right
 
 # split window
 bindsym $mod+Shift+Right split h; exec $term
 bindsym $mod+Shift+Down split v; exec $term
+# change focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+# move focused window
+bindsym $mod+Control+Shift+Left move left
+bindsym $mod+Control+Shift+Down move down
+bindsym $mod+Control+Shift+Up move up
+bindsym $mod+Control+Shift+Right move right
 
 # switch workspace
 bindsym $mod+Tab exec rofi -show window
@@ -61,58 +52,55 @@ bindsym $mod+$alt+f fullscreen toggle
 bindsym $mod+Shift+space floating toggle
 
 # Floating apps
-for_window [class="Ardour"] move container to workspace $ws6, workspace $ws6, floating enable, focus
-for_window [class="Audacity"] move container to workspace $ws6, workspace $ws6, floating enable, focus
-for_window [class="Blender"] move container to workspace $ws5, workspace $ws5, floating enable, focus
-for_window [class="Code"] move container to workspace $ws3, workspace $ws3, floating enable, focus
-for_window [class="Firefox"] move container to workspace $ws2, workspace $ws2, floating enable, focus
-for_window [class="Gimp"] move container to workspace $ws7, workspace $ws7, floating enable, focus
-for_window [class="google-chrome"] move container to workspace $ws2, workspace $ws2, floating enable, focus
-for_window [class="Google-chrome"] move container to workspace $ws2, workspace $ws2, floating enable, focus
-for_window [title="htop"] move container to workspace $ws10, workspace $ws10, floating enable, focus
-for_window [class="Inkscape"] move container to workspace $ws7, workspace $ws7, floating enable, focus
-for_window [class="KDEnlive"] move container to workspace $ws5, workspace $ws5, floating enable, focus
-for_window [title="mc"] move container to workspace $ws10, workspace $ws10, floating enable, focus
-for_window [class="Openshot"] move container to workspace $ws5, workspace $ws5, floating enable, focus
-for_window [class="Pitivi"] move container to workspace $ws5, workspace $ws5, floating enable, focus
-for_window [class="Shotcut"] move container to workspace $ws5, workspace $ws5, floating enable, focus
-for_window [class="Tor Browser"] move container to workspace $ws2, workspace $ws2, floating enable, focus
-for_window [class="vim"] move container to workspace $ws3, workspace $ws3, floating enable, focus
-for_window [class="vlc"] move container to workspace $ws5, workspace $ws5, floating enable, focus
-for_window [class="Wireshark"] move container to workspace $ws10, workspace $ws10, floating enable, focus
+for_window [class="Ardour"] move container to workspace $ws_audio, workspace $ws_audio, floating enable, focus
+for_window [class="Audacity"] move container to workspace $ws_audio, workspace $ws_audio, floating enable, focus
+for_window [class="Blender"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
+for_window [class="Code"] move container to workspace $ws_code, workspace $ws_code, floating enable, focus
+for_window [class="Firefox"] move container to workspace $ws_web, workspace $ws_web, floating enable, focus
+for_window [class="Gimp"] move container to workspace $ws_graphics, workspace $ws_graphics, floating enable, focus
+for_window [class="google-chrome"] move container to workspace $ws_web, workspace $ws_web, floating enable, focus
+for_window [class="Google-chrome"] move container to workspace $ws_web, workspace $ws_web, floating enable, focus
+for_window [title="htop"] move container to workspace $ws_tools, workspace $ws_tools, floating enable, focus
+for_window [class="Inkscape"] move container to workspace $ws_graphics, workspace $ws_graphics, floating enable, focus
+for_window [class="KDEnlive"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
+for_window [title="mc"] move container to workspace $ws_tools, workspace $ws_tools, floating enable, focus
+for_window [class="Openshot"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
+for_window [class="Pitivi"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
+for_window [class="Shotcut"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
+for_window [class="Tor Browser"] move container to workspace $ws_web, workspace $ws_web, floating enable, focus
+for_window [class="vim"] move container to workspace $ws_code, workspace $ws_code, floating enable, focus
+for_window [class="vlc"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
+for_window [class="Wireshark"] move container to workspace $ws_tools, workspace $ws_tools, floating enable, focus
 
-set $ws1 "1: Terminal"
-set $ws2 "2: Web"
-set $ws3 "3: Code"
+set $ws_terminal "1: Terminal"
+set $ws_code "2: Code"
+set $ws_web "3: Web"
 set $ws4 "4: "
-set $ws5 "5: Video"
-set $ws6 "6: Audio"
-set $ws7 "7: Graphics"
+set $ws_video "5: Video"
+set $ws_audio "6: Audio"
+set $ws_graphics "7: Graphics"
 set $ws8 "8: "
-set $ws9 "9: "
-set $ws10 "10: Tools"
+set $ws_tools "9: Tools"
 # switch to workspace
-bindsym $mod+1 workspace $ws1
-bindsym $mod+2 workspace $ws2
-bindsym $mod+3 workspace $ws3
+bindsym $mod+1 workspace $ws_terminal
+bindsym $mod+2 workspace $ws_code
+bindsym $mod+3 workspace $ws_web
 bindsym $mod+4 workspace $ws4
-bindsym $mod+5 workspace $ws5
-bindsym $mod+6 workspace $ws6
-bindsym $mod+7 workspace $ws7
+bindsym $mod+5 workspace $ws_video
+bindsym $mod+6 workspace $ws_audio
+bindsym $mod+7 workspace $ws_graphics
 bindsym $mod+8 workspace $ws8
-bindsym $mod+9 workspace $ws9
-bindsym $mod+0 workspace $ws10
+bindsym $mod+9 workspace $ws_tools
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $ws1
-bindsym $mod+Shift+2 move container to workspace $ws2
-bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+1 move container to workspace $ws_terminal
+bindsym $mod+Shift+2 move container to workspace $ws_code
+bindsym $mod+Shift+3 move container to workspace $ws_web
 bindsym $mod+Shift+4 move container to workspace $ws4
-bindsym $mod+Shift+5 move container to workspace $ws5
-bindsym $mod+Shift+6 move container to workspace $ws6
-bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+5 move container to workspace $ws_video
+bindsym $mod+Shift+6 move container to workspace $ws_audio
+bindsym $mod+Shift+7 move container to workspace $ws_graphics
 bindsym $mod+Shift+8 move container to workspace $ws8
-bindsym $mod+Shift+9 move container to workspace $ws9
-bindsym $mod+Shift+0 move container to workspace $ws10
+bindsym $mod+Shift+9 move container to workspace $ws_tools
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
