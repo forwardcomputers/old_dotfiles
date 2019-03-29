@@ -30,6 +30,7 @@ OneDrive/
 pulse
 refresh_token
 .ssh/
+.sudo_as_admin_successful
 .uuid
 .viminfo
 Xauthority
