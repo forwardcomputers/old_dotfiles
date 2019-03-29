@@ -52,6 +52,7 @@ bindsym $mod+$alt+f fullscreen toggle
 bindsym $mod+Shift+space floating toggle
 
 # Floating apps
+for_window [class=".*"] move absolute position center
 for_window [class="Ardour"] move container to workspace $ws_audio, workspace $ws_audio, floating enable, focus
 for_window [class="Audacity"] move container to workspace $ws_audio, workspace $ws_audio, floating enable, focus
 for_window [class="Blender"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
@@ -103,30 +104,19 @@ bindsym $mod+Shift+8 move container to workspace $ws8
 bindsym $mod+Shift+9 move container to workspace $ws_tools
 
 # resize window (you can also use the mouse for that)
+bindsym $mod+r mode "resize"
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window’s width.
-        # Pressing right will grow the window’s width.
-        # Pressing up will shrink the window’s height.
-        # Pressing down will grow the window’s height.
         bindsym h resize shrink width 10 px or 10 ppt
         bindsym j resize grow height 10 px or 10 ppt
         bindsym k resize shrink height 10 px or 10 ppt
         bindsym l resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
         bindsym Down resize grow height 10 px or 10 ppt
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape
         bindsym Return mode "default"
         bindsym Escape mode "default"
 }
-
-bindsym $mod+r mode "resize"
 
 # Set shut down, restart and locking features
 bindsym $mod+Escape mode "$mode_system"
