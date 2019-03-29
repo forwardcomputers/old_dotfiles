@@ -103,6 +103,7 @@ else
   export XDG_CONFIG_HOME="${HOME}/.config"
   export XDG_DATA_HOME="${HOME}/.local/share"
 fi
+export XORGCONFIG="${XDG_CONFIG_HOME}/X11/xorg.conf"
 if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.168.1.40/os/lpass); fi
 # Prompt colors
 i=0;
