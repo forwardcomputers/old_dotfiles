@@ -10,10 +10,10 @@ set $term urxvt
 font pango:Material Design Icons 8, monospace 8
 #
 # startup programs
-exec --no-startup-id xrdb -merge $XDG_CONFIG_HOME/X11/xresources && $term
-exec_always --no-startup-id dunst
-exec_always --no-startup-id xautolock -corners +--- -cornerdelay 1 -time 15 -locker "i3lock --color=000000 --ignore-empty-password"
-exec_always --no-startup-id redshift -c $XDG_CONFIG_HOME/redshift/redshift.conf
+exec --no-startup-id /usr/bin/xrdb -merge ~/.config/X11/xresources && $term
+exec_always --no-startup-id /usr/bin/dunst
+exec_always --no-startup-id /usr/bin/xautolock -corners +--- -cornerdelay 1 -time 15 -locker "i3lock --color=000000 --ignore-empty-password"
+exec_always --no-startup-id /usr/bin/redshift -c $XDG_CONFIG_HOME/redshift/redshift.conf
 #
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
