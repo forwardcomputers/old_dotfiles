@@ -2,7 +2,8 @@
 .bash_history
 .cache/
 .circleci/
-.config/
+!.config/
+.config/*
 !.config/code/
 !.config/git/
 !.config/i3/
