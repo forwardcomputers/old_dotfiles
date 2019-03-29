@@ -224,7 +224,7 @@ class I3CheatWindow(Gtk.ApplicationWindow):
 class I3Cheat(Gtk.Application):
     CSS = b"""
         * {
-            font-size: 16px;
+            font-size: 8px;
         }
         @binding-set test {
             bind "slash" { "start-interactive-search" () };
@@ -232,7 +232,7 @@ class I3Cheat(Gtk.Application):
             bind "k" { "move-cursor" (display-lines, -1) };
         }
         GtkTreeView, treeview {
-            gtk-key-bindings: test;
+            -gtk-key-bindings: test;
         }
     """
 
