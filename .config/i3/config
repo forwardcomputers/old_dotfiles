@@ -121,9 +121,9 @@ mode "resize" {
 }
 
 # Set shut down, restart and locking features
-bindsym $mod+Escape mode "$mode_system"
-set $mode_system (l)ock, (e)xit, (s)uspend, (h)ibernate, (Shift+r)eboot, (Shift+s)hutdown
-mode "$mode_system" {
+set $system (l)ock, (e)xit, (s)uspend, (h)ibernate, (Shift+r)eboot, (Shift+s)hutdown
+bindsym $mod+Escape mode "$system"
+mode "$system" {
     bindsym l exec --no-startup-id i3lock --color=000000 --ignore-empty-password, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id "i3lock && systemctl suspend", mode "default"
