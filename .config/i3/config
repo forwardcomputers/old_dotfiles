@@ -13,7 +13,7 @@ font pango:Material Design Icons 8, monospace 8
 exec --no-startup-id /usr/bin/xrandr --output Virtual1 --mode 1680x1050 --rate 60
 exec --no-startup-id /usr/bin/xrdb -merge ~/.config/X11/xresources && $term
 exec_always --no-startup-id /usr/bin/dunst
-exec_always --no-startup-id /usr/bin/xautolock -corners +--- -cornerdelay 1 -time 15 -locker "i3lock --color=000000 --ignore-empty-password"
+exec_always --no-startup-id /usr/bin/xautolock -corners +--- -cornerdelay 1 -time 15 -locker "slock"
 exec_always --no-startup-id /usr/bin/redshift -c ~/.config/redshift/redshift.conf
 #
 # Use Mouse+$mod to drag floating windows to their wanted position
