@@ -165,7 +165,9 @@ alias dkc='dk container ls'  # List running Docker containers
 alias dkca='dk container ls -a'  # List all Docker containers
 alias dki='dk image ls'  # List Docker images
 alias dkrmca='dk container rm $(dk container ls -a -q)'  # Delete all Docker containers
+alias dkrmc='docker container rm'  # Delete a Docker container
 alias dkrmia='dk image rm $(dk images --filter dangling=true -q)'  # Delete dangling Docker images
+alias dkrmi='docker image rm'  # Delete a Docker image
 # shellcheck disable=SC2142
 alias refresh="dki | awk '(NR>1) && (\$2!~/none/) {print \$1\":\"\$2}' | xargs -L1 docker pull" # Refresh Docker images
 #
