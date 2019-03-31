@@ -15,3 +15,4 @@ rm -rf tmp
 git reset --hard
 git remote set-url origin ssh://git@github.com/forwardcomputers/dotfiles.git
 ````
+
