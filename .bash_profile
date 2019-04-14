@@ -78,9 +78,6 @@ export GDK_DPI_SCALE=0.5
 export QT_DEVICE_PIXEL_RATIO=2
 # Make new shells get the history lines from all previous
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-# Make `vim` the default editor
-export EDITOR='vim'
-
 # Don't clear the screen after quitting a `man` page
 export MANPAGER='less -X'
 # Shared data directory
@@ -104,6 +101,13 @@ else
   export XDG_CONFIG_HOME="${HOME}/.config"
   export XDG_DATA_HOME="${HOME}/.local/share"
 fi
+# Make `vim` the default editor
+export EDITOR='vim'
+set undodir=$XDG_CACHE_HOME/vim/undo
+set directory=$XDG_CACHE_HOME/vim/swap
+set backupdir=$XDG_CACHE_HOME/vim/backup
+set viminfo+='1000,n$XDG_CACHE_HOME/vim/viminfo'
+set runtimepath=$XDG_CONFIG_HOME/vim,$VIMRUNTIME,$XDG_CONFIG_HOME/vim/after
 if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.168.1.40/os/lpass); fi
 # Prompt colors
 i=0;
