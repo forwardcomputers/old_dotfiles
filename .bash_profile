@@ -191,18 +191,18 @@ export GIT_PS1_SHOWUNTRACKEDFILES=true
 export GIT_PS1_SHOWCOLORHINTS=true
 export GIT_PS1_SHOWUPSTREAM="auto"
 PS1="${debian_chroot:+($debian_chroot)}"
-PS1+="[${userStyle}]u"
-PS1+="[${CO_RESET}]@"
-PS1+="[${hostStyle}]h"
-PS1+="[${CO_RESET}]:"
-PS1+="[${FG_BLUE}]w"
-PS1+="[${CO_RESET}]$ "
+PS1+="\[${userStyle}\]\u"
+PS1+="\[${CO_RESET}\]@"
+PS1+="\[${hostStyle}\]\h"
+PS1+="\[${CO_RESET}\]:"
+PS1+="\[${FG_BLUE}\]\w"
+PS1+="\[${CO_RESET}\]\$ "
 if [[ -z "${debian_chroot:-}" && -r /etc/debian_chroot ]]; then
      debian_chroot=$(cat /etc/debian_chroot)
  fi
 #export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s): ${PWD}\007"'
 ##export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]" "\$ "'
-export PROMPT_COMMAND='__git_ps1 "${PS1}"'
+export PROMPT_COMMAND='__git_ps1 ${PS1}'
 #case "$TERM" in
 #screen*|xterm*|rxvt*|urxvt*)
 #    export PS1='${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]$(__git_ps1 " (%s)")\$ '
