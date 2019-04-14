@@ -116,7 +116,7 @@ for color in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE '' DEFAULT; do
 		printf -v "FG_$color" $'\e[%dm' $((90 + i))
 		printf -v "BG_$color" $'\e[%dm' $((40 + i))
 	fi
-	((i++))
+	((++i))
 done
 export CO_RESET=$'\e[0m'
 export CO_BOLD=$'\e[1m'
@@ -198,23 +198,8 @@ export GIT_PS1_SHOWUPSTREAM="auto"
 if [[ -z "${debian_chroot:-}" && -r /etc/debian_chroot ]]; then
      debian_chroot=$(cat /etc/debian_chroot)
  fi
-PC="${debian_chroot:+($debian_chroot)}"
-PC+="\[${userStyle}\]\u"
-PC+="\[${CO_RESET}\]@"
-PC+="\[${hostStyle}\]\h"
-PC+="\[${CO_RESET}\]:"
-PC+="\[${FG_BLUE}\]\w"
-PC+="\[${CO_RESET}\]\$ "
 #export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s): ${PWD}\007"'
-##export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]" "\$ "'
-export PROMPT_COMMAND="__git_ps1  ${PC}"
-#case "$TERM" in
-#screen*|xterm*|rxvt*|urxvt*)
-#    export PS1='${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]$(__git_ps1 " (%s)")\$ '
-#    ;;
-#*)
-#    ;;
-#esac
+export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]" "\$ "'
 #
 #
 # For VMware
