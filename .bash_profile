@@ -202,7 +202,7 @@ if [[ -z "${debian_chroot:-}" && -r /etc/debian_chroot ]]; then
  fi
 #export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s): ${PWD}\007"'
 ##export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]" "\$ "'
-export PROMPT_COMMAND='__git_ps1 "${PC}"'
+export PROMPT_COMMAND='__git_ps1 ' "${PC}"
 #case "$TERM" in
 #screen*|xterm*|rxvt*|urxvt*)
 #    export PS1='${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]$(__git_ps1 " (%s)")\$ '
