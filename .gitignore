@@ -18,6 +18,7 @@ code
 .docker/
 history
 .gnupg/
+gdrive/
 google-chrome/
 .ICEauthority
 items.sqlite3
