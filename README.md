@@ -2,17 +2,6 @@
 #### My dotfiles
 
 
-[//]: # (BlockStart)
-[![CircleCI](https://img.shields.io/circleci/project/github/forwardcomputers/dotfiles.svg?label=dotfiles)](https://circleci.com/gh/forwardcomputers/dotfiles)
-[![Github](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/dotfiles)
-
-[//]: # (BlockEnd)
-
-````
-git clone --recursive https://github.com/forwardcomputers/dotfiles.git tmp
-mv tmp/.git .
-rm -rf tmp
-git reset --hard
-git remote set-url origin ssh://git@github.com/forwardcomputers/dotfiles.git
-````
-
+| Repository | Status | GitHub | Docker | Tag | Size | Layers |
+| --- | --- | :---: | :---: | :--- | :---: | :---: |
+| [![](https://img.shields.io/badge/dotfiles-grey.svg)](https://github.com/forwardcomputers/dotfiles) | [![](https://img.shields.io/circleci/project/github/forwardcomputers/dotfiles.svg?label)](https://circleci.com/gh/forwardcomputers/dotfiles) | [![](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/dotfiles) |
