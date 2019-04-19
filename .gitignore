@@ -36,3 +36,23 @@ refresh_token
 .viminfo
 Xauthority
 
+
+Applications/
+.cups/
+Desktop/
+Documents/
+Downloads/
+.DS_Store
+filer
+Library/
+Movies/
+.mume/
+Music/
+Pictures/
+Public/
+.serverauth*
+Virtual Machines.localized/
+VirtualBox VMs/
+.vscode/
+.Trash/
+.Xauthority
