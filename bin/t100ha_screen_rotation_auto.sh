@@ -61,7 +61,7 @@ input_device=$(xinput --list | grep SIS | sed 's/.*id=\([0-9]*\).*/\1/')
 # Check the accelerometers and adjust screen and inputs.
 while true
 do
-    new_rotation=$(xrandr -q --verbose | grep $screen_output | cut -d" " -f6)
+    new_rotation=$(xrandr -q --verbose | grep "${screen_output}" | cut -d" " -f6)
 
     case "${new_rotation}" in
       "normal")   coord_transf_matrix="1 0 0 0 1 0 0 0 1" ;;
@@ -71,7 +71,7 @@ do
       *) ;;
     esac
 
-    xinput set-prop "${input_device}" 'Coordinate Transformation Matrix' $coord_transf_matrix
+    xinput set-prop "${input_device}" 'Coordinate Transformation Matrix' "${coord_transf_matrix}"
 
     sleep "${accel_time_check}"
 done
