@@ -10,7 +10,7 @@
 # Is command a docker app
 command_not_found_handle () {
   if [[ -d /media/filer/os/dockerfiles/"${1}" ]]; then
-    /media/filer/os/dockerfiles/dapp.sh run "${1}"
+    /media/filer/os/dockerfiles/dapp.sh run "$@"
   else
     if [ -x /usr/lib/command-not-found ]; then
         /usr/lib/command-not-found -- "$1";
