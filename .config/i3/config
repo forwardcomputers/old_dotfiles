@@ -63,6 +63,7 @@ for_window [class="Blender"] move container to workspace $ws_video, workspace $w
 for_window [class="Code"] move container to workspace $ws_code, workspace $ws_code, floating enable, focus
 for_window [class="Firefox"] move container to workspace $ws_web, workspace $ws_web, floating enable, focus
 for_window [class="Gimp"] move container to workspace $ws_graphics, workspace $ws_graphics, floating enable, focus
+for_window [class="GParted"] move container to workspace $ws_tools, workspace $ws_tools, floating enable, focus
 for_window [class="google-chrome"] move container to workspace $ws_web, workspace $ws_web, floating enable, focus
 for_window [class="Google-chrome"] move container to workspace $ws_web, workspace $ws_web, floating enable, focus
 for_window [title="htop"] move container to workspace $ws_tools, workspace $ws_tools, floating enable, focus
