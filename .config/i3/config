@@ -73,6 +73,7 @@ for_window [class="krita"] move container to workspace $ws_graphics, workspace $
 for_window [title="mc"] move container to workspace $ws_tools, workspace $ws_tools, floating enable, focus
 for_window [class="Openshot"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
 for_window [class="Pitivi"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
+for_window [class="com-projectlibre1-main-Main"] move container to workspace $ws_office, workspace $ws_office, floating enable, focus
 for_window [class="Shotcut"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
 for_window [class="Tor Browser"] move container to workspace $ws_web, workspace $ws_web, floating enable, focus
 for_window [class="vim"] move container to workspace $ws_code, workspace $ws_code, floating enable, focus
@@ -82,7 +83,7 @@ for_window [class="Wireshark"] move container to workspace $ws_tools, workspace 
 set $ws_terminal "1: Terminal"
 set $ws_code "2: Code"
 set $ws_web "3: Web"
-set $ws4 "4: "
+set $ws4 "4: Office"
 set $ws_video "5: Video"
 set $ws_audio "6: Audio"
 set $ws_graphics "7: Graphics"
@@ -92,7 +93,7 @@ set $ws_tools "9: Tools"
 bindsym $mod+1 workspace $ws_terminal
 bindsym $mod+2 workspace $ws_code
 bindsym $mod+3 workspace $ws_web
-bindsym $mod+4 workspace $ws4
+bindsym $mod+4 workspace $ws_office
 bindsym $mod+5 workspace $ws_video
 bindsym $mod+6 workspace $ws_audio
 bindsym $mod+7 workspace $ws_graphics
