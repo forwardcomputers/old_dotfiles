@@ -101,9 +101,12 @@ else
   export XDG_CONFIG_HOME="${HOME}/.config"
   export XDG_DATA_HOME="${HOME}/.local/share"
 fi
-# Define XAUTHORITY
-export XAUTHORITY="S{XDG_DATA_HOME}"/Xauthority
-[[ ! -e $XDG_DATA_HOME/Xauthority ]] && mkdir -p "${XDG_DATA_HOME}"/Xauthority
+# Define .Xauthority
+export XAUTHORITY="${XDG_DATA_HOME}"/Xauthority
+[[ ! -e "${XDG_DATA_HOME}"/Xauthority ]] && mkdir -p "${XDG_DATA_HOME}"/Xauthority
+# Define .gnupg
+export GNUPGHOME="${XDG_DATA_HOME}"/gnupg
+[[ ! -e "${XDG_DATA_HOME}"/gnupg ]] && mkdir -p "${XDG_DATA_HOME}"/gnupg
 # Make `vim` the default editor
 export EDITOR='vim'
 set undodir="${XDG_CACHE_HOME}"/vim/undo
@@ -276,8 +279,6 @@ fi
 #
 if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
   # Set up lastpass
-  export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-  [[ ! -e $XDG_DATA_HOME/gnupg ]] && mkdir -p "${XDG_DATA_HOME}"/gnupg
   export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
   if [[ -z "$TMUX" ]]; then
     lpass status --quiet || lpass login --trust --force "${FULLNAME}"
