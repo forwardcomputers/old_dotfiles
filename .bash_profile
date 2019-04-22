@@ -101,6 +101,9 @@ else
   export XDG_CONFIG_HOME="${HOME}/.config"
   export XDG_DATA_HOME="${HOME}/.local/share"
 fi
+# Define XAUTHORITY
+export XAUTHORITY="S{XDG_DATA_HOME}/Xauthority"
+[[ ! -e $XDG_DATA_HOME/Xauthority ]] && mkdir -p "${XDG_DATA_HOME}"/Xauthority
 # Make `vim` the default editor
 export EDITOR='vim'
 set undodir="${XDG_CACHE_HOME}"/vim/undo
@@ -169,9 +172,9 @@ alias dk='docker'
 alias dkc='dk container ls'  # List running Docker containers
 alias dkca='dk container ls -a'  # List all Docker containers
 alias dki='dk image ls'  # List Docker images
-alias dkrmca='dk container rm $(dk container ls -a -q)'  # Delete all Docker containers
+alias dkrmca='dk container rm -f $(dk container ls -a -q)'  # Delete all Docker containers
 alias dkrmc='docker container rm'  # Delete a Docker container
-alias dkrmia='dk image rm $(dk images --filter dangling=true -q)'  # Delete dangling Docker images
+alias dkrmia='dk image rm -f $(dk images --filter dangling=true -q)'  # Delete dangling Docker images
 alias dkrmi='docker image rm'  # Delete a Docker image
 # shellcheck disable=SC2142
 alias refresh="dki | awk '(NR>1) && (\$2!~/none/) {print \$1\":\"\$2}' | xargs -L1 docker pull" # Refresh Docker images
@@ -274,6 +277,7 @@ fi
 if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
   # Set up lastpass
   export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+  [[ ! -e $XDG_DATA_HOME/gnupg ]] && mkdir -p "${XDG_DATA_HOME}"/gnupg
   export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
   if [[ -z "$TMUX" ]]; then
     lpass status --quiet || lpass login --trust --force "${FULLNAME}"
