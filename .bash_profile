@@ -102,7 +102,7 @@ else
   export XDG_DATA_HOME="${HOME}/.local/share"
 fi
 # Define XAUTHORITY
-export XAUTHORITY="S{XDG_DATA_HOME}/Xauthority"
+export XAUTHORITY="S{XDG_DATA_HOME}"/Xauthority
 [[ ! -e $XDG_DATA_HOME/Xauthority ]] && mkdir -p "${XDG_DATA_HOME}"/Xauthority
 # Make `vim` the default editor
 export EDITOR='vim'
