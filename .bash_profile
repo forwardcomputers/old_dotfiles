@@ -103,7 +103,6 @@ else
 fi
 # Define .Xauthority
 export XAUTHORITY="${XDG_RUNTIME_HOME}"/Xauthority
-[[ ! -e "${XDG_RUNTIME_HOME}"/Xauthority ]] && mkdir -p "${XDG_RUNTIME_HOME}"/Xauthority
 # Define .gnupg
 export GNUPGHOME="${XDG_DATA_HOME}"/gnupg
 [[ ! -e "${XDG_DATA_HOME}"/gnupg ]] && mkdir -p "${XDG_DATA_HOME}"/gnupg
