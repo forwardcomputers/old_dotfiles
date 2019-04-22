@@ -83,7 +83,7 @@ for_window [class="Wireshark"] move container to workspace $ws_tools, workspace 
 set $ws_terminal "1: Terminal"
 set $ws_code "2: Code"
 set $ws_web "3: Web"
-set $ws4 "4: Office"
+set $ws_office "4: Office"
 set $ws_video "5: Video"
 set $ws_audio "6: Audio"
 set $ws_graphics "7: Graphics"

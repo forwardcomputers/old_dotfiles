@@ -323,6 +323,7 @@ if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
   export XINITRC="$XDG_CONFIG_HOME/X11/xinitrc"
   export XSERVERRC="$XDG_CONFIG_HOME/X11/xserverrc"
   export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+  export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
   # wget history directory
   alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
   # git alias
