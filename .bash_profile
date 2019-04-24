@@ -73,9 +73,9 @@ OSTYPE=$( uname -s )
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 # hidpi for gtk apps
-export GDK_SCALE=2
-export GDK_DPI_SCALE=0.5
-export QT_DEVICE_PIXEL_RATIO=2
+# export GDK_SCALE=2
+# export GDK_DPI_SCALE=0.5
+# export QT_DEVICE_PIXEL_RATIO=2
 # Make new shells get the history lines from all previous
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 # Don't clear the screen after quitting a `man` page
