@@ -113,7 +113,7 @@ set directory="${XDG_CACHE_HOME}"/vim/swap
 set backupdir="${XDG_CACHE_HOME}"/vim/backup
 set viminfo+='1000,n$XDG_CACHE_HOME/vim/viminfo'
 set runtimepath="${XDG_CONFIG_HOME}"/vim,"${VIMRUNTIME}","${XDG_CONFIG_HOME}"/vim/after
-if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.168.1.40/os/lpass); fi
+if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.168.1.40/os/lpass ); fi
 # Prompt colors
 i=0;
 for color in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE '' DEFAULT; do
