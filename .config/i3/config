@@ -57,6 +57,7 @@ bindsym $mod+Shift+space floating toggle
 # Floating apps
 for_window [class=".*"] move absolute position center
 for_window [title="keys"] [class="feh"] move position center, floating enable, focus
+for_window [class="flameshot"] move position center, floating enable, focus
 for_window [class="Netsurf-gtk"] move position center, floating enable, focus
 for_window [class="SimpleScreenRecorder"] move position center, floating enable, focus
 for_window [class="X-www-browser"] move position center, floating enable, focus
