@@ -57,7 +57,8 @@ bindsym $mod+Shift+space floating toggle
 # Floating apps
 for_window [class=".*"] move absolute position center
 for_window [title="keys"] [class="feh"] move position center, floating enable, focus
-for_window [class="Netsurf-gtk"] floating enable, focus
+for_window [class="Netsurf-gtk"] move position center, floating enable, focus
+for_window [class="X-www-browser"] move position center, floating enable, focus
 for_window [class="Ardour"] move container to workspace $ws_audio, workspace $ws_audio, floating enable, focus
 for_window [class="Audacity"] move container to workspace $ws_audio, workspace $ws_audio, floating enable, focus
 for_window [class="Blender"] move container to workspace $ws_video, workspace $ws_video, floating enable, focus
