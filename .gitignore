@@ -28,6 +28,7 @@ items.sqlite3
 lpass
 .mozilla/
 OneDrive/
+.openshot_qt/
 .pki/
 pulse
 refresh_token

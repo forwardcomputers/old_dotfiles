@@ -101,8 +101,9 @@ else
   export XDG_CONFIG_HOME="${HOME}/.config"
   export XDG_DATA_HOME="${HOME}/.local/share"
 fi
-# Define .Xauthority
+# Define (*)authority
 export XAUTHORITY="${XDG_RUNTIME_DIR}"/X11/Xauthority
+export ICEAUTHORITY="${XDG_CACHE_HOME}"/ICEauthority
 # Define .gnupg
 export GNUPGHOME="${XDG_DATA_HOME}"/gnupg
 [[ ! -e "${XDG_DATA_HOME}"/gnupg ]] && mkdir -p "${XDG_DATA_HOME}"/gnupg
