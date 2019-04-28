@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # shellcheck disable=SC2009,SC2155
 # shellcheck source=/dev/null
-set -x
+#set -x
 
 # If not running interactively, don't do anything
 #[[ $- != *i* || $(id -un) = "duser" ]] && return
