@@ -33,6 +33,7 @@ OneDrive/
 pulse
 refresh_token
 .ssh/
+.ssr/
 .sudo_as_admin_successful
 .uuid
 .viminfo
