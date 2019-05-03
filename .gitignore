@@ -3,6 +3,7 @@
 .bash_history
 .cache/
 .circleci/
+.config/dconf/
 !.config/
 .config/*
 !.config/code/
