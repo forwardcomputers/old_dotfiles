@@ -279,6 +279,10 @@ fi
 if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
   # Add to path
   export PATH="${HOME}"/bin:"${PATH}"
+  # Ash competions
+  for f in bin/*-completion.bash; do
+    . "${f}"
+  done
   # Set up lastpass
   export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
   if [[ -z "$TMUX" ]]; then
