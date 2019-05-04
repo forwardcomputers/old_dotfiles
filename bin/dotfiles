@@ -1,4 +1,4 @@
-#!/bin.bash
+#!/bin/bash
 #
 git clone --recursive https://github.com/forwardcomputers/dotfiles.git tmpgit
 mv tmpgit/.git .
