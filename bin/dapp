@@ -244,7 +244,7 @@ desktop () { ## Populate desktop application menu
             "Comment=${DESKTOP_COMMENT}" \
             "Categories=${DESKTOP_CATEGORIES}" \
             "MimeType=${DESKTOP_MIMETYPE}" \
-            "Exec=${ROOT}dapp.sh run ${DESKTOP_EXEC}" \
+            "Exec=${HOME}/bin/dapp run ${DESKTOP_EXEC}" \
             "Icon=${HOME}/.local/share/applications/${DESKTOP_LOGO_NAME}" > ~/.local/share/applications/"${NAME}${i}".desktop
         printf '%s\n' "${DESKTOP_MIMETYPE}=${NAME}.desktop;" >> ~/.local/share/applications/mimeapps.list
         [[ "${i}" == '' ]] && break
