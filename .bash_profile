@@ -10,7 +10,7 @@
 # Is command a docker app
 command_not_found_handle () {
   if [[ -d /media/filer/os/dockerfiles/"${1}" ]]; then
-    /media/filer/os/dockerfiles/dapp.sh run "$@"
+    "${HOME}"/bin/dapp run "$@"
   else
     if [ -x /usr/lib/command-not-found ]; then
         /usr/lib/command-not-found -- "$1";
@@ -170,7 +170,6 @@ alias rebash='exec ${SHELL} -l'
 # Reset garbled screen
 alias garbled='echo -e "\033c"'
 # Docker alias
-alias dapp="/media/filer/os/dockerfiles/dapp.sh"
 alias dk='docker'
 alias dkc='dk container ls'  # List running Docker containers
 alias dkca='dk container ls -a'  # List all Docker containers
@@ -278,6 +277,8 @@ fi
 # For Linux
 #
 if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
+  # Add to path
+  export PATH="${HOME}"/bin:"${PATH}"
   # Set up lastpass
   export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
   if [[ -z "$TMUX" ]]; then
