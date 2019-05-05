@@ -260,7 +260,7 @@ desktop_all () { ## Populate all desktop applications
 #
 remove () {  ## Remove app docker and desktop files
     printf '%s\n' "Removing ${NAME}"
-    rm --force "${HOME}"/bin/"${NAME}"*.*
+    rm --force "${HOME}"/.local/share/applications/"${NAME}"*.*
     docker image rm --force $( docker image ls --quiet "${IMG}" | uniq ) 2> /dev/null
 }
 #
