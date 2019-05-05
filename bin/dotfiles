@@ -6,6 +6,17 @@ rm -rf tmpgit
 git reset --hard
 git remote set-url origin ssh://git@github.com/forwardcomputers/dotfiles.git
 #
+[[ -d .ssh ]] || mkdir .ssh; chmod 700 .ssh
+[[ -d Desktop ]] || mkdir Desktop
+[[ -d Documents ]] || mkdir Documents
+[[ -d Downloads ]] || mkdir Downloads 
+[[ -d Music ]] || mkdir Music
+[[ -d Pictures ]] || mkdir Pictures
+[[ -d Public ]] || mkdir Public
+[[ -d Templates ]] || mkdir Templates
+[[ -d Videos ]] || mkdir Videos
+rm -f .profile
+#
 if [[ $(uname -s) == "Darwin" ]]; then
     ln -sf ~/.config/vim ~/Library/Preferences
     ln -sf ~/.config/git ~/Library/Preferences
