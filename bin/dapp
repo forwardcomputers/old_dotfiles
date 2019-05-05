@@ -254,12 +254,10 @@ desktop () { ## Populate desktop application menu
 desktop_all () { ## Populate all desktop applications
     printf '%s\n' "Populateing all desktop applications"
     all_apps
-    set -x
     for NAME in "${APPS[@]}"; do
         DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
         desktop
     done
-    set +x
 }
 #
 readme () { ## Create readme file
