@@ -247,7 +247,7 @@ desktop () { ## Populate desktop application menu
             "Exec=${HOME}/bin/dapp run ${DESKTOP_EXEC}" \
             "Icon=${HOME}/.local/share/applications/${DESKTOP_LOGO_NAME}" > ~/.local/share/applications/"${NAME}${i}".desktop
         printf '%s\n' "${DESKTOP_MIMETYPE}=${NAME}.desktop;" >> ~/.local/share/applications/mimeapps.list
-        [[ "${i}" == '' ]] && break
+        [[ "${i}" == '' ]] && break 1
     done
 }
 #
