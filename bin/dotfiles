@@ -6,16 +6,16 @@ rm -rf tmpgit
 git reset --hard
 git remote set-url origin ssh://git@github.com/forwardcomputers/dotfiles.git
 #
-[[ -d .ssh ]] || mkdir .ssh; chmod 700 .ssh
-[[ -d Desktop ]] || mkdir Desktop
-[[ -d Documents ]] || mkdir Documents
-[[ -d Downloads ]] || mkdir Downloads 
-[[ -d Music ]] || mkdir Music
-[[ -d Pictures ]] || mkdir Pictures
-[[ -d Public ]] || mkdir Public
-[[ -d Templates ]] || mkdir Templates
-[[ -d Videos ]] || mkdir Videos
-rm -f .profile
+[[ -d .ssh ]] || echo 'Creating directory - .ssh'; mkdir .ssh; chmod 700 .ssh
+[[ -d Desktop ]] || echo 'Creating directory - Desktop'; mkdir Desktop
+[[ -d Documents ]] || echo 'Creating directory - Documents'; mkdir Documents
+[[ -d Downloads ]] || echo 'Creating directory - Downloads'; mkdir Downloads 
+[[ -d Music ]] || echo 'Creating directory - Music'; mkdir Music
+[[ -d Pictures ]] || echo 'Creating directory - Pictures'; mkdir Pictures
+[[ -d Public ]] || echo 'Creating directory - Public'; mkdir Public
+[[ -d Templates ]] || echo 'Creating directory - Templates'; mkdir Templates
+[[ -d Videos ]] || echo 'Creating directory - Videos'; mkdir Videos
+echo 'Removing file - .profile'; rm -f .profile
 #
 if [[ $(uname -s) == "Darwin" ]]; then
     ln -sf ~/.config/vim ~/Library/Preferences
