@@ -199,7 +199,6 @@ shell () { ## Run shell in docker application
     docker run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${IMG}"
 }
 #
-#
 root () { ## Run shell in docker application as root
     printf '%s\n' "Runing shell in ${NAME}"
     checklocalimage
@@ -258,6 +257,12 @@ desktop_all () { ## Populate all desktop applications
         DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
         desktop
     done
+}
+#
+remove () {  ## Remove app docker and desktop files
+    printf '%s\n' "Removing ${NAME}"
+    rm --force "${HOME}"/bin/"${NAME}"*.*
+    docker image rm --force $( docker image ls --quiet "${IMG}" | uniq ) 2> /dev/null
 }
 #
 readme () { ## Create readme file
