@@ -54,6 +54,8 @@ Music/
 Pictures/
 Public/
 .serverauth*
+Templates/
+Videos/
 Virtual Machines.localized/
 VirtualBox VMs/
 .vscode/
