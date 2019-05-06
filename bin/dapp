@@ -15,7 +15,8 @@ GH_AUTH_HEADER=""
 if [[ ! -z ${LP_GITHUB_API_TOKEN+x} ]]; then LP_GITHUB_API_TOKEN="Authorization: token ${LP_GITHUB_API_TOKEN}"; fi
 if [[ -z ${DISPLAY+x} ]]; then DISPLAY=0; fi
 #
-ROLLING="$(curl --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)"
+ROLLING="$(curl --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" || true 
+[[ -z "${ROLLING}" ]] && NO_IP=true
 BUILD_DATE="$(date +'%-d-%-m-%G %r')"
 CO="forwardcomputers"
 set +u
@@ -106,17 +107,17 @@ help () { ## Show this help message
 info () { ## Check if there is a newer application version
     checkbaseimage
     if [[ ! "${APPNEW}" ]]; then APPNEW=null; fi
-    if [[ "${APPNEW}" == ${APPOLD} && ! -f /tmp/MAKE_BASE_UPDATED ]]; then
+    if [[ "${APPNEW}" == ${APPHUB} && ! -f /tmp/MAKE_BASE_UPDATED ]]; then
         printf '\r%s\n' "${YELLOW}${NAME}${GREEN} build is on latest version ${YELLOW}${APPNEW}${NC}"
     else
-        if [[ ${APPOLD} == 0 ]]; then
+        if [[ ${APPHUB} == 0 ]]; then
             if [[ ${APPNEW} == "null" ]]; then APPNEW=""; fi
             printf '%s\n' "${YELLOW}${NAME}${GREEN} nonexistant in Docker, use ${YELLOW}'dapp upgrade ${NAME}'${GREEN} or ${YELLOW}'dapp build ${NAME}'${GREEN} to generate the latest version ${YELLOW}${APPNEW}${NC}"
         else
             if [[ -f /tmp/MAKE_BASE_UPDATED ]]; then
                 printf '%s\n' "${YELLOW}${NAME}${GREEN} ${RED}base image ${YELLOW}${BASE_IMAGE}${NC} ${GREEN}has been updated"
             else \
-                printf '%s\n' "${YELLOW}${NAME}${GREEN} ${RED}build is on older version ${YELLOW}${APPOLD}${NC} ${GREEN}current version ${YELLOW}${APPNEW}${NC}"
+                printf '%s\n' "${YELLOW}${NAME}${GREEN} ${RED}build is on older version ${YELLOW}${APPHUB}${NC} ${GREEN}current version ${YELLOW}${APPNEW}${NC}"
             fi
         fi
         touch -f /tmp/MAKE_REBUILD
@@ -172,8 +173,12 @@ rebuild_all () { ## Rebuild all applications
 }
 #
 build () { ## Build docker image file
+    if [[ ! -f "${ROOT}${NAME}/Dockerfile" ]]; then
+      printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
+      exit
+    fi
     printf '%s\n' "Building ${NAME}"
-    docker build --rm --force-rm --compress --label "${IMG}" --tag "${IMG}" --tag "${IMG}":"${APPNEW}" --build-arg REPO="${NAME}" --build-arg VERSION="${APPNEW}" --build-arg TEXT="${BUILD_DATE}" "${ROOT}${NAME}"
+    docker build --rm --force-rm --compress --label "${IMG}"="${APPNEW}" --tag "${IMG}" --tag "${IMG}":"${APPNEW}" --build-arg REPO="${NAME}" --build-arg VERSION="${APPNEW}" --build-arg TEXT="${BUILD_DATE}" "${ROOT}${NAME}"
 }
 #
 push () {  ## Push image to Docker Hub
@@ -186,6 +191,7 @@ push () {  ## Push image to Docker Hub
 run () { ## Run the docker application
     printf '%s\n' "Runing ${NAME}"
     checklocalimage
+    [[ ${APPHUB} > ${APPLOCAL} ]] && docker pull "${IMG}":latest
     xhost +LOCAL: > /dev/null 2>&1
     if [[ "${DOCKER_PASSTHOUGH}" ]]; then
         docker run --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
@@ -293,8 +299,10 @@ readme () { ## Create readme file
 }
 #
 appversions () {
+    if [[ ! "${NO_IP}" ]]; then
     BASE_IMAGE="$(sed -n -e 's/^FROM //p' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
-    until APPOLD="$(curl --silent --location --url https://registry.hub.docker.com/v2/repositories/forwardcomputers/"${NAME}"/tags | jq --raw-output '.results|.[0]|.name // 0')"; do
+    APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "'"${IMG}"'" }}' "${IMG}" 2> /dev/null || true)"
+    until APPHUB="$(curl --silent --location --url https://registry.hub.docker.com/v2/repositories/forwardcomputers/"${NAME}"/tags | jq --raw-output '.results|.[0]|.name // 0')"; do
         sleep 1
     done
     APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
@@ -310,6 +318,7 @@ appversions () {
             set -e
         fi
     fi
+    fi
 }
 #
 checkbaseimage () {
@@ -323,9 +332,7 @@ checkbaseimage () {
 #
 checklocalimage () {
     if ! docker image inspect "${IMG}" > /dev/null 2>&1; then
-        docker pull "${IMG}":latest > /dev/null 2>&1 || ( [[ -d "${ROOT}" ]] && build )
-        printf '%s\n' "${RED}Cannot connect to file share${NC}"
-        break
+      docker pull "${IMG}":latest > /dev/null 2>&1 || { [[ -d "${ROOT}" ]] && build || { printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to file share${NC}"; exit; } }
     fi
 }
 #
