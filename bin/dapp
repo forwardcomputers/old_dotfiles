@@ -323,7 +323,8 @@ checkbaseimage () {
 #
 checklocalimage () {
     if ! docker image inspect "${IMG}" > /dev/null 2>&1; then
-        docker pull "${IMG}":latest > /dev/null 2>&1 || build
+        docker pull "${IMG}":latest > /dev/null 2>&1 || ( [[ -d "${ROOT}" ]] && build )
+        break
     fi
 }
 #
