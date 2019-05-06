@@ -34,6 +34,7 @@ NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
 [[ -h "${ROOT}${NAME}" ]] && NAME=$(readlink --quiet --silent "${ROOT}${NAME}")
 IMG="${CO}/${NAME}"
 [[ -f "${ROOT}${NAME}"/Dockerfile ]] && DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
+mkdir --parents ~/.local/share/applications
 #
 # shellcheck disable=SC2034
 BLACK=$'\033[30m'
