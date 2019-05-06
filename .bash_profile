@@ -109,11 +109,11 @@ export GNUPGHOME="${XDG_DATA_HOME}"/gnupg
 [[ ! -e "${XDG_DATA_HOME}"/gnupg ]] && mkdir -p "${XDG_DATA_HOME}"/gnupg
 # Make `vim` the default editor
 export EDITOR='vim'
-set undodir="${XDG_CACHE_HOME}"/vim/undo
-set directory="${XDG_CACHE_HOME}"/vim/swap
-set backupdir="${XDG_CACHE_HOME}"/vim/backup
-set viminfo+='1000,n$XDG_CACHE_HOME/vim/viminfo'
-set runtimepath="${XDG_CONFIG_HOME}"/vim,"${VIMRUNTIME}","${XDG_CONFIG_HOME}"/vim/after
+export undodir="${XDG_CACHE_HOME}"/vim/undo
+export directory="${XDG_CACHE_HOME}"/vim/swap
+export backupdir="${XDG_CACHE_HOME}"/vim/backup
+export viminfo+='1000,n$XDG_CACHE_HOME/vim/viminfo'
+export runtimepath="${XDG_CONFIG_HOME}"/vim,"${VIMRUNTIME}","${XDG_CONFIG_HOME}"/vim/after
 if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.168.1.40/os/lpass ); fi
 # Prompt colors
 i=0;
