@@ -109,6 +109,7 @@ export GNUPGHOME="${XDG_DATA_HOME}"/gnupg
 [[ ! -e "${XDG_DATA_HOME}"/gnupg ]] && mkdir -p "${XDG_DATA_HOME}"/gnupg
 # Make `vim` the default editor
 export EDITOR='vim'
+[[ ! -e "${XDG_CACHE_HOME}"/vim ]] && mkdir -p "${XDG_CACHE_HOME}"/vim
 export undodir="${XDG_CACHE_HOME}"/vim/undo
 export directory="${XDG_CACHE_HOME}"/vim/swap
 export backupdir="${XDG_CACHE_HOME}"/vim/backup
@@ -323,6 +324,7 @@ if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
   # XDG exports
   export BASH_COMPLETION_USER_FILE="$XDG_CONFIG_HOME"/bash-completion/bash_completion
   export HISTFILE="$XDG_DATA_HOME/bash/history"
+  [[ ! -e "${XDG_CACHE_HOME}"/less ]] && mkdir -p "${XDG_CACHE_HOME}"/less
   export LESSKEY="$XDG_CONFIG_HOME/less/lesskey"
   export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
   export VIMINIT=":source $XDG_CONFIG_HOME/vim/vimrc"
