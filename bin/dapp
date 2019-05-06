@@ -3,7 +3,7 @@ set -E              # any trap on ERR is inherited by shell functions
 set -e              # exit if error occurs
 set -u              # treat unset variables and parameters as an error
 set -o pipefail     # fail if pipe failed
-set -x              # show every commond
+#set -x              # show every commond
 #
 DOCKER_PASSTHOUGH=""
 set +u
@@ -229,8 +229,7 @@ desktop () { ## Populate desktop application menu
         # shellcheck disable=SC2086
         DESKTOP_EXEC="$(grep -oP '(?<=^#'${i}'DESKTOP_EXEC ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
         [[ "${DESKTOP_EXEC}" ]] || DESKTOP_EXEC="${NAME}"
-#        curl --silent --location --output ~/.local/share/applications/"${DESKTOP_LOGO_NAME}" "${DESKTOP_LOGO}"
-        curl --location --output ~/.local/share/applications/"${DESKTOP_LOGO_NAME}" "${DESKTOP_LOGO}"
+        curl --silent --location --output ~/.local/share/applications/"${DESKTOP_LOGO_NAME}" "${DESKTOP_LOGO}"
         if [[ "${DESKTOP_LOGO}" == *?format=TEXT* ]]; then
             mv ~/.local/share/applications/"${DESKTOP_LOGO_NAME}" /tmp
             base64 --decode /tmp/"${DESKTOP_LOGO_NAME}" > ~/.local/share/applications/"${DESKTOP_LOGO_NAME}"
