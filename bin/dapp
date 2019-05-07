@@ -49,7 +49,7 @@ IMG="${CO}/${NAME}"
 DESKTOP_DOCKERFILE=
 HAVE_DOCKERFILE=0
 DOCKERFILE_DOCKER_OPT=()
-if [[ -f "${ROOT}" ]]; then
+if [[ -d "${ROOT}" ]]; then
     HAVE_DOCKERFILE=1
     if [[ -f "${ROOT}${NAME}"/Dockerfile ]]; then
         DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
@@ -352,7 +352,7 @@ appversions () {
             sleep 1
         done
         if (( "${HAVE_DOCKERFILE}" )); then
-            APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null)"
+            APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
         else
             printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
             exit
