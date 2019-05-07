@@ -35,7 +35,7 @@ NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
 [[ -h "${ROOT}${NAME}" ]] && NAME=$(readlink --quiet --silent "${ROOT}${NAME}")
 IMG="${CO}/${NAME}"
 DESKTOP_DOCKERFILE=
-DOCKERFILE_DOCKER_OPT=
+DOCKERFILE_DOCKER_OPT=()
 [[ -f "${ROOT}${NAME}"/Dockerfile ]] && DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
 mkdir --parents ~/.local/share/applications
 #
@@ -77,11 +77,11 @@ DOCKER_OPT=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
 IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(grep -oP '(?<=^#DOCKER_OPT ).*' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
 # shellcheck disable=SC2206
-if [[ "${DOCKERFILE_DOCKER_OPT[0]}" == "+" ]]; then eval DOCKER_OPT+=("${DOCKERFILE_DOCKER_OPT[@]:1}") ; fi
+if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "+" ]]; then eval DOCKER_OPT+=("${DOCKERFILE_DOCKER_OPT[@]:1}") ; fi
 # shellcheck disable=SC2206
-if [[ "${DOCKERFILE_DOCKER_OPT[0]}" == "=" ]]; then eval DOCKER_OPT=("${DOCKERFILE_DOCKER_OPT[@]:1}") ; fi
+if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "=" ]]; then eval DOCKER_OPT=("${DOCKERFILE_DOCKER_OPT[@]:1}") ; fi
 # shellcheck disable=SC2206
-if [[ "${DOCKERFILE_DOCKER_OPT[0]}" == "-" ]]; then
+if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "-" ]]; then
     for i in "${DOCKERFILE_DOCKER_OPT[@]:1}"; do
         DOCKER_OPT=("${DOCKER_OPT[@]/$i}")
     done
