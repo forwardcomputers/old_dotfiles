@@ -47,9 +47,11 @@ if [[ -h "${ROOT}${NAME}" ]]; then
 fi
 IMG="${CO}/${NAME}"
 DESKTOP_DOCKERFILE=
+HAVE_DOCKERFILE=0
 DOCKERFILE_DOCKER_OPT=()
 if [[ -f "${ROOT}${NAME}"/Dockerfile ]]; then
     DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
+    HAVE_DOCKERFILE=1
 fi
 mkdir --parents ~/.local/share/applications
 #
@@ -205,7 +207,7 @@ build () { ## Build docker image file
         printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to internet${NC}"
         exit
     fi
-    if [[ ! -f "${ROOT}${NAME}/Dockerfile" ]]; then
+    if ! (( "${HAVE_DOCKERFILE}" )); then
         printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
         exit
     fi
@@ -347,14 +349,12 @@ appversions () {
         until APPHUB="$(curl --silent --location --url https://registry.hub.docker.com/v2/repositories/forwardcomputers/"${NAME}"/tags | jq --raw-output '.results|.[0]|.name // 0')"; do
             sleep 1
         done
-        set +e
-        APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null)"
-        if [[ $? -ne 0 ]]; then
+        if (( "${HAVE_DOCKERFILE}" )); then
+            APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null)"
+        else
             printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
             exit
         fi
-        set -e
-#        APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
         if ! [[ "${APPNEW}" =~ ^[+-]?([0-9]*[.,])?[0-9]+?$ ]]; then
             if [[ "${APPNEW}" == "apt" ]]; then
                 until APTNEWPAGE=$(curl --fail --silent --location --url https://packages.ubuntu.com/"${DISTRO}"/"${NAME}"); do
