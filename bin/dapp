@@ -49,9 +49,11 @@ IMG="${CO}/${NAME}"
 DESKTOP_DOCKERFILE=
 HAVE_DOCKERFILE=0
 DOCKERFILE_DOCKER_OPT=()
-if [[ -f "${ROOT}${NAME}"/Dockerfile ]]; then
-    DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
+if [[ -f "${ROOT}" ]]; then
     HAVE_DOCKERFILE=1
+    if [[ -f "${ROOT}${NAME}"/Dockerfile ]]; then
+        DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
+    fi
 fi
 mkdir --parents ~/.local/share/applications
 #
