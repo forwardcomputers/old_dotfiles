@@ -7,16 +7,26 @@ set -o pipefail     # fail if pipe failed
 #
 DOCKER_PASSTHOUGH=""
 set +u
-if [[ ! -z "$3" ]]; then DOCKER_PASSTHOUGH="$3"; fi
+if [[ ! -z "$3" ]]; then
+    DOCKER_PASSTHOUGH="$3"
+fi
 set -u
 #
 GH_API_HEADER="Accept: application/vnd.github.v3+json"
 GH_AUTH_HEADER=""
-if [[ ! -z ${LP_GITHUB_API_TOKEN+x} ]]; then GH_AUTH_HEADER="Authorization: token ${LP_GITHUB_API_TOKEN}"; fi
-if [[ -z ${DISPLAY+x} ]]; then DISPLAY=":0"; fi
+if [[ ! -z ${LP_GITHUB_API_TOKEN+x} ]]; then
+    GH_AUTH_HEADER="Authorization: token ${LP_GITHUB_API_TOKEN}"
+fi
+if [[ -z ${DISPLAY+x} ]]; then
+    DISPLAY=":0"
+fi
 #
 DISTRO="$(curl --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" || true 
-[[ -z "${DISTRO}" ]] && HAVE_IP=0 || HAVE_IP=1
+if [[ -z "${DISTRO}" ]]; then
+    HAVE_IP=0
+else
+    HAVE_IP=1
+fi
 CO="forwardcomputers"
 set +u
 if [[ "${CIRCLECI}" ]]; then
@@ -32,11 +42,15 @@ else
 fi
 set -u
 NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
-[[ -h "${ROOT}${NAME}" ]] && NAME=$(readlink --quiet --silent "${ROOT}${NAME}")
+if [[ -h "${ROOT}${NAME}" ]]; then
+    NAME=$(readlink --quiet --silent "${ROOT}${NAME}")
+fi
 IMG="${CO}/${NAME}"
 DESKTOP_DOCKERFILE=
 DOCKERFILE_DOCKER_OPT=()
-[[ -f "${ROOT}${NAME}"/Dockerfile ]] && DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
+if [[ -f "${ROOT}${NAME}"/Dockerfile ]]; then
+    DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
+fi
 mkdir --parents ~/.local/share/applications
 #
 # shellcheck disable=SC2034
@@ -77,9 +91,13 @@ DOCKER_OPT=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
 IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(grep -oP '(?<=^#DOCKER_OPT ).*' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
 # shellcheck disable=SC2206
-if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "+" ]]; then eval DOCKER_OPT+=("${DOCKERFILE_DOCKER_OPT[@]:1}") ; fi
+if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "+" ]]; then
+    eval DOCKER_OPT+=("${DOCKERFILE_DOCKER_OPT[@]:1}")
+fi
 # shellcheck disable=SC2206
-if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "=" ]]; then eval DOCKER_OPT=("${DOCKERFILE_DOCKER_OPT[@]:1}") ; fi
+if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "=" ]]; then
+    eval DOCKER_OPT=("${DOCKERFILE_DOCKER_OPT[@]:1}")
+fi
 # shellcheck disable=SC2206
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "-" ]]; then
     for i in "${DOCKERFILE_DOCKER_OPT[@]:1}"; do
@@ -108,16 +126,20 @@ help () { ## Show this help message
 #
 info () { ## Check if there is a newer application version
     if ! (( "${HAVE_IP}" )); then
-      printf '%s\n' "${RED}Unable to connect to internet${NC}"
-      exit
+        printf '%s\n' "${RED}Unable to connect to internet${NC}"
+        exit
     fi
     checkbaseimage
-    if [[ ! "${APPNEW}" ]]; then APPNEW=null; fi
+    if [[ ! "${APPNEW}" ]]; then
+        APPNEW=null
+    fi
     if [[ "${APPNEW}" == ${APPHUB} && ! -f /tmp/MAKE_DISTRO_UPDATED ]]; then
         printf '\r%s\n' "${YELLOW}${NAME}${GREEN} build is on latest version ${YELLOW}${APPNEW}${NC}"
     else
         if [[ ${APPHUB} == 0 ]]; then
-            if [[ ${APPNEW} == "null" ]]; then APPNEW=""; fi
+            if [[ ${APPNEW} == "null" ]]; then
+                APPNEW=""
+            fi
             printf '%s\n' "${YELLOW}${NAME}${GREEN} nonexistant in Docker, use ${YELLOW}'dapp upgrade ${NAME}'${GREEN} or ${YELLOW}'dapp build ${NAME}'${GREEN} to generate the latest version ${YELLOW}${APPNEW}${NC}"
         else
             if [[ -f /tmp/MAKE_DISTRO_UPDATED ]]; then
@@ -180,12 +202,12 @@ rebuild_all () { ## Rebuild all applications
 #
 build () { ## Build docker image file
     if ! (( "${HAVE_IP}" )); then
-      printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to internet${NC}"
-      exit
+        printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to internet${NC}"
+        exit
     fi
     if [[ ! -f "${ROOT}${NAME}/Dockerfile" ]]; then
-      printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
-      exit
+        printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
+        exit
     fi
     local BUILD_DATE="$(date +'%-d-%-m-%G %r')"
     printf '%s\n' "Building ${NAME}"
@@ -202,7 +224,9 @@ push () {  ## Push image to Docker Hub
 run () { ## Run the docker application
     printf '%s\n' "Runing ${NAME}"
     checklocalimage
-    [[ ${APPHUB} > ${APPLOCAL} ]] && docker pull "${IMG}":latest
+    if [[ ${APPHUB} > ${APPLOCAL} ]]; then
+        docker pull "${IMG}":latest
+    fi
     xhost +LOCAL: > /dev/null 2>&1
     if [[ "${DOCKER_PASSTHOUGH}" ]]; then
         docker run --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
@@ -230,7 +254,9 @@ desktop () { ## Populate desktop application menu
     # shellcheck disable=SC2086
     DESKTOP_COUNT="$( grep -oP '(?<=^#DESKTOP_COUNT ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || echo '999' )"
     for ((i=1; i<="${DESKTOP_COUNT}"; i++)); do
-        [[ "${DESKTOP_COUNT}" = 999 ]] && i=''
+        if [[ "${DESKTOP_COUNT}" = 999 ]]; then
+            i=''
+        fi
         # shellcheck disable=SC2086
         DESKTOP_NAME="$(grep -oP '(?<=^#'${i}'DESKTOP_NAME ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
         # shellcheck disable=SC2086
@@ -245,7 +271,9 @@ desktop () { ## Populate desktop application menu
         DESKTOP_LOGO_NAME="${NAME}_$(basename $( sed 's/?format.*//' <<< ${DESKTOP_LOGO}))"
         # shellcheck disable=SC2086
         DESKTOP_EXEC="$(grep -oP '(?<=^#'${i}'DESKTOP_EXEC ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
-        [[ "${DESKTOP_EXEC}" ]] || DESKTOP_EXEC="${NAME}"
+        if [[ ! "${DESKTOP_EXEC}" ]]; then
+            DESKTOP_EXEC="${NAME}"
+        fi
         curl --silent --location --output ~/.local/share/applications/"${DESKTOP_LOGO_NAME}" "${DESKTOP_LOGO}"
         if [[ "${DESKTOP_LOGO}" == *?format=TEXT* ]]; then
             mv ~/.local/share/applications/"${DESKTOP_LOGO_NAME}" /tmp
@@ -265,7 +293,9 @@ desktop () { ## Populate desktop application menu
             "Exec=${HOME}/bin/dapp run ${DESKTOP_EXEC}" \
             "Icon=${HOME}/.local/share/applications/${DESKTOP_LOGO_NAME}" > ~/.local/share/applications/"${NAME}${i}".desktop
         printf '%s\n' "${DESKTOP_MIMETYPE}=${NAME}.desktop;" >> ~/.local/share/applications/mimeapps.list
-        [[ "${i}" == '' || "${i}" == "${DESKTOP_COUNT}" ]] && i=999
+        if [[ "${i}" == '' || "${i}" == "${DESKTOP_COUNT}" ]]; then
+            i=999
+        fi
     done
 }
 #
@@ -320,8 +350,8 @@ appversions () {
         set +e
         APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null)"
         if [[ $? -ne 0 ]]; then
-          printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
-          exit
+            printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
+            exit
         fi
         set -e
 #        APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
@@ -343,9 +373,13 @@ appversions () {
 checkbaseimage () {
     rm -f /tmp/MAKE_DISTRO_LOG /tmp/MAKE_DISTRO_UPDATED /tmp/MAKE_REBUILD
     docker pull "${IMG}":latest > /dev/null 2>&1 || true
-    if [[ "${DISTRO_IMAGE}" ]]; then docker pull "${DISTRO_IMAGE}" > /tmp/MAKE_DISTRO_LOG; fi
+    if [[ "${DISTRO_IMAGE}" ]]; then
+        docker pull "${DISTRO_IMAGE}" > /tmp/MAKE_DISTRO_LOG
+    fi
     # shellcheck disable=SC2143
-    if [[ -f /tmp/MAKE_DISTRO_LOG && ! -z "$(grep 'Pull complete' /tmp/MAKE_DISTRO_LOG)" ]]; then touch -f /tmp/MAKE_DISTRO_UPDATED; fi
+    if [[ -f /tmp/MAKE_DISTRO_LOG && ! -z "$(grep 'Pull complete' /tmp/MAKE_DISTRO_LOG)" ]]; then
+        touch -f /tmp/MAKE_DISTRO_UPDATED
+    fi
     rm -f /tmp/MAKE_DISTRO_LOG
 }
 #
