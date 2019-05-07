@@ -17,7 +17,6 @@ if [[ -z ${DISPLAY+x} ]]; then DISPLAY=0; fi
 #
 ROLLING="$(curl --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" || true 
 [[ -z "${ROLLING}" ]] && NO_IP=true
-BUILD_DATE="$(date +'%-d-%-m-%G %r')"
 CO="forwardcomputers"
 set +u
 if [[ "${CIRCLECI}" ]]; then
@@ -177,6 +176,7 @@ build () { ## Build docker image file
       printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
       exit
     fi
+    local BUILD_DATE="$(date +'%-d-%-m-%G %r')"
     printf '%s\n' "Building ${NAME}"
     docker build --rm --force-rm --compress --label "${IMG}"="${APPNEW}" --tag "${IMG}" --tag "${IMG}":"${APPNEW}" --build-arg REPO="${NAME}" --build-arg VERSION="${APPNEW}" --build-arg TEXT="${BUILD_DATE}" "${ROOT}${NAME}"
 }
