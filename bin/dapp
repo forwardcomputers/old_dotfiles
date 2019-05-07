@@ -16,7 +16,7 @@ if [[ ! -z ${LP_GITHUB_API_TOKEN+x} ]]; then GH_AUTH_HEADER="Authorization: toke
 if [[ -z ${DISPLAY+x} ]]; then DISPLAY=":0"; fi
 #
 DISTRO="$(curl --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" || true 
-[[ -z "${DISTRO}" ]] && NO_IP=true || NO_IP=false
+[[ -z "${DISTRO}" ]] && HAVE_IP=0 || HAVE_IP=1
 CO="forwardcomputers"
 set +u
 if [[ "${CIRCLECI}" ]]; then
@@ -107,6 +107,10 @@ help () { ## Show this help message
 }
 #
 info () { ## Check if there is a newer application version
+    if ! (( "${HAVE_IP}" )); then
+      printf '%s\n' "${RED}Unable to connect to internet${NC}"
+      exit
+    fi
     checkbaseimage
     if [[ ! "${APPNEW}" ]]; then APPNEW=null; fi
     if [[ "${APPNEW}" == ${APPHUB} && ! -f /tmp/MAKE_DISTRO_UPDATED ]]; then
@@ -175,6 +179,10 @@ rebuild_all () { ## Rebuild all applications
 }
 #
 build () { ## Build docker image file
+    if ! (( "${HAVE_IP}" )); then
+      printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to internet${NC}"
+      exit
+    fi
     if [[ ! -f "${ROOT}${NAME}/Dockerfile" ]]; then
       printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
       exit
@@ -303,13 +311,20 @@ readme () { ## Create readme file
 }
 #
 appversions () {
-    if [[ ! "${NO_IP}" ]]; then
+    if (( "${HAVE_IP}" )); then
         DISTRO_IMAGE="$(sed -n -e 's/^FROM //p' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
         APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "'"${IMG}"'" }}' "${IMG}" 2> /dev/null || true)"
         until APPHUB="$(curl --silent --location --url https://registry.hub.docker.com/v2/repositories/forwardcomputers/"${NAME}"/tags | jq --raw-output '.results|.[0]|.name // 0')"; do
             sleep 1
         done
-        APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
+        set +e
+        APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null)"
+        if [[ $? -ne 0 ]]; then
+          printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
+          exit
+        fi
+        set -e
+#        APPNEW="$(grep -oP '(?<=APPNEW ).*' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
         if ! [[ "${APPNEW}" =~ ^[+-]?([0-9]*[.,])?[0-9]+?$ ]]; then
             if [[ "${APPNEW}" == "apt" ]]; then
                 until APTNEWPAGE=$(curl --fail --silent --location --url https://packages.ubuntu.com/"${DISTRO}"/"${NAME}"); do
