@@ -16,7 +16,7 @@ if [[ ! -z ${LP_GITHUB_API_TOKEN+x} ]]; then GH_AUTH_HEADER="Authorization: toke
 if [[ -z ${DISPLAY+x} ]]; then DISPLAY=":0"; fi
 #
 DISTRO="$(curl --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" || true 
-[[ -z "${DISTRO}" ]] && NO_IP=true
+[[ -z "${DISTRO}" ]] && NO_IP=true || NO_IP=false
 CO="forwardcomputers"
 set +u
 if [[ "${CIRCLECI}" ]]; then
