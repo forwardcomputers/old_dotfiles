@@ -294,10 +294,9 @@ readme () { ## Create readme file
             "|" >> "${ROOT}"README.md
         printf '\n' >> "${ROOT}"README.md
     done
-    printf '%s\n' \
-        "" \
-        "This setup is largely based on Jessie Frazelle work [https://github.com/jfrazelle/dockerfiles](https://github.com/jfrazelle/dockerfiles)" \
-        "FoxitReader - From the arch repository @ https://aur.archlinux.org/packages/foxitreader/ ">> "${ROOT}"README.md
+    printf '\n%s' \
+        "This setup is largely based on Jessie Frazelle work [https://github.com/jfrazelle/dockerfiles](https://github.com/jfrazelle/dockerfiles)  " \
+        "FoxitReader - From the arch repository @ https://aur.archlinux.org/packages/foxitreader/  ">> "${ROOT}"README.md
 }
 #
 appversions () {
