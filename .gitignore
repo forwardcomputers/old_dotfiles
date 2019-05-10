@@ -39,6 +39,8 @@ refresh_token
 .viminfo
 Xauthority
 .xinputrc
+.xorgxrdp.11.log*
+.xsession-errors
 
 Applications/
 .cups/
