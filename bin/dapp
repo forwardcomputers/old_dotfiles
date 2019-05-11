@@ -105,7 +105,7 @@ DOCKER_OPT_CROS=(--env DISPLAY=unix"${DISPLAY}" \
             --volume /etc/machine-id:/etc/machine-id:ro \
             --volume /run/user/"${UID}"/pulse:/run/user/1001/pulse)
 # shellcheck disable=SC2191
-set +ux
+set +u -x
 DOCKER_OPT_DARWIN=(--env DISPLAY=host.docker.internal:0 \
             --env PULSE_SERVER=${IP})
 if [[ $(uname -s) == Darwin ]]; then
@@ -115,7 +115,7 @@ elif [[ ( -f /etc/lsb-release || -f /etc/os-release ) && -z "$SOMMELIER_VERSION"
 else
     DOCKER_OPT=("${DOCKER_OPT_BASE[@]}" "${DOCKER_OPT_CROS[@]}")
 fi
-set -ux
+set -u +x
 # shellcheck disable=SC2162
 IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(grep -oP '(?<=^#DOCKER_OPT ).*' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
