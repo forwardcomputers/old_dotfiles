@@ -241,7 +241,7 @@ build () { ## Build docker image file
                 "org.label-schema.version"="${APPNEW}" \
                 "org.label-schema.url"="https://hub.docker.com/r/forwardcomputers/${NAME}" \
         --tag "${IMG}" \
-              "${IMG}":"${APPNEW}" \
+        --tag "${IMG}":"${APPNEW}" \
         "${ROOT}${NAME}"
 }
 #
