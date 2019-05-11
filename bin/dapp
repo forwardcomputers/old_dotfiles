@@ -235,17 +235,19 @@ build () { ## Build docker image file
     printf '%s\n' "Building ${NAME}"
     docker build --rm --force-rm --compress \
         --label "org.label-schema.schema-version"="1.0" \
-        --label "org.label-schema.build-date"="${BUILD_DATE}" \
-        --label "org.label-schema.name"="${NAME}" \
-        --label "org.label-schema.version"="${APPNEW}" \
-        --label "org.label-schema.url"="https://hub.docker.com/r/forwardcomputers/${NAME}" \
-        --label "${IMG}"="${APPNEW}" \
-        --label "maintainer"="Ali Mustakim <alim@forwardcomputers.com>" \
-        --label "BuildDate"="${BUILD_DATE}" \
+                "org.label-schema.build-date"="${BUILD_DATE}" \
+                "org.label-schema.name"="${NAME}" \
+                "org.label-schema.vendor"="${CO}" \
+                "org.label-schema.version"="${APPNEW}" \
+                "org.label-schema.url"="https://hub.docker.com/r/forwardcomputers/${NAME}" \
         --tag "${IMG}" \
-        --tag "${IMG}":"${APPNEW}" \
+              "${IMG}":"${APPNEW}" \
         "${ROOT}${NAME}"
 }
+#
+                # "${IMG}"="${APPNEW}" \
+                # "maintainer"="Ali Mustakim <alim@forwardcomputers.com>" \
+                # "BuildDate"="${BUILD_DATE}" \
 #
 push () {  ## Push image to Docker Hub
     printf '%s\n' "Pushing ${NAME}-${APPNEW} to Docker hub"
