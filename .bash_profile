@@ -468,6 +468,13 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         start_agent
     fi
   fi
+  # mount /media/filer in CROS
+  if [[ ! -z "$SOMMELIER_VERSION" ]]; then
+    if [[ ! -d /media/filer ]]; then
+        sudo mkdir --parents /media/filer
+    fi
+    sshfs admin@filer:/share /media/filer
+  fi
 #
 fi
 #
