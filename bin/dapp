@@ -83,14 +83,17 @@ DOCKER_OPT=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
             # --env GDK_DPI_SCALE \
             # --env QT_AUTO_SCREEN_SCALE_FACTOR=1 \
             --env PULSE_SERVER=unix:/run/user/"${UID}"/pulse/native \
-            --device /dev/bus/usb \
-            --device /dev/dri \
+#            --device /dev/bus/usb \
+#            --device /dev/dri \
             --device /dev/snd \
             --volume /etc/machine-id:/etc/machine-id:ro \
             --volume /media:/media \
             --volume /run/user/"${UID}"/pulse:/run/user/1001/pulse \
             --volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
-            --volume "${HOME}":/home/duser)
+--volume "${HOME}":/home/duser \
+-e "HOME=/home/duser" \
+-w "/home/duser" \
+-u $(id -u ${USER}):$(id -g ${USER}))
 # shellcheck disable=SC2162
 IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(grep -oP '(?<=^#DOCKER_OPT ).*' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
