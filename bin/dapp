@@ -232,18 +232,21 @@ build () { ## Build docker image file
         exit
     fi
     local BUILD_DATE="$(date +'%-d-%-m-%G %r')"
+    printf '%s\n' \
+        'org.label-schema.schema-version="1.0"'
+        'org.label-schema.build-date=${BUILD_DATE}"'
+        'org.label-schema.name="${NAME}"'
+        'org.label-schema.vendor="${CO}"'
+        'org.label-schema.version="${APPNEW}"'
+        'org.label-schema.url="https://hub.docker.com/r/forwardcomputers/${NAME}"' > /tmp/dapp_label
     printf '%s\n' "Building ${NAME}"
     docker build --rm --force-rm --compress \
-        --label org.label-schema.schema-version="1.0" org.label-schema.build-date="${BUILD_DATE}" \
+        --label-file /tmp/dapp_label \
         --tag "${IMG}" \
         --tag "${IMG}":"${APPNEW}" \
         "${ROOT}${NAME}"
 }
 #
-                # "org.label-schema.name"="${NAME}" \
-                # "org.label-schema.vendor"="${CO}" \
-                # "org.label-schema.version"="${APPNEW}" \
-                # "org.label-schema.url"="https://hub.docker.com/r/forwardcomputers/${NAME}" \
                 # "${IMG}"="${APPNEW}" \
                 # "maintainer"="Ali Mustakim <alim@forwardcomputers.com>" \
                 # "BuildDate"="${BUILD_DATE}" \
