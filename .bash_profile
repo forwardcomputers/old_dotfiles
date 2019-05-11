@@ -36,7 +36,7 @@ start_agent () {
 get_ssh_key () {
   # Add existing private keys to ssh agent
   SSH_ADD_OPT=""
-  if [[ "${OSTYPE}" == "Darwin" ]]; then SSH_ADD_OPT="-K"; fi
+  if [[ "${OSTYPE}" == Darwin ]]; then SSH_ADD_OPT="-K"; fi
   if ls "${HOME}"/.ssh/LP* 1> /dev/null 2>&1; then
     for LP_ID in "${HOME}"/.ssh/LP*; do
       LP_ID=${LP_ID#$HOME/.ssh/}
@@ -83,7 +83,7 @@ export MANPAGER='less -X'
 # Shared data directory
 export SHARE='/media/filer/os/lnx/data'
 # ls color, order & XDG options
-if [[ "${OSTYPE}" == "Darwin" ]]; then
+if [[ "${OSTYPE}" == Darwin ]]; then
   export colorflag="-G"
   export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
   export dirsfirst=''
@@ -277,7 +277,7 @@ fi
 #
 # For Linux
 #
-if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
+if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
   # Add to path
   export PATH="${HOME}"/bin:"${PATH}"
   # Bash competions
@@ -379,7 +379,7 @@ if [[ -f /etc/lsb-release || "${OSTYPE}" = "Darwin" ]]; then
  # VSCode directory
  if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
   #
-  if [[ "${OSTYPE}" == "Darwin" ]]; then
+  if [[ "${OSTYPE}" == Darwin ]]; then
     # Use keychain for ssh logins
     # shellcheck disable=SC1003
     grep -q "^UseKeychain" "${HOME}/.ssh/config" || sed -i '1iUseKeychain yes\' "${HOME}/.ssh/config"
