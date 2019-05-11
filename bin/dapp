@@ -249,8 +249,7 @@ run () { ## Run the docker application
     if [[ ${APPHUB} > ${APPLOCAL} ]]; then
         docker pull "${IMG}":latest
     fi
-#    xhost +LOCAL: > /dev/null 2>&1
-    xhost + 127.0.0.1 > /dev/null 2>&1
+    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1
     if [[ "${DOCKER_PASSTHOUGH}" ]]; then
         docker run --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
     else
@@ -261,14 +260,14 @@ run () { ## Run the docker application
 shell () { ## Run shell in docker application
     printf '%s\n' "Runing shell in ${NAME}"
     checklocalimage
-    xhost +LOCAL: > /dev/null 2>&1
+    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1
     docker run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${IMG}"
 }
 #
 root () { ## Run shell in docker application as root
     printf '%s\n' "Runing shell in ${NAME}"
     checklocalimage
-    xhost +LOCAL: > /dev/null 2>&1
+    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1
     docker run --interactive --tty --user root --workdir /root --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${IMG}"
 }
 #
