@@ -247,11 +247,12 @@ run () { ## Run the docker application
     printf '%s\n' "Runing ${NAME}"
     checklocalimage
     if [[ ${APPHUB} > ${APPLOCAL} ]]; then
+        printf '%s\n' "Pulling ${IMG}"
         docker pull "${IMG}":latest
     fi
     xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1
     if [[ "${DOCKER_PASSTHOUGH}" ]]; then
-        docker run --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
+        docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
     else
         docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}"
     fi
