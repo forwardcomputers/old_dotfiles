@@ -238,7 +238,7 @@ build () { ## Build docker image file
         --label "org.label-schema.build-date"="${BUILD_DATE}" \
         --label "org.label-schema.name"="${NAME}" \
         --label "org.label-schema.version"="${APPNEW}" \
-        --label "org.label-schema.url"="https://hub.docker.com/r/forwardcomputers/${REPO}" \
+        --label "org.label-schema.url"="https://hub.docker.com/r/forwardcomputers/${NAME} \
         --label "${IMG}"="${APPNEW}" \
         --label "maintainer"="Ali Mustakim <alim@forwardcomputers.com>" \
         --label "BuildDate"="${BUILD_DATE}" \
