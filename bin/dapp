@@ -55,7 +55,7 @@ if [[ -d "${ROOT}" ]]; then
         DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
     fi
 fi
-mkdir --parents ~/.local/share/applications
+mkdir -p ~/.local/share/applications
 #
 # shellcheck disable=SC2034
 BLACK=$'\033[30m'
@@ -79,7 +79,6 @@ NC=$'\033[0m'
 # shellcheck disable=SC2191
 DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
             --env HOME=/home/duser \
-            --volume /etc/machine-id:/etc/machine-id:ro \
             --volume /media:/media \
             --volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
             --volume "${HOME}":/home/duser \
@@ -250,7 +249,8 @@ run () { ## Run the docker application
     if [[ ${APPHUB} > ${APPLOCAL} ]]; then
         docker pull "${IMG}":latest
     fi
-    xhost +LOCAL: > /dev/null 2>&1
+#    xhost +LOCAL: > /dev/null 2>&1
+    xhost + 127.0.0.1 > /dev/null 2>&1
     if [[ "${DOCKER_PASSTHOUGH}" ]]; then
         docker run --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
     else
