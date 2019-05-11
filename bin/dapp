@@ -235,13 +235,13 @@ build () { ## Build docker image file
     printf '%s\n' "Building ${NAME}"
     docker build --rm --force-rm --compress \
         --label "org.label-schema.schema-version"="1.0" \
-        --label "org.label-schema.build-date"="${TEXT}" \
+        --label "org.label-schema.build-date"="${BUILD_DATE}" \
         --label "org.label-schema.name"="${REPO}" \
         --label "org.label-schema.version"="${APPNEW}" \
         --label "org.label-schema.url"="https://hub.docker.com/r/forwardcomputers/${REPO}" \
         --label "${IMG}"="${APPNEW}" \
         --label "maintainer"="Ali Mustakim <alim@forwardcomputers.com>" \
-        --label "BuildDate"="${TEXT}" \
+        --label "BuildDate"="${BUILD_DATE}" \
         --tag "${IMG}" \
         --tag "${IMG}":"${APPNEW}" \
         "${ROOT}${NAME}"
