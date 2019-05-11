@@ -77,9 +77,16 @@ YELLOW=$'\033[1;33m'
 NC=$'\033[0m'
 #
 # shellcheck disable=SC2191
-DOCKER_OPT=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
-            --env DISPLAY=unix"${DISPLAY}" \
+DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
             --env HOME=/home/duser \
+            --volume /etc/machine-id:/etc/machine-id:ro \
+            --volume /media:/media \
+            --volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
+            --volume "${HOME}":/home/duser \
+            --user $(id -u ${USER}):$(id -g ${USER}) \
+            --workdir /home/duser)
+# shellcheck disable=SC2191
+DOCKER_OPT_LINUX=(--env DISPLAY=unix"${DISPLAY}" \
             # --env GDK_SCALE \
             # --env GDK_DPI_SCALE \
             # --env QT_AUTO_SCREEN_SCALE_FACTOR=1 \
@@ -88,12 +95,23 @@ DOCKER_OPT=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
             --device /dev/dri \
             --device /dev/snd \
             --volume /etc/machine-id:/etc/machine-id:ro \
-            --volume /media:/media \
-            --volume /run/user/"${UID}"/pulse:/run/user/1001/pulse \
-            --volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
-            --volume "${HOME}":/home/duser \
-            --user $(id -u ${USER}):$(id -g ${USER}) \
-            --workdir /home/duser)
+            --volume /run/user/"${UID}"/pulse:/run/user/1001/pulse)
+DOCKER_OPT_CROS=(--env DISPLAY=unix"${DISPLAY}" \
+            --env GDK_SCALE \
+            --env GDK_DPI_SCALE \
+            --env QT_AUTO_SCREEN_SCALE_FACTOR=1 \
+            --device /dev/snd \
+            --volume /etc/machine-id:/etc/machine-id:ro \
+            --volume /run/user/"${UID}"/pulse:/run/user/1001/pulse)
+DOCKER_OPT_DARWIN=(--env DISPLAY=host.docker.internal:0 \
+            --env PULSE_SERVER=${IP})
+if [[ $(uname -s) == Darwin ]]; then
+    DOCKER_OPT=("${DOCKER_OPT_BASE[@]}" "${DOCKER_OPT_DARWIN[@]}")
+elif [[ ( -f /etc/lsb-release || -f /etc/os-release ) && ! -z "$SOMMELIER_VERSION" ]]; then
+    DOCKER_OPT=("${DOCKER_OPT_BASE[@]}" "${DOCKER_OPT_LINUX[@]}")
+else
+    DOCKER_OPT=("${DOCKER_OPT_BASE[@]}" "${DOCKER_OPT_LINUX[@]}")
+fi
 # shellcheck disable=SC2162
 IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(grep -oP '(?<=^#DOCKER_OPT ).*' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
