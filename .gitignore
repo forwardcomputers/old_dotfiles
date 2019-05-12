@@ -43,6 +43,7 @@ Xauthority
 .xsession-errors
 
 Applications/
+.bash_sessions/
 .cups/
 Desktop/
 Documents/
