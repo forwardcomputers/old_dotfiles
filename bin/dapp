@@ -373,7 +373,7 @@ readme () { ## Create readme file
 appversions () {
     if (( "${HAVE_IP}" )); then
         DISTRO_IMAGE="$(sed --silent --expression='s/^FROM //p' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
-        APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "'"${IMG}"'" }}' "${IMG}" 2> /dev/null || true)"
+        APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
         until APPHUB="$(curl --silent --location --url https://registry.hub.docker.com/v2/repositories/forwardcomputers/"${NAME}"/tags | jq --raw-output '.results|.[0]|.name // 0')"; do
             sleep 1
         done
