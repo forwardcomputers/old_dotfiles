@@ -367,7 +367,7 @@ readme () { ## Create readme file
     done
     printf '\n%s' \
         "This setup is largely based on Jessie Frazelle work [https://github.com/jfrazelle/dockerfiles](https://github.com/jfrazelle/dockerfiles)  " \
-        "FoxitReader - From the Arch Limux repository @ [https://aur.archlinux.org/packages/foxitreader](https://aur.archlinux.org/packages/foxitreader)  ">> "${ROOT}"README.md
+        "FoxitReader - From the Arch Linux repository @ [https://aur.archlinux.org/packages/foxitreader](https://aur.archlinux.org/packages/foxitreader)  ">> "${ROOT}"README.md
 }
 #
 appversions () {
@@ -413,7 +413,9 @@ checkbaseimage () {
 #
 checklocalimage () {
     if ! docker image inspect "${IMG}" > /dev/null 2>&1; then
+      printf '%s\n' "Pulling ${IMG}"
       docker pull "${IMG}":latest > /dev/null 2>&1 || { [[ -d "${ROOT}" ]] && build || { printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to file share${NC}"; exit; } }
+      APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
     fi
 }
 #
