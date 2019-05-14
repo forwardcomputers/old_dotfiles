@@ -170,8 +170,7 @@ alias rebash='exec ${SHELL} -l'
 alias garbled='echo -e "\033c"'
 # Docker alias
 alias dk='docker'
-alias dkc='dk container ls'  # List running Docker containers
-alias dkca='dk container ls -a'  # List all Docker containers
+alias dkc='dk container ls -a'  # List all Docker containers
 alias dki='dk image ls'  # List Docker images
 alias dkrmca='dk container rm -f $(dk container ls -a -q)'  # Delete all Docker containers
 alias dkrmc='docker container rm'  # Delete a Docker container
