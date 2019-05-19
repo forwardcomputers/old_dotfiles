@@ -343,7 +343,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
   # Add, commit and push files
   alias gpush='g add . && g commit --short && g commit -a -m "updates" && g push origin'
   # Add, commit and push files no circleci
-  alias gci='g add . && g commit --short && g commit -a -m "updates [skip ci]" && g push origin'
+  alias gci='g add . && g commit --short ; g commit -a -m "updates [skip ci]" && g push origin'
   # Pull files
   alias gpull='g pull origin master && g submodule update --recursive'
   # List ignored files
