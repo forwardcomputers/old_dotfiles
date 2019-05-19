@@ -5,6 +5,7 @@
 .circleci/
 !.config/
 .config/*
+!.config/albert/albert.conf
 !.config/code/
 !.config/git/
 !.config/i3/
