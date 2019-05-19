@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+git clone --recursive https://github.com/forwardcomputers/dotfiles.git tmpgit
+mv tmpgit/.git .
+rm -rf tmpgit
+git reset --hard
+git remote set-url origin ssh://git@github.com/forwardcomputers/dotfiles.git
+#
+[[ -d .ssh ]] || echo 'Creating directory - .ssh'; mkdir .ssh; chmod 700 .ssh
+[[ -d Desktop ]] || echo 'Creating directory - Desktop'; mkdir Desktop
+[[ -d Documents ]] || echo 'Creating directory - Documents'; mkdir Documents
+[[ -d Downloads ]] || echo 'Creating directory - Downloads'; mkdir Downloads 
+[[ -d Music ]] || echo 'Creating directory - Music'; mkdir Music
+[[ -d Pictures ]] || echo 'Creating directory - Pictures'; mkdir Pictures
+[[ -d Public ]] || echo 'Creating directory - Public'; mkdir Public
+[[ -d Templates ]] || echo 'Creating directory - Templates'; mkdir Templates
+[[ -d Videos ]] || echo 'Creating directory - Videos'; mkdir Videos
+echo 'Removing file - .profile'; rm -f .profile
+#
+if [[ $(uname -s) == "Darwin" ]]; then
+    ln -sf ~/.config/vim ~/Library/Preferences
+    ln -sf ~/.config/git ~/Library/Preferences
+    ln -sf ~/.config/tmux ~/Library/Preferences
+    #
+    [[ -d ~/Library/bash ]] || mkdir ~/Library/bash
+    [[ -d ~/Library/Fonts ]] && (chmod -N ~/Library/Fonts && rm -rf ~/Library/Fonts && ln -sf ~/.local/share/fonts ~/Library/Fonts)
+fi
+#

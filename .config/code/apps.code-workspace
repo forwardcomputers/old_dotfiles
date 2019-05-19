@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": "/media/filer/os/lnx/apps/docker/audacity"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/blender"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/chrome"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/firefox"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/firefox-esr"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/forwardcomputers.github.io"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/gitcommon"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/inkscape"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/pitivi"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/shotcut"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/torbrowser"
+		},
+		{
+			"path": "/media/filer/os/lnx/apps/docker/ssh"
+		}
+	]
+}

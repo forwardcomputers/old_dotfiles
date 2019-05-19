@@ -1,0 +1,72 @@
+{
+    "Install-ChocolateyPackage": {
+        "prefix": "chocoInstallChocolateyPackage",
+        "body": [
+            "\\$ErrorActionPreference = 'Stop';",
+            "",
+            "\\$packageName= '${1:packageName}'",
+            "\\$toolsDir   = \"$(Split-Path -parent \\$MyInvocation.MyCommand.Definition)\"",
+            "\\$url        = '${2:DownloadUrl}'",
+            "\\$url64      = '${3:64BitDownloadUrl}'",
+            "",
+            "\\$packageArgs = @{",
+                "\tpackageName   = \\$packageName",
+                "\tunzipLocation = \\$toolsDir",
+                "\tfileType      = '${4:fileType}'",
+                "\turl           = \\$url",
+                "\turl64bit      = \\$url64",
+
+                "\tsilentArgs    = \"${5:silentArgs}\"",
+                "\tvalidExitCodes= @(${6:validExitCodes})",
+
+                "\tsoftwareName  = '${7:softwareName}'",
+                "\tchecksum      = '${8:checkSum}'",
+                "\tchecksumType  = '${9:checkSumType}'",
+                "\tchecksum64    = '${10:checkSum64}'",
+                "\tchecksumType64= '${11:checkSum64Type}'",
+            "}",
+            "",
+            "Install-ChocolateyPackage @packageArgs"
+        ],
+        "description": "Chocolatey Install-ChocolateyPackage Helper Function"
+    },
+        "Uninstall-ChocolateyPackage": {
+        "prefix": "chocoUninstallChocolateyPackage",
+        "body": [
+            "\\$ErrorActionPreference = 'Stop';",
+            "",
+            "\\$packageArgs = @{",
+            "\tpackageName    = \\$env:ChocolateyPackageName",
+            "\tsoftwareName   = '${1:softwareName}*'",
+            "\tfileType       = '${2|exe,msi,msu|}'",
+            "\tsilentArgs     = '${3:silentArgs}'",
+            "\t# https://msdn.microsoft.com/en-us/library/aa376931(v=vs.85).aspx",
+            "\tvalidExitCodes = @(${4:validExitCodes})",
+            "}",
+            "",
+            "\\$uninstalled = \\$false",
+            "[array]\\$key = Get-UninstallRegistryKey -SoftwareName \\$packageArgs['softwareName']",
+            "",
+            "if (\\$key.Count -eq 1) {",
+            "\t\\$key | % {",
+            "\t\t\\$packageArgs['file'] = \"$(\\$_.UninstallString)\"",
+            "\t\tif (\\$packageArgs['fileType'] -eq 'MSI') {",
+            "\t\t\t\\$packageArgs['silentArgs'] = \"$(\\$_.PSChildName) $(\\$packageArgs['silentArgs'])\"",
+            "",
+            "\t\t\t\\$packageArgs['file'] = ''",
+            "\t\t}",
+            "",
+            "\t\tUninstall-ChocolateyPackage @packageArgs",
+            "\t}",
+            "} elseif (\\$key.Count -eq 0) {",
+            "\tWrite-Warning \"$(\\$packageArgs['packageName']) has already been uninstalled by other means.\"",
+            "} elseif (\\$key.Count -gt 1) {",
+            "\tWrite-Warning \"$(\\$key.Count) matches found!\"",
+            "\tWrite-Warning \"To prevent accidental data loss, no programs will be uninstalled.\"",
+            "\tWrite-Warning \"Please alert package maintainer the following keys were matched:\"",
+            "\t\\$key | % {Write-Warning \"- $(\\$_.DisplayName)\"}",
+            "}"
+        ],
+        "description": "Chocolatey Uninstall-ChocolateyPackage Helper Function"
+    }
+}
