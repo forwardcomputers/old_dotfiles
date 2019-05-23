@@ -111,6 +111,7 @@ export EDITOR='vim'
 export undodir="${XDG_CACHE_HOME}"/vim/undo
 export directory="${XDG_CACHE_HOME}"/vim/swap
 export backupdir="${XDG_CACHE_HOME}"/vim/backup
+# shellcheck disable=SC2016
 export viminfo+='1000,n$XDG_CACHE_HOME/vim/viminfo'
 export runtimepath="${XDG_CONFIG_HOME}"/vim,"${VIMRUNTIME}","${XDG_CONFIG_HOME}"/vim/after
 if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.168.1.40/os/lpass ); fi
