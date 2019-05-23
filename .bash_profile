@@ -342,7 +342,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
   # Create new GitHub repo, add, commit and push files
   alias gnew='gnewr && g init && g add . && g commit -m "Initial commit" && g remote add origin ssh://git@github.com/forwardcomputers/${PWD##*/}.git && g push --set-upstream origin master'
   # Add, commit and push files
-  alias gpush='g add . && g commit --short && g commit -a -m "updates" && g push origin'
+  alias gpush='g add . && g commit --short ; g commit -a -m "updates" && g push origin'
   # Add, commit and push files no circleci
   alias gci='g add . && g commit --short ; g commit -a -m "updates [skip ci]" && g push origin'
   # Pull files
