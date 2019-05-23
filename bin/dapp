@@ -76,7 +76,7 @@ YELLOW=$'\033[1;33m'
 # shellcheck disable=SC2034
 NC=$'\033[0m'
 #
-# shellcheck disable=SC2191
+# shellcheck disable=SC2191,SC2207,SC2086
 DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
             --env HOME=/home/duser \
             --volume /media:/media \
@@ -92,13 +92,13 @@ DOCKER_OPT_LINUX=(--env DISPLAY=unix"${DISPLAY}" \
             --device /dev/snd \
             --volume /etc/machine-id:/etc/machine-id:ro \
             --volume /run/user/"${UID}"/pulse:/run/user/1001/pulse)
-# shellcheck disable=SC2191
 set +u
+# shellcheck disable=SC2191
 DOCKER_OPT_CROS=(--env DISPLAY=unix"${DISPLAY_LOW_DENSITY}" \
             --device /dev/snd \
             --volume /etc/machine-id:/etc/machine-id:ro \
             --volume /run/user/"${UID}"/pulse:/run/user/1001/pulse)
-# shellcheck disable=SC2191
+# shellcheck disable=SC2191,SC2206
 DOCKER_OPT_DARWIN=(--env DISPLAY=host.docker.internal:0 \
             --env PULSE_SERVER=${IP})
 if [[ $(uname -s) == Darwin ]]; then
@@ -112,15 +112,12 @@ set -u
 # shellcheck disable=SC2162
 IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(grep -oP '(?<=^#DOCKER_OPT ).*' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
-# shellcheck disable=SC2206
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "+" ]]; then
-    eval DOCKER_OPT+=("${DOCKERFILE_DOCKER_OPT[@]:1}")
+    eval "DOCKER_OPT+=(DOCKERFILE_DOCKER_OPT[@]:1)"
 fi
-# shellcheck disable=SC2206
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "=" ]]; then
-    eval DOCKER_OPT=("${DOCKERFILE_DOCKER_OPT[@]:1}")
+    eval "DOCKER_OPT=(DOCKERFILE_DOCKER_OPT[@]:1)"
 fi
-# shellcheck disable=SC2206
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "-" ]]; then
     for i in "${DOCKERFILE_DOCKER_OPT[@]:1}"; do
         DOCKER_OPT=("${DOCKER_OPT[@]/$i}")
@@ -155,6 +152,7 @@ info () { ## Check if there is a newer application version
     if [[ ! "${APPNEW}" ]]; then
         APPNEW=null
     fi
+    # shellcheck disable=SC2053
     if [[ "${APPNEW}" == ${APPHUB} && ! -f /tmp/MAKE_DISTRO_UPDATED ]]; then
         printf '\r%s\n' "${YELLOW}${NAME}${GREEN} build is on latest version ${YELLOW}${APPNEW}${NC}"
     else
@@ -231,7 +229,8 @@ build () { ## Build docker image file
         printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
         exit
     fi
-    local BUILD_DATE="$(date +'%-d-%-m-%G %r')"
+    local BUILD_DATE
+    BUILD_DATE="$(date +'%-d-%-m-%G %r')"
     printf '%s\n' "Building ${NAME}"
     docker build --rm --force-rm --compress \
         --build-arg NAME="${NAME}" \
@@ -341,6 +340,7 @@ desktop_all () { ## Populate all desktop applications
 remove () {  ## Remove app docker and desktop files
     printf '%s\n' "Removing ${NAME}"
     rm --force "${HOME}"/.local/share/applications/"${NAME}"*.*
+    # shellcheck disable=SC2046
     docker image rm --force $( docker image ls --quiet "${IMG}" | uniq ) 2> /dev/null
 }
 #
@@ -413,9 +413,10 @@ checkbaseimage () {
 #
 checklocalimage () {
     if ! docker image inspect "${IMG}" > /dev/null 2>&1; then
-      printf '%s\n' "Pulling ${IMG}"
-      docker pull "${IMG}":latest > /dev/null 2>&1 || { [[ -d "${ROOT}" ]] && build || { printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to file share${NC}"; exit; } }
-      APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
+        printf '%s\n' "Pulling ${IMG}"
+        # shellcheck disable=SC2015
+        docker pull "${IMG}":latest > /dev/null 2>&1 || { [[ -d "${ROOT}" ]] && build || { printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to file share${NC}"; exit; } }
+        APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
     fi
 }
 #
