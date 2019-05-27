@@ -55,7 +55,9 @@ if [[ -d "${ROOT}" ]]; then
         DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
     fi
 fi
-mkdir -p ~/.local/share/applications
+if [[ ! -d ~/.local/share/applications ]]; then
+    mkdir --parents ~/.local/share/applications
+fi
 #
 # shellcheck disable=SC2034
 BLACK=$'\033[30m'
@@ -329,7 +331,7 @@ desktop () { ## Populate desktop application menu
 }
 #
 desktop_all () { ## Populate all desktop applications
-    printf '%s\n' "Populateing all desktop applications"
+    printf '%s\n' "Populating all desktop applications"
     all_apps
     for NAME in "${APPS[@]}"; do
         DESKTOP_DOCKERFILE=$( < "${ROOT}${NAME}"/Dockerfile )
