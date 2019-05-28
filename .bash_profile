@@ -381,6 +381,8 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # Use keychain for ssh logins
     # shellcheck disable=SC1003
     grep -q "^UseKeychain" "${HOME}/.ssh/config" || sed -i '1iUseKeychain yes\' "${HOME}/.ssh/config"
+    # powerline directory
+    ln -sfn "${HOME}"/.config/powerline "${HOME}"/Library/Preferences/powerline
     # Kodi directory
     ln -sfn /media/filer/os/data/Kodi "${HOME}"/Library/Application\ Support/Kodi
     # Enable subpixel font rendering on non-Apple LCDs
@@ -483,11 +485,8 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     if [[ -f /usr/share/powerline/bash/powerline.sh ]]; then
       # fedora
       . /usr/share/powerline/bash/powerline.sh
-    elif [[ -f /usr/share/powerline/bindings/bash/powerline.sh ]]; then
-      # ubuntu
-      . /usr/share/powerline/bindings/bash/powerline.sh
     else
-      # macos
+      # macos ubuntu
       . /usr/local/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh
     fi
   fi
