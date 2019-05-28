@@ -480,7 +480,11 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     powerline-daemon -q
     POWERLINE_BASH_CONTINUATION=1
     POWERLINE_BASH_SELECT=1
-    . /usr/share/powerline/bindings/bash/powerline.sh
+    if [[ -f /usr/share/powerline/bindings/bash/powerline.sh ]]; then
+      . /usr/share/powerline/bindings/bash/powerline.sh
+    else
+      . /usr/share/powerline/bash/powerline.sh
+    fi
   fi
 #
 fi
