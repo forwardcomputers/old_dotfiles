@@ -181,27 +181,27 @@ alias dkrmi='docker image rm'  # Delete a Docker image
 alias refresh="dki | awk '(NR>1) && (\$2!~/none/) {print \$1\":\"\$2}' | xargs -L1 docker pull" # Refresh Docker images
 #
 # Highlight the user name when logged in as root.
-if [[ "${USER}" == "root" ]]; then
-	userStyle="${FG_RED}"
-else
-	userStyle="${FG_GREEN}"
-fi
+#if [[ "${USER}" == "root" ]]; then
+#	userStyle="${FG_RED}"
+#else
+#	userStyle="${FG_GREEN}"
+#fi
 # Highlight the hostname when connected via SSH.
-if [[ -n "${SSH_TTY}" ]]; then
-	hostStyle="${CO_BOLD}${FG_RED}"
-else
-	hostStyle="${FG_GREEN}"
-fi
+#if [[ -n "${SSH_TTY}" ]]; then
+#	hostStyle="${CO_BOLD}${FG_RED}"
+#else
+#	hostStyle="${FG_GREEN}"
+#fi
 # Set prompt
 # shellcheck disable=SC2154
-. "$XDG_CONFIG_HOME/git/gitprompt.sh"
-export GIT_PS1_SHOWDIRTYSTATE=true
-export GIT_PS1_SHOWUNTRACKEDFILES=true
-export GIT_PS1_SHOWCOLORHINTS=true
-export GIT_PS1_SHOWUPSTREAM="auto"
-if [[ -z "${debian_chroot:-}" && -r /etc/debian_chroot ]]; then
-     debian_chroot=$(cat /etc/debian_chroot)
- fi
+#. "$XDG_CONFIG_HOME/git/gitprompt.sh"
+#export GIT_PS1_SHOWDIRTYSTATE=true
+#export GIT_PS1_SHOWUNTRACKEDFILES=true
+#export GIT_PS1_SHOWCOLORHINTS=true
+#export GIT_PS1_SHOWUPSTREAM="auto"
+#if [[ -z "${debian_chroot:-}" && -r /etc/debian_chroot ]]; then
+#     debian_chroot=$(cat /etc/debian_chroot)
+#fi
 #export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s): ${PWD}\007"'
 #export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]" "\$ "'
 #
@@ -449,9 +449,9 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     . /etc/bash_completion
   fi
   # git completions
-  if [[ -f /usr/share/bash-completion/completions/git ]]; then
-    . /usr/share/bash-completion/completions/git
-  fi
+  #if [[ -f /usr/share/bash-completion/completions/git ]]; then
+  #  . /usr/share/bash-completion/completions/git
+  #fi
   #
   # Source SSH settings, if applicable
   if [[ -f /usr/bin/ssh-add ]]; then
@@ -478,10 +478,10 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     sshfs admin@filer:/share /media/filer
   fi
   # start powerline
-  if [ -f `which powerline-daemon` ]; then
+  if [ -f $(which powerline-daemon) ]; then
     powerline-daemon -q
-    POWERLINE_BASH_CONTINUATION=1
-    POWERLINE_BASH_SELECT=1
+    export POWERLINE_BASH_CONTINUATION=1
+    export POWERLINE_BASH_SELECT=1
     if [[ -f /usr/share/powerline/bash/powerline.sh ]]; then
       # fedora
       . /usr/share/powerline/bash/powerline.sh
