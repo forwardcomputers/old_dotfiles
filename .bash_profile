@@ -203,7 +203,7 @@ if [[ -z "${debian_chroot:-}" && -r /etc/debian_chroot ]]; then
      debian_chroot=$(cat /etc/debian_chroot)
  fi
 #export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname -s): ${PWD}\007"'
-export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]" "\$ "'
+#export PROMPT_COMMAND='__git_ps1 "${debian_chroot:+($debian_chroot)}\[${userStyle}\]\u\[${CO_RESET}\]@\[${hostStyle}\]\h\[${CO_RESET}\]:\[${FG_BLUE}\]\w\[${CO_RESET}\]" "\$ "'
 #
 #
 # For VMware
@@ -474,6 +474,13 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         sudo mkdir --parents /media/filer
     fi
     sshfs admin@filer:/share /media/filer
+  fi
+  # start powerline
+  if [ -f `which powerline-daemon` ]; then
+    powerline-daemon -q
+    POWERLINE_BASH_CONTINUATION=1
+    POWERLINE_BASH_SELECT=1
+    . /usr/share/powerline/bindings/bash/powerline.sh
   fi
 #
 fi

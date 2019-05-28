@@ -9,6 +9,7 @@
 !.config/code/
 !.config/git/
 !.config/i3/
+!.config/powerline/
 !.config/redshift/
 !.config/tmux/
 !.config/vim/
