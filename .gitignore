@@ -19,6 +19,7 @@
 code
 .dbus/
 .docker/
+.esd_auth
 history
 .gnupg/
 gdrive/
