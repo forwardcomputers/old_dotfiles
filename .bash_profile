@@ -449,7 +449,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         sshfs admin@filer:/share /media/filer
     fi
     # start powerline
-    if [ -f $(which powerline-daemon) ]; then
+    if [ -f "$(which powerline-daemon)" ]; then
         powerline-daemon -q
         export POWERLINE_BASH_CONTINUATION=1
         export POWERLINE_BASH_SELECT=1
