@@ -16,6 +16,7 @@
 !.config/X11/
 !.config/user-dirs.dirs
 !.config/wgetrc
+!.config/monitors.xml
 code
 .dbus/
 .docker/
