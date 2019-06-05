@@ -4,7 +4,7 @@
     "powerline.segments.common.net.hostname": {
       "args": {
         "exclude_domain": true,
-        "only_if_ssh": true
+        "only_if_ssh": false
       }
     },
 		"powerline.segments.common.vcs.branch": {
