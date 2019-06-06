@@ -449,8 +449,10 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         sshfs admin@filer:/share /media/filer
     fi
     # start powerline
-    if [ -f "$(which powerline-daemon)" ]; then
-        powerline-daemon -q
+    if [[ -f "$(which powerline-daemon)" ]]; then
+        if [[ "${OSTYPE}" != Darwin ]]; then
+          powerline-daemon -q
+        fi
         export POWERLINE_BASH_CONTINUATION=1
         export POWERLINE_BASH_SELECT=1
         for f in /usr/share/powerline/bash/powerline.sh /usr/share/powerline/bindings/bash/powerline.sh /usr/local/lib/python3.7/site-packages/powerline/bindings/bash/powerline.sh ; do
