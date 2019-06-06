@@ -451,7 +451,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # start powerline
     if [[ -f "$(which powerline-daemon)" ]]; then
         if [[ "${OSTYPE}" != Darwin ]]; then
-          powerline-daemon --quiet --replace
+          powerline-daemon --quiet
         fi
         export POWERLINE_BASH_CONTINUATION=1
         export POWERLINE_BASH_SELECT=1
