@@ -43,6 +43,7 @@ refresh_token
 .sudo_as_admin_successful
 .uuid
 .viminfo
+.wine/
 Xauthority
 .xinputrc
 .xorgxrdp.*.log*
