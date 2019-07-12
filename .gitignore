@@ -7,6 +7,7 @@ apps/
 !.config/
 .config/*
 !.config/albert/albert.conf
+!.config/browser/
 !.config/code/
 !.config/git/
 !.config/i3/
