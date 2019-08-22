@@ -50,6 +50,11 @@ Xauthority
 .xorgxrdp.*.log*
 .xsession-errors
 
+.android/
+amabox1
+amastick1
+shield
+
 Applications/
 .bash_sessions/
 .cups/

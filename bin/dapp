@@ -194,11 +194,13 @@ upgrade () { ## Upgrade if there is a newer application version
 upgrade_all () { ## Upgrade all applications
     printf '%s\n' "Upgrading applications"
     all_apps
+    set +e
     for NAME in "${APPS[@]}"; do
         IMG="${CO}/${NAME}"
         appversions
         upgrade
     done
+    set -e
 }
 #
 rebuild () { ## Rebuild application
@@ -210,15 +212,15 @@ rebuild () { ## Rebuild application
 rebuild_all () { ## Rebuild all applications
     printf '%s\n' "Rebuilding all applications"
     all_apps
+    set +e
     for NAME in "${APPS[@]}"; do
         IMG="${CO}/${NAME}"
-        set +e
         appversions
-        set -e
         build
         push
         printf '%s\n' "${GREEN}Built ${YELLOW}${NAME}${GREEN} to the latest version ${YELLOW}${APPNEW}${NC}"
     done
+    set -e
     readme
 }
 #
