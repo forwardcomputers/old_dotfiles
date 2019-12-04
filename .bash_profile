@@ -20,7 +20,7 @@ command_not_found_handle () {
             /usr/share/command-not-found/command-not-found -- "$1"
             return $?
         else
-            printf "%s: command not found\n" "$1" 1>&2
+            printf "%s: command not found\\n" "$1" 1>&2
             return 127
         fi;
     fi
@@ -63,7 +63,7 @@ add_key_to_ssh_agent () {
     expect 2>/dev/null <<EOF >/dev/null
 spawn ssh-add ${SSH_ADD_OPT} ${LP_KEY_NAME}
 expect "Enter passphrase"
-send "${LP_KEY_PASS}\n"
+send "${LP_KEY_PASS}\\n"
 expect eof
 EOF
 }
@@ -254,6 +254,9 @@ fi
 if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # Add to path
     export PATH="${HOME}"/bin:"${PATH}"
+    # golang setup
+    export PATH="${PATH}:/usr/local/go/bin"
+    export GOPATH="${HOME}/app"
     # Set up lastpass
     export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
     if [[ -z "$TMUX" ]]; then
@@ -318,13 +321,13 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # Add, commit and push files no circleci
     alias gci='g add . && g commit --short ; g commit -a -m "updates [skip ci]" && g push origin'
     # Pull files
-    alias gpull='g pull origin master && g submodule update --recursive'
+    alias gpull='g pull origin master && g submodule sync && g submodule update --remote --recursive'
     # List ignored files
     alias gignored='g status --ignored'
     # Submodule update 
-    alias gsubup='g submodule update --remote'
+    alias gsubup='g submodule sync && g submodule update --remote --recursive'
     # Repo status 
-    alias gstatus='g status'
+    alias gstatus='g status && git submodule foreach "git status"'
     # Status for all repos
     alias gallstatus='for d in $(find /media/filer/os -maxdepth 5 -name .git); do d="${d%/*}"; output="$( (cd $d; eval "git status") 2>&1 )"; echo -e "\033[0;36m${d}\033[0m\n"$output; done'
     # Twitter keys
@@ -390,7 +393,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         alias stfu="osascript -e 'set volume output muted true'"
         alias pumpitup="osascript -e 'set volume output volume 100'"
         # Lock the screen (when going AFK)
-        alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+        alias afk="/System/Library/CoreServices/Menu\\ Extras/User.menu/Contents/Resources/CGSession -suspend"
         # Show top 5 CPU hogs
         alias hogs='ps -Ao pid,%cpu,user,tty,command -r | head -n 6'
         # ls - show long format most recently modified last
@@ -449,6 +452,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         sshfs admin@filer:/share /media/filer
     fi
     # start powerline
+    # shellcheck disable=SC2230
     if [[ -f "$(which powerline-daemon)" ]]; then
         if [[ "${OSTYPE}" != Darwin ]]; then
           powerline-daemon --quiet

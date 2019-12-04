@@ -11,7 +11,7 @@ jobs:
           name: Test files
           command: |
             apt-get update && apt-get install -y shellcheck
-            for f in $(find . -type f -not -path '*.config*' -not -path '*.git*' -not -path '*.local*' -not -path '*.vim*' -not -path '*.vscode*' -executable); do
+            for f in $(find . -type f ! -ipath '*.config*' ! -ipath '*.git*' ! -ipath '*.local*' ! -ipath '*.vim*' ! -ipath '*.vscode*' ! -iname cht.sh -executable); do
               if file "${f}" | grep --quiet shell; then
                 {
                   shellcheck "${f}" && echo "[OK]: successfully linted ${f}"

@@ -7,6 +7,7 @@ apps/
 !.config/
 .config/*
 !.config/albert/albert.conf
+!.config/browser/
 !.config/code/
 !.config/git/
 !.config/i3/
@@ -43,10 +44,16 @@ refresh_token
 .sudo_as_admin_successful
 .uuid
 .viminfo
+.wine/
 Xauthority
 .xinputrc
 .xorgxrdp.*.log*
 .xsession-errors
+
+.android/
+amabox1
+amastick1
+shield
 
 Applications/
 .bash_sessions/
@@ -63,6 +70,7 @@ Music/
 Pictures/
 Public/
 .serverauth*
+Standard Notes Backups/
 Templates/
 Videos/
 Virtual Machines.localized/
