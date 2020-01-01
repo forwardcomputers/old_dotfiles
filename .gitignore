@@ -50,8 +50,7 @@ Xauthority
 .xorgxrdp.*.log*
 .xsession-errors
 
-.flutter
-.flutter_tool_state
+.flutter*
 
 .android/
 amabox1
