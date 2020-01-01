@@ -3,7 +3,7 @@ set -E              # any trap on ERR is inherited by shell functions
 set -e              # exit if error occurs
 set -u              # treat unset variables and parameters as an error
 set -o pipefail     # fail if pipe failed
-#set -x              # show every commond
+# set -x              # show every commond
 #
 DOCKER_PASSTHOUGH=""
 set +u
@@ -128,7 +128,7 @@ fi
 #
 main () {
     TARGET="${1-help}"
-    if [[ "${TARGET}" == "help" || ( "${NAME}" == "none" && "${TARGET}" != "rebuild_all" && "${TARGET}" != "upgrade_all" && "${TARGET}" != "desktop_all" && "${TARGET}" != "readme" ) ]]; then
+    if [[ "${TARGET}" == "help" || ( "${NAME}" == "none" && "${TARGET}" != "info_all" && "${TARGET}" != "rebuild_all" && "${TARGET}" != "upgrade_all" && "${TARGET}" != "desktop_all" && "${TARGET}" != "readme" ) ]]; then
         help
     else
         if ! type "${TARGET}" >/dev/null 2>&1; then
@@ -173,6 +173,16 @@ info () { ## Check if there is a newer application version
         touch -f /tmp/MAKE_REBUILD
     fi
     rm -f /tmp/MAKE_DISTRO_UPDATED
+}
+#
+info_all () { ## Check if there is a newer version for all applications
+    printf '%s\n' "Info on applications" 
+    all_apps
+    for NAME in "${APPS[@]}"; do
+        IMG="${CO}/${NAME}"
+        appversions
+        info
+    done
 }
 #
 update () {
@@ -236,7 +246,10 @@ build () { ## Build docker image file
     local BUILD_DATE
     BUILD_DATE="$(date +'%-d-%-m-%G %r')"
     printf '%s\n' "Building ${NAME}"
-    docker build --rm --force-rm --compress \
+    # docker build --rm --force-rm --squash \
+    # docker build --rm --force-rm --compress \
+    # docker build --rm --force-rm \
+    docker build \
         --build-arg NAME="${NAME}" \
         --build-arg CO="${CO}" \
         --build-arg APPNEW="${APPNEW}" \
@@ -378,7 +391,7 @@ appversions () {
     if (( "${HAVE_IP}" )); then
         DISTRO_IMAGE="$(sed --silent --expression='s/^FROM //p' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
         APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
-        until APPHUB="$(curl --silent --location --url https://registry.hub.docker.com/v2/repositories/forwardcomputers/"${NAME}"/tags | jq --raw-output '.results|.[0]|.name // 0')"; do
+        until APPHUB="$(curl --silent --location --url https://registry.hub.docker.com/v2/repositories/forwardcomputers/"${NAME}"/tags | jq --raw-output '.results|.[1]|.name // 0')"; do
             sleep 1
         done
         if (( "${HAVE_DOCKERFILE}" )); then
