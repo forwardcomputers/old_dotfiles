@@ -82,7 +82,7 @@ export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 # Don't clear the screen after quitting a `man` page
 export MANPAGER='less -X'
 # Shared data directory
-export SHARE='/media/filer/os/lnx/data'
+export SHARE='/opt/filer/os/lnx/data'
 # ls color, order & XDG options
 if [[ "${OSTYPE}" == Darwin ]]; then
     export colorflag="-G"
