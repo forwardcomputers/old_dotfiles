@@ -182,6 +182,10 @@ alias dkrmia='dk image rm -f $(dk images --filter dangling=true -q)'  # Delete d
 alias dkrmi='docker image rm'  # Delete a Docker image
 # shellcheck disable=SC2142
 alias refresh="dki | awk '(NR>1) && (\$2!~/none/) {print \$1\":\"\$2}' | xargs -L1 docker pull" # Refresh Docker images
+# HASS alias
+alias hassc='cat /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log
+alias hasst='tail /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log
+alias hasstf='tail -f /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log
 #
 #
 #
