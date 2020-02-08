@@ -38,7 +38,7 @@ else
             docker login --username forwardcomputers --password $(lpass show LP_DOCKER_PASSWORD --password) > /dev/null 2>&1
         fi
     fi
-    ROOT="/media/filer/os/dockerfiles/"
+    ROOT="/opt/filer/os/dockerfiles/"
 fi
 set -u
 NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
@@ -81,7 +81,7 @@ NC=$'\033[0m'
 # shellcheck disable=SC2191,SC2207,SC2086
 DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
             --env HOME=/home/duser \
-            --volume /media:/media \
+            --volume /opt:/opt \
             --volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
             --volume "${HOME}":/home/duser \
             --user $(id -u ${USER}):$(id -g ${USER}) \
