@@ -405,6 +405,9 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         alias hogs='ps -Ao pid,%cpu,user,tty,command -r | head -n 6'
         # ls - show long format most recently modified last
         alias lt='ls -latr'
+        # top alias
+        alias top="${HOME}/bin/osx_ytop"
+        alias oldtop="/usr/bin/top"
     else
         if [[ ! -f "/.dockerenv" ]]; then 
             # Kodi directory
@@ -420,6 +423,9 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         alias lt='ls -latr --time-style=long-iso'
         # Follow the system logfile
         [[ -x "$(command -v journalctl)" ]] && alias logf='journalctl -f'
+        # top alias
+        alias top="${HOME}/bin/nix_ytop"
+        alias oldtop="/usr/bin/top"
     fi
     #
     # Bash completions
