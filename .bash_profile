@@ -406,8 +406,8 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         # ls - show long format most recently modified last
         alias lt='ls -latr'
         # top alias
-        alias top='"${HOME}"/bin/osx_ytop'
-        alias oldtop="/usr/bin/top -c vice"
+        alias top='"${HOME}"/bin/osx_ytop -c vice'
+        alias oldtop="/usr/bin/top"
     else
         if [[ ! -f "/.dockerenv" ]]; then 
             # Kodi directory
@@ -424,8 +424,8 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         # Follow the system logfile
         [[ -x "$(command -v journalctl)" ]] && alias logf='journalctl -f'
         # top alias
-        alias top='"${HOME}"/bin/nix_ytop'
-        alias oldtop="/usr/bin/top -c vice"
+        alias top='"${HOME}"/bin/nix_ytop -c vice'
+        alias oldtop="/usr/bin/top"
     fi
     #
     # Bash completions
