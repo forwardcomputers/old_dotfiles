@@ -44,6 +44,7 @@ refresh_token
 .sudo_as_admin_successful
 .uuid
 .viminfo
+.vnc/
 .wine/
 Xauthority
 .xinputrc
