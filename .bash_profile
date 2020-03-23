@@ -358,6 +358,10 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     alias tm='tmux -f "$XDG_CONFIG_HOME/tmux/tmux.conf" new-session -AD -s $USER'
     # VSCode directory
     if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
+    # Home Assistant alias
+    export LP_HASS_API_TOKEN=$(lpass show LP_HASS_API_TOKEN --password)
+    alias doff='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' http://hass.home.mustakim.com:8123/api/services/switch/turn_off'
+    alias don='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' http://hass.home.mustakim.com:8123/api/services/switch/turn_on'
     #
     if [[ "${OSTYPE}" == Darwin ]]; then
         # Use keychain for ssh logins
