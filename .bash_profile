@@ -67,6 +67,14 @@ send "${LP_KEY_PASS}\\n"
 expect eof
 EOF
 }
+git_delete_history () {
+    git checkout --orphan TEMP_BRANCH
+    git add -A
+    git commit -am "Initial commit"
+    git branch -D master
+    git branch -m master
+    git push -f origin master
+}
 #
 OSTYPE=$( uname -s )
 #
@@ -337,6 +345,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     alias gstatus='g status && git submodule foreach "git status"'
     # Status for all repos
     alias gallstatus='for d in $(find /media/filer/os -maxdepth 5 -name .git); do d="${d%/*}"; output="$( (cd $d; eval "git status") 2>&1 )"; echo -e "\033[0;36m${d}\033[0m\n"$output; done'
+    alias gdelhis='git_delete_history'
     # Twitter keys
     export LP_T_CONSUMER_KEY=$(lpass show LP_T_CONSUMER_KEY --password)
     export LP_T_CONSUMER_SECRET=$(lpass show LP_T_CONSUMER_SECRET --password)
@@ -428,6 +437,8 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         alias lt='ls -latr --time-style=long-iso'
         # Follow the system logfile
         [[ -x "$(command -v journalctl)" ]] && alias logf='journalctl -f'
+        # Clear journal file
+        alias journal_clear='journalctl --rotate --vacuum-time=1s'
         # top alias
         alias top='"${HOME}"/bin/nix_ytop -c vice'
         alias oldtop="/usr/bin/top"
