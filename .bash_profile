@@ -437,7 +437,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         alias lt='ls -latr --time-style=long-iso'
         # Follow the system logfile
         [[ -x "$(command -v journalctl)" ]] && alias logf='journalctl -f'
-        # Clear journal file
+        # Clear journal file 
         alias journal_clear='journalctl --rotate --vacuum-time=1s'
         # top alias
         alias top='"${HOME}"/bin/nix_ytop -c vice'
