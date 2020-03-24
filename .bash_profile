@@ -359,9 +359,10 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # VSCode directory
     if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
     # Home Assistant alias
-    export LP_HASS_API_TOKEN=$(lpass show LP_HASS_API_TOKEN --password)
-    alias doff='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' http://hass.home.mustakim.com:8123/api/services/switch/turn_off'
-    alias don='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' http://hass.home.mustakim.com:8123/api/services/switch/turn_on'
+    export LP_HASS_API_TOKEN=$(lpass show LP_HASS_INFO --password)
+    export LP_HASS_HOST=$(lpass show LP_HASS_INFO --username)
+    alias doff='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_off'
+    alias don='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_on'
     #
     if [[ "${OSTYPE}" == Darwin ]]; then
         # Use keychain for ssh logins
