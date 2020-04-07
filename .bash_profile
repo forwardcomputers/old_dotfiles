@@ -273,6 +273,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     export PATH="${PATH}:/usr/local/go/bin"
     export GOPATH="${HOME}/app"
     # Set up lastpass
+    export LPASS_AGENT_TIMEOUT=0
     export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
     if [[ -z "$TMUX" ]]; then
         lpass status --quiet || lpass login --trust --force "${FULLNAME}"
