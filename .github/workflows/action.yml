@@ -39,10 +39,9 @@ jobs:
         run: |
           # Code bits from - https://github.com/moebiuscurve/tweetExperiments/tree/master/curlTweets
           repo_name=$( echo "$GITHUB_REPOSITORY" | awk -F / '{ print $2 }' )
-          echo $repo_name
-          message="${GITHUB_REPOSITORY} failed"
-          message_string=$( echo -n "${message}"|sed -e s'/ /%2520/g' )
-          message_curl=$( echo -n "${message}"|sed -e s'/ /+/g' )
+          message="${repo_name} failed"
+          message_string=$( echo -n "${message}" | sed -e s'/ /%2520/g' )
+          message_curl=$( echo -n "${message}" | sed -e s'/ /+/g' )
           timestamp=$( date +%s )
           nonce=$( date +%s%T | openssl base64 | sed -e s'/[+=/]//g' )
           api_version="1.1"
