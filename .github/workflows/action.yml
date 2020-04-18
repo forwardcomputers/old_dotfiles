@@ -8,7 +8,7 @@ jobs:
     steps:
       - name: Test files
         run: |
-          apt-get update && apt-get install -y shellcheck
+          ls -la
           for f in $(find . -type f ! -ipath '*.config*' ! -ipath '*.git*' ! -ipath '*.local*' ! -ipath '*.vim*' ! -ipath '*.vscode*' ! -iname cht.sh -executable); do
             if file "${f}" | grep --quiet shell; then
               {
