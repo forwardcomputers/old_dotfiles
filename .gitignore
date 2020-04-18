@@ -45,6 +45,7 @@ refresh_token
 .uuid
 .viminfo
 .vnc/
+.wget-hsts
 .wine/
 Xauthority
 .xinputrc
