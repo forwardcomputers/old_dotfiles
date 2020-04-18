@@ -34,7 +34,7 @@ jobs:
         run: |
           # Code bits from - https://github.com/moebiuscurve/tweetExperiments/tree/master/curlTweets
           message="${GITHUB_REPOSITORY} failed"
-          echo "${message}
+          echo "${message}"
           message_string=$( echo -n ${message}|sed -e s'/ /%2520/g' )
           message_curl=$( echo -n ${message}|sed -e s'/ /+/g' )
           timestamp=$( date +%s )
