@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# qshellcheck disable=SC2009,SC2155
+# shellcheck disable=SC2009,SC2155
 # shellcheck source=/dev/null
 #set -x
 
@@ -345,6 +345,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # Repo status 
     alias gstatus='g status && git submodule foreach "git status"'
     # Status for all repos
+    # shellcheck disable=SC2154
     alias gallstatus='for d in $(find /media/filer/os -maxdepth 5 -name .git); do d="${d%/*}"; output="$( (cd $d; eval "git status") 2>&1 )"; echo -e "\033[0;36m${d}\033[0m\n"$output; done'
     alias gdelhis='git_delete_history'
     # Twitter keys
@@ -475,7 +476,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         fi
     fi
     # mount /media/filer in CROS
-    if [[ ! -z "$SOMMELIER_VERSION" ]]; then
+    if [[ -n "$SOMMELIER_VERSION" ]]; then
         if [[ ! -d /media/filer ]]; then
             sudo mkdir --parents /media/filer
         fi
