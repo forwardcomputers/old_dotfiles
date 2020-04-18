@@ -38,6 +38,7 @@ jobs:
           LP_T_OAUTH_TOKEN:  ${{ secrets.LP_T_OAUTH_TOKEN }}
         run: |
           # Code bits from - https://github.com/moebiuscurve/tweetExperiments/tree/master/curlTweets
+          set -x
           repo_name=$( echo "$GITHUB_REPOSITORY" | awk -F / '{ print $2 }' )
           message="${repo_name} failed"
           message_string=$( echo -n "${message}" | sed -e s'/ /%2520/g' )
