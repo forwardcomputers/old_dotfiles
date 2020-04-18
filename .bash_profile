@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# qshellcheck disable=SC2009,SC2155
+# shellcheck disable=SC2009,SC2155
 # shellcheck source=/dev/null
 #set -x
 
