@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       env:
-        LP_T_CONSUMER_KEY: $(( secrets.LP_T_CONSUMER_KEY }}
-        LP_T_CONSUMER_SECRET: $(( secrets.LP_T_CONSUMER_SECRET }}
-        LP_T_OATH_SECRET: $(( secrets.LP_T_OATH_SECRET }}
-        LP_T_OATH_TOKEN: $(( secrets.LP_T_OATH_TOKEN }}
+        LP_T_CONSUMER_KEY: ${{ secrets.LP_T_CONSUMER_KEY }}
+        LP_T_CONSUMER_SECRET: ${{ secrets.LP_T_CONSUMER_SECRET }}
+        LP_T_OATH_SECRET: ${{ secrets.LP_T_OATH_SECRET }}
+        LP_T_OATH_TOKEN: ${{ secrets.LP_T_OATH_TOKEN }}
       - name: Check out repository
         uses: actions/checkout@v2
       - name: Shellcheck files
