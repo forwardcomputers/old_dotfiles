@@ -235,6 +235,7 @@ rebuild_all () { ## Rebuild all applications
 }
 #
 build () { ## Build docker image file
+    set -x
     if ! (( "${HAVE_IP}" )); then
         printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to internet${NC}"
         exit
