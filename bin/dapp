@@ -376,8 +376,8 @@ readme () { ## Create readme file
             "| [![](https://img.shields.io/badge/dynamic/json.svg?query=$.Labels['org.opencontainers.image.created']&label=&url=https://api.microbadger.com/v1/images/forwardcomputers/${APP})](https://hub.docker.com/r/forwardcomputers/${APP}) " \
             "| [![](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/dockerfiles/tree/master/${APP}) " \
             "| [![](https://img.shields.io/badge/docker--E5E5E5.svg?label=&logo=docker)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
-            "| [![](https://img.shields.io/badge/dynamic/json.svg?query=$.results.0.name&label=&url=https://registry.hub.docker.com/v2/repositories/forwardcomputers/${APP}/tags)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
-            "| [![](https://img.shields.io/docker/image-size/forwardcomputers/${APP}/latest.svg?label=)](http://microbadger.com/images/forwardcomputers/${APP}) " \
+            "| [![](https://img.shields.io/docker/v/forwardcomputers/s/${APP}/latest?label=)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
+            "| [![](https://img.shields.io/docker/image-size/forwardcomputers/${APP}/latest?label=)](http://microbadger.com/images/forwardcomputers/${APP}) " \
             "| [![](https://img.shields.io/microbadger/layers/forwardcomputers/${APP}.svg?label=)](http://microbadger.com/images/forwardcomputers/${APP}) " \
             "|" >> "${ROOT}"README.md
         printf '\n' >> "${ROOT}"README.md
