@@ -29,7 +29,7 @@ else
 fi
 CO="forwardcomputers"
 set +u
-if [[ "${CIRCLECI}" ]]; then
+if [[ "${CIRCLECI}" || "${GITHUB_ACTIONS}" ]]; then
     ROOT="${CIRCLE_WORKING_DIRECTORY}/"
 else
     if [[ ! ${SU_COMMAND} ]]; then
