@@ -3,7 +3,7 @@ set -E              # any trap on ERR is inherited by shell functions
 set -e              # exit if error occurs
 set -u              # treat unset variables and parameters as an error
 set -o pipefail     # fail if pipe failed
-set -x              # show every commond
+#set -x              # show every commond
 #
 DOCKER_PASSTHOUGH=""
 set +u
@@ -29,8 +29,10 @@ else
 fi
 CO="forwardcomputers"
 set +u
-if [[ "${CIRCLECI}" || "${GITHUB_ACTIONS}" ]]; then
+if [[ "${CIRCLECI}" ]]; then
     ROOT="${CIRCLE_WORKING_DIRECTORY}/"
+elif [[ "${GITHUB_ACTIONS}" ]]; then
+    ROOT="${}GITHUB_WORKSPACE/"
 else
     if [[ ! ${SU_COMMAND} ]]; then
         if ! grep -q 'index.docker.io' "${HOME}"/.docker/config.json > /dev/null 2>&1 ; then
