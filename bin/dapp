@@ -373,7 +373,7 @@ readme () { ## Create readme file
         "---" \
         "| Repository | Status | GitHub | Docker | Tag | Size | Layers |" \
         "| --- | --- | :---: | :---: | :--- | :---: | :---: |" \
-        "| [![](https://img.shields.io/badge/dockerfiles-grey.svg)](https://github.com/forwardcomputers/dockerfiles) | [![](https://img.shields.io/github/workflow/status/forwardcomputers/dockerfiles/build_all?label)](https://github.com/forwardcomputers/dockerfiles/actions) | [![](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/pxe) |" > "${ROOT}"README.md
+        "| [![](https://img.shields.io/badge/dockerfiles-grey.svg)](https://github.com/forwardcomputers/dockerfiles) | [![](https://img.shields.io/github/workflow/status/forwardcomputers/dockerfiles/build_all?label)](https://github.com/forwardcomputers/dockerfiles/actions) | [![](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/pxe) | [![](https://img.shields.io/badge/docker--E5E5E5.svg?label=&logo=docker)](https://hub.docker.com/r/forwardcomputers) |" > "${ROOT}"README.md
     for APP in "${APPS[@]}"; do
         printf '%s' \
             "| [![](https://img.shields.io/badge/${APP}-grey.svg)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
