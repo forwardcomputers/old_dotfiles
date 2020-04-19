@@ -32,7 +32,7 @@ set +u
 if [[ "${CIRCLECI}" ]]; then
     ROOT="${CIRCLE_WORKING_DIRECTORY}/"
 elif [[ "${GITHUB_ACTIONS}" ]]; then
-    ROOT="${}GITHUB_WORKSPACE/"
+    ROOT="${GITHUB_WORKSPACE}/"
 else
     if [[ ! ${SU_COMMAND} ]]; then
         if ! grep -q 'index.docker.io' "${HOME}"/.docker/config.json > /dev/null 2>&1 ; then
