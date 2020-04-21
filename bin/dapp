@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -E              # any trap on ERR is inherited by shell functions
 set -e              # exit if error occurs
 set -u              # treat unset variables and parameters as an error
