@@ -4,6 +4,10 @@ apps/
 .bash_history
 .cache/
 .circleci/
+!.code-server/
+.code-server/*
+!.code-server/data/User/settings.json
+!.code-server/extensions/
 !.config/
 .config/*
 !.config/albert/albert.conf
