@@ -10,7 +10,6 @@ apps/
 !.code-server/data/User
 .code-server/data/User/*
 !.code-server/data/User/settings.json
-.code-server/extensions/*
 !.code-server/extensions
 !.config/
 .config/*
