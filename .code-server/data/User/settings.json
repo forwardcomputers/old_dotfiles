@@ -8,5 +8,8 @@
     "editor.renderControlCharacters": true,
     "terminal.integrated.shell.linux": "/bin/bash",
     "workbench.startupEditor": "none",
-    "workbench.colorTheme": "Default Light+"
+    "workbench.colorTheme": "Default Light+",
+    "files.autoSave": "off",
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true
 }
