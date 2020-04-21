@@ -9,5 +9,7 @@
     "terminal.integrated.shell.linux": "/bin/bash",
     "workbench.startupEditor": "none",
     "workbench.colorTheme": "Default Light+",
-    "files.autoSave": "off"
+    "files.autoSave": "off",
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true
 }
