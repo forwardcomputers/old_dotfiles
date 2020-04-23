@@ -1,15 +1,16 @@
 {
-    "editor.rulers" : [80],
+    "editor.renderControlCharacters": true,
     "editor.renderWhitespace": "all",
+    "editor.rulers" : [80],
+    "files.autoSave": "off",
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true,
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "workbench.colorTheme": "Default Light+",
+    "workbench.startupEditor": "none",
     "[shellscript]": {
         "editor.tabSize": 2,
         "editor.insertSpaces": true
     },
-    "editor.renderControlCharacters": true,
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "workbench.startupEditor": "none",
-    "workbench.colorTheme": "Default Light+",
-    "files.autoSave": "off",
-    "git.confirmSync": false,
-    "git.enableSmartCommit": true
+    "editor.fontFamily": "\"/home/duser/.local/share/fonts/Meslo LG L Regular Nerd Font Complete Mono.ttf\""
 }
