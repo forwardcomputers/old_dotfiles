@@ -3,7 +3,7 @@ set -E              # any trap on ERR is inherited by shell functions
 set -e              # exit if error occurs
 set -u              # treat unset variables and parameters as an error
 set -o pipefail     # fail if pipe failed
-set -x              # show every commond
+#set -x              # show every commond
 #
 DOCKER_PASSTHOUGH=""
 set +u
@@ -82,9 +82,6 @@ YELLOW=$'\033[1;33m'
 NC=$'\033[0m'
 #
 # shellcheck disable=SC2191,SC2207,SC2086
-#DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
-#            --volume /opt:/opt \
-#            --volume /tmp/.X11-unix:/tmp/.X11-unix:ro)
 DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
             --env HOME=/home/duser \
             --volume /opt:/opt \
@@ -114,7 +111,6 @@ DOCKER_OPT_DUSER=(--env HOME=/home/duser \
             --volume "${HOME}":/home/duser \
             --user $(id -u ${USER}):$(id -g ${USER}) \
             --workdir /home/duser)
-#
 DOCKER_OPT_ROOT=(--env HOME=/root \
             --user root \
             --workdir /root)
@@ -127,13 +123,14 @@ else
 fi
 set -u
 # shellcheck disable=SC2162
-IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(grep -oP '(?<=^#DOCKER_OPT ).*' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
+IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(perl -ne 'print $& if /(?<=^#DOCKER_OPT ).*/' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
+echo "${DOCKERFILE_DOCKER_OPT[@]:1}"
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "+" ]]; then
-    eval "DOCKER_OPT+=(DOCKERFILE_DOCKER_OPT[@]:1)"
+    eval "DOCKER_OPT+=(${DOCKERFILE_DOCKER_OPT[@]:1})"
 fi
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "=" ]]; then
-    eval "DOCKER_OPT=(DOCKERFILE_DOCKER_OPT[@]:1)"
+    eval "DOCKER_OPT=(${DOCKERFILE_DOCKER_OPT[@]:1})"
 fi
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "-" ]]; then
     for i in "${DOCKERFILE_DOCKER_OPT[@]:1}"; do
@@ -288,12 +285,8 @@ run () { ## Run the docker application
         printf '%s\n' "Pulling ${IMG}"
         docker pull "${IMG}":latest
     fi
-    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1
-    if [[ "${DOCKER_PASSTHOUGH}" ]]; then
-        docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
-    else
-        docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}"
-    fi
+    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
+    docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
 }
 #
 shell () { ## Run shell in docker application
