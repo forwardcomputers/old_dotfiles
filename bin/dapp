@@ -23,6 +23,7 @@ fi
 #
 # Ubuntu - latest = latest LTS, rolling = Latest release, devel.
 DISTRO="$(curl --fail --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" 
+# shellcheck disable=SC2053
 if [[ -z "${DISTRO}" || $? != 0 ]]; then
     HAVE_IP=0
 else
@@ -109,7 +110,7 @@ DOCKER_OPT_DARWIN=(--env DISPLAY=host.docker.internal:0 \
 #
 DOCKER_OPT_DUSER=(--env HOME=/home/duser \
             --volume "${HOME}":/home/duser \
-            --user $(id -u ${USER}):$(id -g ${USER}) \
+            --user $(id -u "${USER}"):$(id -g "${USER}") \
             --workdir /home/duser)
 DOCKER_OPT_ROOT=(--env HOME=/root \
             --user root \
@@ -127,9 +128,11 @@ IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(perl -ne 'print $& if /(?<=^#DOCKER
 unset IFS
 echo "${DOCKERFILE_DOCKER_OPT[@]:1}"
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "+" ]]; then
+    # shellcheck disable=SC2145
     eval "DOCKER_OPT+=(${DOCKERFILE_DOCKER_OPT[@]:1})"
 fi
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "=" ]]; then
+    # shellcheck disable=SC2145
     eval "DOCKER_OPT=(${DOCKERFILE_DOCKER_OPT[@]:1})"
 fi
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "-" ]]; then
