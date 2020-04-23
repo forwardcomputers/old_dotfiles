@@ -127,7 +127,6 @@ set -u
 # shellcheck disable=SC2162
 IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(perl -ne 'print $& if /(?<=^#DOCKER_OPT ).*/' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
-echo "${DOCKERFILE_DOCKER_OPT[@]:1}"
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "+" ]]; then
     # shellcheck disable=SC2145
     eval "DOCKER_OPT+=(${DOCKERFILE_DOCKER_OPT[@]:1})"
