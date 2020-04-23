@@ -22,8 +22,8 @@ if [[ -z ${DISPLAY+x} ]]; then
 fi
 #
 # Ubuntu - latest = latest LTS, rolling = Latest release, devel.
-DISTRO="$(curl --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" || true 
-if [[ -z "${DISTRO}" ]]; then
+DISTRO="$(curl --fail --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" 
+if [[ -z "${DISTRO}" || $? != 0 ]]; then
     HAVE_IP=0
 else
     HAVE_IP=1

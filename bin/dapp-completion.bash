@@ -11,7 +11,7 @@ _dapp()
   case "${prev}" in
     build|desktop|info|rebuild|push|remove|run|root|shell|update|upgrade)
 #    'build' | 'desktop' | 'rebuild' | 'push' | 'remove' | 'run' | 'root' | 'shell' | 'update' | 'upgrade')
-      local dockerfiles=$( find /media/filer/os/dockerfiles/ -name Dockerfile | awk -F'/' '{print $(NF-1)}' )
+      local dockerfiles=$( find /opt/filer/os/dockerfiles/ -name Dockerfile | awk -F'/' '{print $(NF-1)}' )
       COMPREPLY=( $( compgen -W "${dockerfiles}" -- "${cur}" ) )
       return 0
       ;;
