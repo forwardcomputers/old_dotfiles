@@ -1,28 +1,30 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -E              # any trap on ERR is inherited by shell functions
 set -e              # exit if error occurs
 set -u              # treat unset variables and parameters as an error
 set -o pipefail     # fail if pipe failed
-# set -x              # show every commond
+#set -x              # show every commond
 #
 DOCKER_PASSTHOUGH=""
 set +u
-if [[ ! -z "$3" ]]; then
+if [[ -n "$3" ]]; then
     DOCKER_PASSTHOUGH="$3"
 fi
 set -u
 #
 GH_API_HEADER="Accept: application/vnd.github.v3+json"
 GH_AUTH_HEADER=""
-if [[ ! -z ${LP_GITHUB_API_TOKEN+x} ]]; then
+if [[ -n ${LP_GITHUB_API_TOKEN+x} ]]; then
     GH_AUTH_HEADER="Authorization: token ${LP_GITHUB_API_TOKEN}"
 fi
 if [[ -z ${DISPLAY+x} ]]; then
     DISPLAY=":0"
 fi
 #
-DISTRO="$(curl --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" || true 
-if [[ -z "${DISTRO}" ]]; then
+# Ubuntu - latest = latest LTS, rolling = Latest release, devel.
+DISTRO="$(curl --fail --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" 
+# shellcheck disable=SC2181
+if [[ -z "${DISTRO}" || $? != 0 ]]; then
     HAVE_IP=0
 else
     HAVE_IP=1
@@ -31,6 +33,8 @@ CO="forwardcomputers"
 set +u
 if [[ "${CIRCLECI}" ]]; then
     ROOT="${CIRCLE_WORKING_DIRECTORY}/"
+elif [[ "${GITHUB_ACTIONS}" ]]; then
+    ROOT="${GITHUB_WORKSPACE}/"
 else
     if [[ ! ${SU_COMMAND} ]]; then
         if ! grep -q 'index.docker.io' "${HOME}"/.docker/config.json > /dev/null 2>&1 ; then
@@ -38,7 +42,7 @@ else
             docker login --username forwardcomputers --password $(lpass show LP_DOCKER_PASSWORD --password) > /dev/null 2>&1
         fi
     fi
-    ROOT="/media/filer/os/dockerfiles/"
+    ROOT="/opt/filer/os/dockerfiles/"
 fi
 set -u
 NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
@@ -81,7 +85,7 @@ NC=$'\033[0m'
 # shellcheck disable=SC2191,SC2207,SC2086
 DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
             --env HOME=/home/duser \
-            --volume /media:/media \
+            --volume /opt:/opt \
             --volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
             --volume "${HOME}":/home/duser \
             --user $(id -u ${USER}):$(id -g ${USER}) \
@@ -103,6 +107,15 @@ DOCKER_OPT_CROS=(--env DISPLAY=unix"${DISPLAY_LOW_DENSITY}" \
 # shellcheck disable=SC2191,SC2206
 DOCKER_OPT_DARWIN=(--env DISPLAY=host.docker.internal:0 \
             --env PULSE_SERVER=${IP})
+#
+# shellcheck disable=SC2207
+DOCKER_OPT_DUSER=(--env HOME=/home/duser \
+            --volume "${HOME}":/home/duser \
+            --user $(id -u "${USER}"):$(id -g "${USER}") \
+            --workdir /home/duser)
+DOCKER_OPT_ROOT=(--env HOME=/root \
+            --user root \
+            --workdir /root)
 if [[ $(uname -s) == Darwin ]]; then
     DOCKER_OPT=("${DOCKER_OPT_BASE[@]}" "${DOCKER_OPT_DARWIN[@]}")
 elif [[ ( -f /etc/lsb-release || -f /etc/os-release ) && -z "$SOMMELIER_VERSION" ]]; then
@@ -112,13 +125,15 @@ else
 fi
 set -u
 # shellcheck disable=SC2162
-IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(grep -oP '(?<=^#DOCKER_OPT ).*' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
+IFS=' ' read -a DOCKERFILE_DOCKER_OPT <<< "$(perl -ne 'print $& if /(?<=^#DOCKER_OPT ).*/' <<< "${DESKTOP_DOCKERFILE}" 2> /dev/null || true)"
 unset IFS
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "+" ]]; then
-    eval "DOCKER_OPT+=(DOCKERFILE_DOCKER_OPT[@]:1)"
+    # shellcheck disable=SC2145
+    eval "DOCKER_OPT+=(${DOCKERFILE_DOCKER_OPT[@]:1})"
 fi
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "=" ]]; then
-    eval "DOCKER_OPT=(DOCKERFILE_DOCKER_OPT[@]:1)"
+    # shellcheck disable=SC2145
+    eval "DOCKER_OPT=(${DOCKERFILE_DOCKER_OPT[@]:1})"
 fi
 if [[ "${DOCKERFILE_DOCKER_OPT[0]-}" == "-" ]]; then
     for i in "${DOCKERFILE_DOCKER_OPT[@]:1}"; do
@@ -141,7 +156,7 @@ main () {
 #
 help () { ## Show this help message
     printf '\n%s\n  %s\n\n%s\n' "Usage:" "${GREEN}dapp ${YELLOW}[target] ${CYAN}directory${NC}" "Targets:"
-    grep -E '^[a-zA-Z_-]+.*{.*?## .*$' "${0}" | sort | awk 'BEGIN {FS = "\\(.*?## "}; { printf "  '${GREEN}'%-15s'${YELLOW}'%s'${NC}'\n", $1, $2} '
+    grep -E '^[a-zA-Z_-]+.*{.*?## .*$' "${0}" | sort | awk 'BEGIN {FS = "\\(.*?## "}; { printf "  '"${GREEN}"'%-15s'"${YELLOW}"'%s'"${NC}"'\n", $1, $2} '
     printf '\n'
 }
 #
@@ -273,26 +288,22 @@ run () { ## Run the docker application
         printf '%s\n' "Pulling ${IMG}"
         docker pull "${IMG}":latest
     fi
-    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1
-    if [[ "${DOCKER_PASSTHOUGH}" ]]; then
-        docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
-    else
-        docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}"
-    fi
+    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
+    docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
 }
 #
 shell () { ## Run shell in docker application
     printf '%s\n' "Runing shell in ${NAME}"
     checklocalimage
-    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1
-    docker run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${IMG}"
+    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
+    docker run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${DOCKER_OPT_DUSER[@]}" "${IMG}"
 }
 #
 root () { ## Run shell in docker application as root
     printf '%s\n' "Runing shell in ${NAME}"
     checklocalimage
-    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1
-    docker run --interactive --tty --user root --workdir /root --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${IMG}"
+    xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
+    docker run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${DOCKER_OPT_ROOT[@]}" "${IMG}"
 }
 #
 desktop () { ## Populate desktop application menu
@@ -313,7 +324,7 @@ desktop () { ## Populate desktop application menu
         DESKTOP_MIMETYPE="$(grep -oP '(?<=^#'${i}'DESKTOP_MIMETYPE ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
         # shellcheck disable=SC2086
         DESKTOP_LOGO="$(grep -oP '(?<=^#'${i}'DESKTOP_LOGO ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
-        # shellcheck disable=SC2046,SC2086
+        # shellcheck disable=SC2001,SC2046,SC2086
         DESKTOP_LOGO_NAME="${NAME}_$(basename $( sed 's/?format.*//' <<< ${DESKTOP_LOGO}))"
         # shellcheck disable=SC2086
         DESKTOP_EXEC="$(grep -oP '(?<=^#'${i}'DESKTOP_EXEC ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
@@ -369,15 +380,16 @@ readme () { ## Create readme file
         "#### Docker files for various Linux applications." \
         "---" \
         "| Repository | Status | GitHub | Docker | Tag | Size | Layers |" \
-        "| --- | --- | :---: | :---: | :--- | :---: | :---: |" > "${ROOT}"README.md
+        "| --- | --- | :---: | :---: | :--- | :---: | :---: |" \
+        "| [![](https://img.shields.io/badge/dockerfiles-grey.svg)](https://github.com/forwardcomputers/dockerfiles) | [![](https://img.shields.io/github/workflow/status/forwardcomputers/dockerfiles/build_all?label)](https://github.com/forwardcomputers/dockerfiles/actions) | [![](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/pxe) | [![](https://img.shields.io/badge/docker--E5E5E5.svg?label=&logo=docker)](https://hub.docker.com/r/forwardcomputers) |" > "${ROOT}"README.md
     for APP in "${APPS[@]}"; do
         printf '%s' \
             "| [![](https://img.shields.io/badge/${APP}-grey.svg)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
             "| [![](https://img.shields.io/badge/dynamic/json.svg?query=$.Labels['org.opencontainers.image.created']&label=&url=https://api.microbadger.com/v1/images/forwardcomputers/${APP})](https://hub.docker.com/r/forwardcomputers/${APP}) " \
             "| [![](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/dockerfiles/tree/master/${APP}) " \
             "| [![](https://img.shields.io/badge/docker--E5E5E5.svg?label=&logo=docker)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
-            "| [![](https://img.shields.io/badge/dynamic/json.svg?query=$.results.0.name&label=&url=https://registry.hub.docker.com/v2/repositories/forwardcomputers/${APP}/tags)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
-            "| [![](https://img.shields.io/microbadger/image-size/forwardcomputers/${APP}.svg?label=)](http://microbadger.com/images/forwardcomputers/${APP}) " \
+            "| [![](https://img.shields.io/docker/v/forwardcomputers/${APP}/latest?color=blue&label=)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
+            "| [![](https://img.shields.io/docker/image-size/forwardcomputers/${APP}/latest?label=)](http://microbadger.com/images/forwardcomputers/${APP}) " \
             "| [![](https://img.shields.io/microbadger/layers/forwardcomputers/${APP}.svg?label=)](http://microbadger.com/images/forwardcomputers/${APP}) " \
             "|" >> "${ROOT}"README.md
         printf '\n' >> "${ROOT}"README.md
@@ -422,7 +434,7 @@ checkbaseimage () {
         docker pull "${DISTRO_IMAGE}" > /tmp/MAKE_DISTRO_LOG
     fi
     # shellcheck disable=SC2143
-    if [[ -f /tmp/MAKE_DISTRO_LOG && ! -z "$(grep 'Pull complete' /tmp/MAKE_DISTRO_LOG)" ]]; then
+    if [[ -f /tmp/MAKE_DISTRO_LOG && -n "$(grep 'Pull complete' /tmp/MAKE_DISTRO_LOG)" ]]; then
         touch -f /tmp/MAKE_DISTRO_UPDATED
     fi
     rm -f /tmp/MAKE_DISTRO_LOG

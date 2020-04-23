@@ -4,6 +4,13 @@ apps/
 .bash_history
 .cache/
 .circleci/
+.code-server/*
+!.code-server/data
+.code-server/data/*
+!.code-server/data/User
+.code-server/data/User/*
+!.code-server/data/User/settings.json
+!.code-server/extensions
 !.config/
 .config/*
 !.config/albert/albert.conf
@@ -44,11 +51,15 @@ refresh_token
 .sudo_as_admin_successful
 .uuid
 .viminfo
+.vnc/
+.wget-hsts
 .wine/
 Xauthority
 .xinputrc
 .xorgxrdp.*.log*
 .xsession-errors
+
+.flutter*
 
 .android/
 amabox1
@@ -77,5 +88,6 @@ Videos/
 Virtual Machines.localized/
 VirtualBox VMs/
 .vscode/
+.vscode-server/
 .Trash/
 .Xauthority

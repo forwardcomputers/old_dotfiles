@@ -67,6 +67,14 @@ send "${LP_KEY_PASS}\\n"
 expect eof
 EOF
 }
+git_delete_history () {
+    git checkout --orphan TEMP_BRANCH
+    git add -A
+    git commit -am "Initial commit"
+    git branch -D master
+    git branch -m master
+    git push -f origin master
+}
 #
 OSTYPE=$( uname -s )
 #
@@ -82,7 +90,7 @@ export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 # Don't clear the screen after quitting a `man` page
 export MANPAGER='less -X'
 # Shared data directory
-export SHARE='/media/filer/os/lnx/data'
+export SHARE='/opt/filer/os/lnx/data'
 # ls color, order & XDG options
 if [[ "${OSTYPE}" == Darwin ]]; then
     export colorflag="-G"
@@ -101,6 +109,9 @@ else
     export XDG_CACHE_HOME="${HOME}/.cache"
     export XDG_CONFIG_HOME="${HOME}/.config"
     export XDG_DATA_HOME="${HOME}/.local/share"
+    # flutter
+    export PATH="${PATH}:${HOME}/apps/flutter/bin"
+    export ENABLE_FLUTTER_DESKTOP=true
 fi
 # Define .gnupg
 export GNUPGHOME="${XDG_DATA_HOME}"/gnupg
@@ -179,6 +190,10 @@ alias dkrmia='dk image rm -f $(dk images --filter dangling=true -q)'  # Delete d
 alias dkrmi='docker image rm'  # Delete a Docker image
 # shellcheck disable=SC2142
 alias refresh="dki | awk '(NR>1) && (\$2!~/none/) {print \$1\":\"\$2}' | xargs -L1 docker pull" # Refresh Docker images
+# HASS alias
+alias hassc='cat /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log'
+alias hasst='tail /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log'
+alias hasstf='tail -f /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log'
 #
 #
 #
@@ -258,6 +273,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     export PATH="${PATH}:/usr/local/go/bin"
     export GOPATH="${HOME}/app"
     # Set up lastpass
+    export LPASS_AGENT_TIMEOUT=0
     export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
     if [[ -z "$TMUX" ]]; then
         lpass status --quiet || lpass login --trust --force "${FULLNAME}"
@@ -329,7 +345,9 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # Repo status 
     alias gstatus='g status && git submodule foreach "git status"'
     # Status for all repos
+    # shellcheck disable=SC2154
     alias gallstatus='for d in $(find /media/filer/os -maxdepth 5 -name .git); do d="${d%/*}"; output="$( (cd $d; eval "git status") 2>&1 )"; echo -e "\033[0;36m${d}\033[0m\n"$output; done'
+    alias gdelhis='git_delete_history'
     # Twitter keys
     export LP_T_CONSUMER_KEY=$(lpass show LP_T_CONSUMER_KEY --password)
     export LP_T_CONSUMER_SECRET=$(lpass show LP_T_CONSUMER_SECRET --password)
@@ -351,6 +369,11 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     alias tm='tmux -f "$XDG_CONFIG_HOME/tmux/tmux.conf" new-session -AD -s $USER'
     # VSCode directory
     if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
+    # Home Assistant alias
+    export LP_HASS_API_TOKEN=$(lpass show LP_HASS_INFO --password)
+    export LP_HASS_HOST=$(lpass show LP_HASS_INFO --username)
+    alias doff='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_off'
+    alias don='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_on'
     #
     if [[ "${OSTYPE}" == Darwin ]]; then
         # Use keychain for ssh logins
@@ -398,6 +421,9 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         alias hogs='ps -Ao pid,%cpu,user,tty,command -r | head -n 6'
         # ls - show long format most recently modified last
         alias lt='ls -latr'
+        # top alias
+        alias top='"${HOME}"/bin/osx_ytop -c vice'
+        alias oldtop="/usr/bin/top"
     else
         if [[ ! -f "/.dockerenv" ]]; then 
             # Kodi directory
@@ -413,6 +439,11 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         alias lt='ls -latr --time-style=long-iso'
         # Follow the system logfile
         [[ -x "$(command -v journalctl)" ]] && alias logf='journalctl -f'
+        # Clear journal file 
+        alias journal_clear='journalctl --merge --vacuum-time=1s'
+        # top alias
+        alias top='"${HOME}"/bin/nix_ytop -c vice'
+        alias oldtop="/usr/bin/top"
     fi
     #
     # Bash completions
@@ -445,7 +476,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         fi
     fi
     # mount /media/filer in CROS
-    if [[ ! -z "$SOMMELIER_VERSION" ]]; then
+    if [[ -n "$SOMMELIER_VERSION" ]]; then
         if [[ ! -d /media/filer ]]; then
             sudo mkdir --parents /media/filer
         fi

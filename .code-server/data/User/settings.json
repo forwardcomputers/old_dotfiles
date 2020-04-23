@@ -1,0 +1,15 @@
+{
+    "editor.rulers" : [80],
+    "editor.renderWhitespace": "all",
+    "[shellscript]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
+    "editor.renderControlCharacters": true,
+    "terminal.integrated.shell.linux": "/bin/bash",
+    "workbench.startupEditor": "none",
+    "workbench.colorTheme": "Default Light+",
+    "files.autoSave": "off",
+    "git.confirmSync": false,
+    "git.enableSmartCommit": true
+}
