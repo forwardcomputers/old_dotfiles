@@ -7,14 +7,14 @@ set -o pipefail     # fail if pipe failed
 #
 DOCKER_PASSTHOUGH=""
 set +u
-if [[ ! -z "$3" ]]; then
+if [[ -n "$3" ]]; then
     DOCKER_PASSTHOUGH="$3"
 fi
 set -u
 #
 GH_API_HEADER="Accept: application/vnd.github.v3+json"
 GH_AUTH_HEADER=""
-if [[ ! -z ${LP_GITHUB_API_TOKEN+x} ]]; then
+if [[ -n ${LP_GITHUB_API_TOKEN+x} ]]; then
     GH_AUTH_HEADER="Authorization: token ${LP_GITHUB_API_TOKEN}"
 fi
 if [[ -z ${DISPLAY+x} ]]; then
@@ -153,7 +153,7 @@ main () {
 #
 help () { ## Show this help message
     printf '\n%s\n  %s\n\n%s\n' "Usage:" "${GREEN}dapp ${YELLOW}[target] ${CYAN}directory${NC}" "Targets:"
-    grep -E '^[a-zA-Z_-]+.*{.*?## .*$' "${0}" | sort | awk 'BEGIN {FS = "\\(.*?## "}; { printf "  '${GREEN}'%-15s'${YELLOW}'%s'${NC}'\n", $1, $2} '
+    grep -E '^[a-zA-Z_-]+.*{.*?## .*$' "${0}" | sort | awk 'BEGIN {FS = "\\(.*?## "}; { printf "  '"${GREEN}"'%-15s'"${YELLOW}"'%s'"${NC}"'\n", $1, $2} '
     printf '\n'
 }
 #
@@ -321,7 +321,7 @@ desktop () { ## Populate desktop application menu
         DESKTOP_MIMETYPE="$(grep -oP '(?<=^#'${i}'DESKTOP_MIMETYPE ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
         # shellcheck disable=SC2086
         DESKTOP_LOGO="$(grep -oP '(?<=^#'${i}'DESKTOP_LOGO ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
-        # shellcheck disable=SC2046,SC2086
+        # shellcheck disable=SC2001,SC2046,SC2086
         DESKTOP_LOGO_NAME="${NAME}_$(basename $( sed 's/?format.*//' <<< ${DESKTOP_LOGO}))"
         # shellcheck disable=SC2086
         DESKTOP_EXEC="$(grep -oP '(?<=^#'${i}'DESKTOP_EXEC ).*' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || true)"
@@ -431,7 +431,7 @@ checkbaseimage () {
         docker pull "${DISTRO_IMAGE}" > /tmp/MAKE_DISTRO_LOG
     fi
     # shellcheck disable=SC2143
-    if [[ -f /tmp/MAKE_DISTRO_LOG && ! -z "$(grep 'Pull complete' /tmp/MAKE_DISTRO_LOG)" ]]; then
+    if [[ -f /tmp/MAKE_DISTRO_LOG && -n "$(grep 'Pull complete' /tmp/MAKE_DISTRO_LOG)" ]]; then
         touch -f /tmp/MAKE_DISTRO_UPDATED
     fi
     rm -f /tmp/MAKE_DISTRO_LOG
