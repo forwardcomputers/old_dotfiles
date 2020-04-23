@@ -23,7 +23,7 @@ fi
 #
 # Ubuntu - latest = latest LTS, rolling = Latest release, devel.
 DISTRO="$(curl --fail --silent --location --url https://raw.githubusercontent.com/tianon/docker-brew-ubuntu-core/master/rolling)" 
-# shellcheck disable=SC2053
+# shellcheck disable=SC2181
 if [[ -z "${DISTRO}" || $? != 0 ]]; then
     HAVE_IP=0
 else
@@ -108,6 +108,7 @@ DOCKER_OPT_CROS=(--env DISPLAY=unix"${DISPLAY_LOW_DENSITY}" \
 DOCKER_OPT_DARWIN=(--env DISPLAY=host.docker.internal:0 \
             --env PULSE_SERVER=${IP})
 #
+# shellcheck disable=SC2207
 DOCKER_OPT_DUSER=(--env HOME=/home/duser \
             --volume "${HOME}":/home/duser \
             --user $(id -u "${USER}"):$(id -g "${USER}") \
