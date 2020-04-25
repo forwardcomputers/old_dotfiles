@@ -298,8 +298,7 @@ run () { ## Run the docker application
       "pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon" \
       "PREFFERED_SINK=\$( pacmd list-sinks | awk '/index:/ {print \$1 \$2 \$3} /card:/ {print \$0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print \$1}' | cut -d ':' -f2 )" \
       "pacmd set-default-sink \${PREFFERED_SINK}" \
-      # shellcheck disable=SC2145
-      "docker container run --name ${NAME} ${DOCKER_OPT[@]} ${IMG} ${DOCKER_PASSTHOUGH}" \
+      "docker container run --name ${NAME} ${DOCKER_OPT[*]} ${IMG} ${DOCKER_PASSTHOUGH}" \
       "pulseaudio --kill || true" \
       "rm -f /tmp/DOCKER_RUN_SCRIPT" > /tmp/DOCKER_RUN_SCRIPT
     bash /tmp/DOCKER_RUN_SCRIPT 2>/dev/null &
