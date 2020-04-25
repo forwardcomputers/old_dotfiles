@@ -291,7 +291,7 @@ run () { ## Run the docker application
   fi
   xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
   if [[ $(uname -s) == Darwin ]]; then
-    rm /tmp/DOCKER_RUN_SCRIPT
+    rm -f /tmp/DOCKER_RUN_SCRIPT
     printf '%s\n' \
       "#!/usr/bin/env bash" \
       "pulseaudio --kill || true" \
@@ -299,8 +299,9 @@ run () { ## Run the docker application
       "PREFFERED_SINK=\$( pacmd list-sinks | awk '/index:/ {print \$1 \$2 \$3} /card:/ {print \$0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print \$1}' | cut -d ':' -f2 )" \
       "pacmd set-default-sink \${PREFFERED_SINK}" \
       "docker container run --name ${NAME} ${DOCKER_OPT[@]} ${IMG} ${DOCKER_PASSTHOUGH}" \
-      "pulseaudio --kill || true" > /tmp/DOCKER_RUN_SCRIPT
-    . /tmp/DOCKER_RUN_SCRIPT 2>/dev/null &
+      "pulseaudio --kill || true" \
+      "rm -f /tmp/DOCKER_RUN_SCRIPT" > /tmp/DOCKER_RUN_SCRIPT
+    bash /tmp/DOCKER_RUN_SCRIPT 2>/dev/null &
   else
     docker container run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
   fi
