@@ -86,7 +86,7 @@ NC=$'\033[0m'
 DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
                 --env HOME=/home/duser \
                 --volume /opt:/opt \
-                --volume /tmp/.X11-unix:/tmp/.X11-unix:ro \
+                --volume /tmp/.X11-unix:/tmp/.X11-unix:rw \
                 --volume "${HOME}":/home/duser \
                 --user $(id -u ${USER}):$(id -g ${USER}) \
                 --workdir /home/duser)
@@ -106,13 +106,14 @@ DOCKER_OPT_CROS=(--env DISPLAY=unix"${DISPLAY_LOW_DENSITY}" \
                 --volume /run/user/"${UID}"/pulse:/run/user/1001/pulse)
 # shellcheck disable=SC2191,SC2206
 DOCKER_OPT_DARWIN=(--env DISPLAY=host.docker.internal:0 \
-                --env PULSE_SERVER=${IP})
+                --env PULSE_SERVER=host.docker.internal)
 #
-# shellcheck disable=SC2207
+# shellcheck disable=SC2207,SC2191
 DOCKER_OPT_DUSER=(--env HOME=/home/duser \
                 --volume "${HOME}":/home/duser \
                 --user $(id -u "${USER}"):$(id -g "${USER}") \
                 --workdir /home/duser)
+# shellcheck disable=SC2191
 DOCKER_OPT_ROOT=(--env HOME=/root \
                 --user root \
                 --workdir /root)
@@ -261,10 +262,10 @@ build () { ## Build docker image file
   local BUILD_DATE
   BUILD_DATE="$(date +'%-d-%-m-%G %r')"
   printf '%s\n' "Building ${NAME}"
-  # docker build --rm --force-rm --squash \
-  # docker build --rm --force-rm --compress \
-  # docker build --rm --force-rm \
-  docker build \
+  # docker image build --rm --force-rm --squash \
+  # docker image build --rm --force-rm --compress \
+  # docker image build --rm --force-rm \
+  docker image build \
     --build-arg NAME="${NAME}" \
     --build-arg CO="${CO}" \
     --build-arg APPNEW="${APPNEW}" \
@@ -276,8 +277,8 @@ build () { ## Build docker image file
 #
 push () {  ## Push image to Docker Hub
   printf '%s\n' "Pushing ${NAME}-${APPNEW} to Docker hub"
-  docker push "${IMG}":latest
-  docker push "${IMG}":"${APPNEW}"
+  docker image push "${IMG}":latest
+  docker image push "${IMG}":"${APPNEW}"
   tweet
 }
 #
@@ -286,24 +287,55 @@ run () { ## Run the docker application
   checklocalimage
   if [[ ${APPHUB} > ${APPLOCAL} ]]; then
     printf '%s\n' "Pulling ${IMG}"
-    docker pull "${IMG}":latest
+    docker image pull "${IMG}":latest
   fi
   xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
-  docker run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
+  if [[ $(uname -s) == Darwin ]]; then
+    rm /tmp/DOCKER_RUN_SCRIPT
+    printf '%s\n' \
+      "#!/usr/bin/env bash" \
+      "pulseaudio --kill || true" \
+      "pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon" \
+      "PREFFERED_SINK=\$( pacmd list-sinks | awk '/index:/ {print \$1 \$2 \$3} /card:/ {print \$0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print \$1}' | cut -d ':' -f2 )" \
+      "pacmd set-default-sink \${PREFFERED_SINK}" \
+      "docker container run --name ${NAME} ${DOCKER_OPT[@]} ${IMG} ${DOCKER_PASSTHOUGH}" \
+      "pulseaudio --kill || true" > /tmp/DOCKER_RUN_SCRIPT
+    . /tmp/DOCKER_RUN_SCRIPT 2>/dev/null &
+  else
+    docker container run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
+  fi
 }
 #
 shell () { ## Run shell in docker application
   printf '%s\n' "Runing shell in ${NAME}"
   checklocalimage
   xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
-  docker run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${DOCKER_OPT_DUSER[@]}" "${IMG}"
+  if [[ $(uname -s) == Darwin ]]; then
+    pulseaudio --kill || true
+    pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
+    PREFFERED_SINK=$( pacmd list-sinks | awk '/index:/ {print $1 $2 $3} /card:/ {print $0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print $1}' | cut -d ':' -f2 )
+    pacmd set-default-sink ${PREFFERED_SINK}
+  fi
+  docker container run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${DOCKER_OPT_DUSER[@]}" "${IMG}"
+  if [[ $(uname -s) == Darwin ]]; then
+    pulseaudio --kill || true
+  fi
 }
 #
 root () { ## Run shell in docker application as root
   printf '%s\n' "Runing shell in ${NAME}"
   checklocalimage
   xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
-  docker run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${DOCKER_OPT_ROOT[@]}" "${IMG}"
+  if [[ $(uname -s) == Darwin ]]; then
+    pulseaudio --kill || true
+    pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
+    PREFFERED_SINK=$( pacmd list-sinks | awk '/index:/ {print $1 $2 $3} /card:/ {print $0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print $1}' | cut -d ':' -f2 )
+    pacmd set-default-sink ${PREFFERED_SINK}
+  fi
+  docker container run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${DOCKER_OPT_ROOT[@]}" "${IMG}"
+  if [[ $(uname -s) == Darwin ]]; then
+    pulseaudio --kill || true
+  fi
 }
 #
 desktop () { ## Populate desktop application menu
@@ -404,7 +436,7 @@ readme () { ## Create readme file
 appversions () {
   if (( "${HAVE_IP}" )); then
     DISTRO_IMAGE="$(sed --silent --expression='s/^FROM //p' "${ROOT}${NAME}"/Dockerfile 2> /dev/null || true)"
-    APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
+    APPLOCAL="$(docker image inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
     until APPHUB="$(curl --silent --location --url https://registry.hub.docker.com/v2/repositories/forwardcomputers/"${NAME}"/tags | jq --raw-output '.results|.[1]|.name // 0')"; do
       sleep 1
     done
@@ -431,9 +463,9 @@ appversions () {
 #
 checkbaseimage () {
   rm -f /tmp/MAKE_DISTRO_LOG /tmp/MAKE_DISTRO_UPDATED /tmp/MAKE_REBUILD
-  docker pull "${IMG}":latest > /dev/null 2>&1 || true
+  docker image pull "${IMG}":latest > /dev/null 2>&1 || true
   if [[ "${DISTRO_IMAGE}" ]]; then
-    docker pull "${DISTRO_IMAGE}" > /tmp/MAKE_DISTRO_LOG
+    docker image pull "${DISTRO_IMAGE}" > /tmp/MAKE_DISTRO_LOG
   fi
   # shellcheck disable=SC2143
   if [[ -f /tmp/MAKE_DISTRO_LOG && -n "$(grep 'Pull complete' /tmp/MAKE_DISTRO_LOG)" ]]; then
@@ -446,8 +478,8 @@ checklocalimage () {
   if ! docker image inspect "${IMG}" > /dev/null 2>&1; then
     printf '%s\n' "Pulling ${IMG}"
     # shellcheck disable=SC2015
-    docker pull "${IMG}":latest > /dev/null 2>&1 || { [[ -d "${ROOT}" ]] && build || { printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to file share${NC}"; exit; } }
-    APPLOCAL="$(docker inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
+    docker image pull "${IMG}":latest > /dev/null 2>&1 || { [[ -d "${ROOT}" ]] && build || { printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to file share${NC}"; exit; } }
+    APPLOCAL="$(docker image inspect --format '{{ index .Config.Labels "org.opencontainers.image.version" }}' "${IMG}" 2> /dev/null || true)"
   fi
 }
 #
