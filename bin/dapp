@@ -298,6 +298,7 @@ run () { ## Run the docker application
       "pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon" \
       "PREFFERED_SINK=\$( pacmd list-sinks | awk '/index:/ {print \$1 \$2 \$3} /card:/ {print \$0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print \$1}' | cut -d ':' -f2 )" \
       "pacmd set-default-sink \${PREFFERED_SINK}" \
+      # shellcheck disable=SC2145
       "docker container run --name ${NAME} ${DOCKER_OPT[@]} ${IMG} ${DOCKER_PASSTHOUGH}" \
       "pulseaudio --kill || true" \
       "rm -f /tmp/DOCKER_RUN_SCRIPT" > /tmp/DOCKER_RUN_SCRIPT
@@ -315,7 +316,7 @@ shell () { ## Run shell in docker application
     pulseaudio --kill || true
     pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
     PREFFERED_SINK=$( pacmd list-sinks | awk '/index:/ {print $1 $2 $3} /card:/ {print $0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print $1}' | cut -d ':' -f2 )
-    pacmd set-default-sink ${PREFFERED_SINK}
+    pacmd set-default-sink "${PREFFERED_SINK}"
   fi
   docker container run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${DOCKER_OPT_DUSER[@]}" "${IMG}"
   if [[ $(uname -s) == Darwin ]]; then
@@ -331,7 +332,7 @@ root () { ## Run shell in docker application as root
     pulseaudio --kill || true
     pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
     PREFFERED_SINK=$( pacmd list-sinks | awk '/index:/ {print $1 $2 $3} /card:/ {print $0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print $1}' | cut -d ':' -f2 )
-    pacmd set-default-sink ${PREFFERED_SINK}
+    pacmd set-default-sink "${PREFFERED_SINK}"
   fi
   docker container run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/bash "${DOCKER_OPT[@]}" "${DOCKER_OPT_ROOT[@]}" "${IMG}"
   if [[ $(uname -s) == Darwin ]]; then
