@@ -40,12 +40,12 @@ else
     if ! grep -q 'index.docker.io' "${HOME}"/.docker/config.json > /dev/null 2>&1 ; then
       # shellcheck disable=SC2046
       docker login --username forwardcomputers --password $(lpass show LP_DOCKER_PASSWORD --password) > /dev/null 2>&1
+      docker pull alpine:latest 
     fi
   fi
   ROOT="/opt/filer/os/dockerfiles/"
 fi
 set -u
-docker images
 NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
 if [[ -h "${ROOT}${NAME}" ]]; then
   NAME=$(readlink --quiet --silent "${ROOT}${NAME}")
