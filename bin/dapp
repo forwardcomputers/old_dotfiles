@@ -45,6 +45,7 @@ else
   ROOT="/opt/filer/os/dockerfiles/"
 fi
 set -u
+docker images
 NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
 if [[ -h "${ROOT}${NAME}" ]]; then
   NAME=$(readlink --quiet --silent "${ROOT}${NAME}")
