@@ -432,9 +432,9 @@ readme () { ## Create readme file
   printf '\n%s' \
     "This setup is largely based on Jessie Frazelle work [https://github.com/jfrazelle/dockerfiles](https://github.com/jfrazelle/dockerfiles)  " \
     "FoxitReader - From the Arch Linux repository @ [https://aur.archlinux.org/packages/foxitreader](https://aur.archlinux.org/packages/foxitreader)  " \
-    "Code-server - Home Assistant Visual Sudio Code add-on @ https://github.com/hassio-addons/addon-vscode  " \
-    "              LinuxServer @ https://github.com/linuxserver/docker-code-server  ">> "${ROOT}"README.md
-  sed -ie 's/firefox-esr-grey/firefox%E2%80%93esr-grey/g' "${ROOT}"README.md
+    "Code-server - Home Assistant Visual Studio Code add-on @ [https://github.com/hassio-addons/addon-vscode](https://github.com/hassio-addons/addon-vscode)  " \
+    "              LinuxServer @ [https://github.com/linuxserver/docker-code-server](https://github.com/linuxserver/docker-code-server)  ">> "${ROOT}"README.md
+  sed -i 's/firefox-esr-grey/firefox%E2%80%93esr-grey/g' "${ROOT}"README.md
 }
 #
 appversions () {
