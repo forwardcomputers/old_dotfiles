@@ -85,7 +85,7 @@ NC=$'\033[0m'
 # shellcheck disable=SC2191,SC2207,SC2086
 DOCKER_OPT_BASE=(--rm --network=host --hostname=docker_"${NAME}" --shm-size=1gb \
                 --env HOME=/home/duser \
-                --volume /opt:/opt \
+                --volume /opt/filer:/opt/filer \
                 --volume /tmp/.X11-unix:/tmp/.X11-unix:rw \
                 --volume "${HOME}":/home/duser \
                 --user $(id -u ${USER}):$(id -g ${USER}) \
