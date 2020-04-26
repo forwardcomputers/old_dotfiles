@@ -44,7 +44,9 @@ else
   fi
   ROOT="/opt/filer/os/dockerfiles/"
 fi
+docker image ls
 docker image pull alpine:latest 
+docker image ls
 set -u
 NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
 if [[ -h "${ROOT}${NAME}" ]]; then
