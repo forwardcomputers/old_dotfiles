@@ -1,5 +1,6 @@
 
 apps/
+.ash_history
 .audacity-data/
 .bash_history
 .cache/
