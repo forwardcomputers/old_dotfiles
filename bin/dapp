@@ -44,9 +44,6 @@ else
   fi
   ROOT="/opt/filer/os/dockerfiles/"
 fi
-docker image ls
-docker image pull alpine:latest 
-docker image ls
 set -u
 NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
 if [[ -h "${ROOT}${NAME}" ]]; then
@@ -468,6 +465,7 @@ appversions () {
 }
 #
 checkbaseimage () {
+set -x
   rm -f /tmp/MAKE_DISTRO_LOG /tmp/MAKE_DISTRO_UPDATED /tmp/MAKE_REBUILD
   docker image pull "${IMG}":latest > /dev/null 2>&1 || true
   if [[ "${DISTRO_IMAGE}" ]]; then
@@ -478,6 +476,7 @@ checkbaseimage () {
     touch -f /tmp/MAKE_DISTRO_UPDATED
   fi
   rm -f /tmp/MAKE_DISTRO_LOG
+set +x
 }
 #
 checklocalimage () {
