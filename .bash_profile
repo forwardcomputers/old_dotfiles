@@ -375,6 +375,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     alias doff='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_off'
     alias don='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_on'
     #
+    shellcheck() { docker run --rm -v $(dirname "$1"):/mnt forwardcomputers/shellcheck -a $(basename "$1") ; }
     if [[ "${OSTYPE}" == Darwin ]]; then
         # Use keychain for ssh logins
         # shellcheck disable=SC1003
