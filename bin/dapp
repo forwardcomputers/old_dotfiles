@@ -46,7 +46,7 @@ else
 fi
 set -u
 # Pull Alpine image for shellcheck
-docker image pull alpine:latest
+#docker image pull alpine:latest
 NAME=$( echo "${2-none}" | cut -d '/' -f 1 )
 if [[ -h "${ROOT}${NAME}" ]]; then
   NAME=$(readlink --quiet --silent "${ROOT}${NAME}")
