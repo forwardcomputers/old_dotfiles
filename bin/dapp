@@ -237,7 +237,7 @@ upgrade_all_ci () {
     IMG="${CO}/${NAME}"
     appversions
     upgrade
-    docker image rm "${IMG}" -f
+    docker image rm -f $( docker image ls -q --filter reference="${IMG}" )
   done
   set -e
 }
