@@ -250,6 +250,22 @@ rebuild_all () { ## Rebuild all applications
   readme
 }
 #
+rebuild_all_ci () {
+  printf '%s\n' "Rebuilding all applications"
+  all_apps
+  set +e
+  for NAME in "${APPS[@]}"; do
+    IMG="${CO}/${NAME}"
+    appversions
+    build
+    push
+    printf '%s\n' "${GREEN}Built ${YELLOW}${NAME}${GREEN} to the latest version ${YELLOW}${APPNEW}${NC}"
+    docker image rm "${IMG}" -f
+  done
+  set -e
+  readme
+}
+#
 build () { ## Build docker image file
   if ! (( "${HAVE_IP}" )); then
     printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} unable to connect to internet${NC}"
