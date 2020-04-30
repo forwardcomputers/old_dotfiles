@@ -5,7 +5,7 @@
     "files.autoSave": "off",
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
-    "terminal.integrated.fontFamily": "Droid Sans Mono for Powerline",
+    "terminal.integrated.fontFamily": "DejaVu Sans Mono for Powerline",
     "terminal.integrated.shell.linux": "/bin/bash",
     "workbench.colorTheme": "Default Light+",
     "workbench.startupEditor": "none",
