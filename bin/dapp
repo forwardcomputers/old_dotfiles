@@ -237,6 +237,7 @@ upgrade_all_ci () {
     IMG="${CO}/${NAME}"
     appversions
     upgrade
+    #shellcheck disable=SC2046
     docker image rm -f $( docker image ls -q --filter reference="${IMG}" )
   done
   set -e
