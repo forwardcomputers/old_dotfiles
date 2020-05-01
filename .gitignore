@@ -38,7 +38,8 @@ google-chrome/
 .ICEauthority
 items.sqlite3
 .kodi
-.local/share/
+.local/share/*
+!.local/share/fonts
 lpass
 .mozilla/
 .npm/
