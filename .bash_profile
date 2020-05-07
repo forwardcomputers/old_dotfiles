@@ -325,7 +325,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # dbus accessibility errors
     export NO_AT_BRIDGE=1
     # web application alias
-    alias wapp="qml -f ${HOME}/bin/wapp.qml --"
+    alias wapp='qml -f "${HOME}"/bin/wapp.qml --'
     # wget history directory
     alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
     # git alias
