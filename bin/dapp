@@ -8,6 +8,7 @@ set -x              # show every commond
 DOCKER_PASSTHOUGH=""
 set +u
 if [[ -n "$3" ]]; then
+  # shellcheck disable=SC2124
   DOCKER_PASSTHOUGH="${@:3}"
 fi
 set -u
