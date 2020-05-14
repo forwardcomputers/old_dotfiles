@@ -3,12 +3,12 @@ set -E              # any trap on ERR is inherited by shell functions
 set -e              # exit if error occurs
 set -u              # treat unset variables and parameters as an error
 set -o pipefail     # fail if pipe failed
-#set -x              # show every commond
+set -x              # show every commond
 #
 DOCKER_PASSTHOUGH=""
 set +u
 if [[ -n "$3" ]]; then
-  DOCKER_PASSTHOUGH="$3"
+  DOCKER_PASSTHOUGH="${@:3}"
 fi
 set -u
 #
@@ -317,7 +317,7 @@ run () { ## Run the docker application
       "rm -f /tmp/DOCKER_RUN_SCRIPT" > /tmp/DOCKER_RUN_SCRIPT
     bash /tmp/DOCKER_RUN_SCRIPT 2>/dev/null &
   else
-    docker container run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" "${DOCKER_PASSTHOUGH}"
+    docker container run --detach --name "${NAME}" "${DOCKER_OPT[@]}" "${IMG}" ${DOCKER_PASSTHOUGH}
   fi
 }
 #
