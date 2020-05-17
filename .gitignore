@@ -15,6 +15,7 @@ apps/
 !.config/
 .config/*
 !.config/albert/albert.conf
+!.config/blacklist_adblock
 !.config/browser/
 !.config/code/
 !.config/git/
