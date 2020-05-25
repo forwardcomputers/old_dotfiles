@@ -384,7 +384,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         # Use keychain for ssh logins
         # shellcheck disable=SC1003
         #grep -q "^UseKeychain" "${HOME}/.ssh/config" || sed -i '1iUseKeychain yes\' "${HOME}/.ssh/config"
-        #grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
+        grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
         # powerline directory
         ln -sfn "${HOME}"/.config/powerline "${HOME}"/Library/Preferences/powerline
         # Kodi directory
