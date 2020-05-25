@@ -383,7 +383,8 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     if [[ "${OSTYPE}" == Darwin ]]; then
         # Use keychain for ssh logins
         # shellcheck disable=SC1003
-        grep -q "^UseKeychain" "${HOME}/.ssh/config" || sed -i '1iUseKeychain yes\' "${HOME}/.ssh/config"
+        #grep -q "^UseKeychain" "${HOME}/.ssh/config" || sed -i '1iUseKeychain yes\' "${HOME}/.ssh/config"
+        #grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
         # powerline directory
         ln -sfn "${HOME}"/.config/powerline "${HOME}"/Library/Preferences/powerline
         # Kodi directory
@@ -467,7 +468,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     if [[ -f /usr/bin/ssh-add ]]; then
         # Populate authorized_keys with public key
         if [[ ! -f "${HOME}/.ssh/authorized_keys" ]]; then
-            lpass show LP_ROOT_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
+            lpass show LP_ALIM_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
             chmod 600 "${HOME}/.ssh/authorized_keys"
         fi
         if [[ -f "${SSH_ENV}" ]]; then
@@ -479,6 +480,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         else
             start_agent
         fi
+        grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
     fi
     # mount /media/filer in CROS
     if [[ -n "$SOMMELIER_VERSION" ]]; then
