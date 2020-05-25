@@ -480,7 +480,9 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         else
             start_agent
         fi
-        grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
+        if [[ "${OSTYPE}" == Darwin ]]; then
+            grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
+        fi
     fi
     # mount /media/filer in CROS
     if [[ -n "$SOMMELIER_VERSION" ]]; then
