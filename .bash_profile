@@ -468,7 +468,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     if [[ -f /usr/bin/ssh-add ]]; then
         # Populate authorized_keys with public key
         if [[ ! -f "${HOME}/.ssh/authorized_keys" ]]; then
-            lpass show LP_ROOT_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
+            lpass show LP_ALIM_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
             chmod 600 "${HOME}/.ssh/authorized_keys"
         fi
         if [[ -f "${SSH_ENV}" ]]; then
