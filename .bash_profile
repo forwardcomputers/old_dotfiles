@@ -75,6 +75,42 @@ git_delete_history () {
     git branch -m master
     git push -f origin master
 }
+# readlink -f for osx - works for linux
+readlinkf() {
+  # from https://github.com/ko1nksm/readlinkf
+  [ "${1:-}" ] || return 1
+  max_symlinks=40
+  CDPATH='' # to avoid changing to an unexpected directory
+
+  target=$1
+  [ -e "${target%/}" ] || target=${1%"${1##*[!/]}"} # trim trailing slashes
+  [ -d "${target:-/}" ] && target="$target/"
+
+  cd -P . 2>/dev/null || return 1
+  while [ "$max_symlinks" -ge 0 ] && max_symlinks=$((max_symlinks - 1)); do
+    if [ ! "$target" = "${target%/*}" ]; then
+      case $target in
+        /*) cd -P "${target%/*}/" 2>/dev/null || break ;;
+        *) cd -P "./${target%/*}" 2>/dev/null || break ;;
+      esac
+      target=${target##*/}
+    fi
+
+    if [ ! -L "$target" ]; then
+      target="${PWD%/}${target:+/}${target}"
+      printf '%s\n' "${target:-/}"
+      return 0
+    fi
+
+    # `ls -dl` format: "%s %u %s %s %u %s %s -> %s\n",
+    #   <file mode>, <number of links>, <owner name>, <group name>,
+    #   <size>, <date and time>, <pathname of link>, <contents of link>
+    # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/ls.html
+    link=$(ls -dl -- "$target" 2>/dev/null) || break
+    target=${link#*" $target -> "}
+  done
+  return 1
+}
 #
 OSTYPE=$( uname -s )
 #
@@ -114,6 +150,8 @@ else
     # add qml to path
     #export PATH="${PATH}"
 fi
+# Check for lastpass username
+if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://filer/os/lpass ); fi
 # Define .gnupg
 export GNUPGHOME="${XDG_DATA_HOME}"/gnupg
 [[ ! -e "${XDG_DATA_HOME}"/gnupg ]] && mkdir -p "${XDG_DATA_HOME}"/gnupg
@@ -126,7 +164,6 @@ export backupdir="${XDG_CACHE_HOME}"/vim/backup
 # shellcheck disable=SC2016
 export viminfo+='1000,n$XDG_CACHE_HOME/vim/viminfo'
 export runtimepath="${XDG_CONFIG_HOME}"/vim,"${VIMRUNTIME}","${XDG_CONFIG_HOME}"/vim/after
-if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://192.168.1.40/os/lpass ); fi
 # Prompt colors
 i=0;
 for color in BLACK RED GREEN YELLOW BLUE MAGENTA CYAN WHITE '' DEFAULT; do
@@ -164,7 +201,6 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ~='cd ${HOME}'
-alias cd.='cd $(readlink -f .)'
 alias share='cd ${SHARE}'
 # ls alias
 alias ls='command ls ${colorflag} ${dirsfirst}'
@@ -379,7 +415,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     alias don='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_on'
     #
     # shellcheck disable=SC2046
-    shellcheck() { docker run --rm -v "$(dirname $(readlink -f "$1"))":/mnt forwardcomputers/shellcheck -a "$(basename "$1")" ; }
+    shellcheck() { docker run --rm -v "$(dirname $(readlinkf "$1"))":/mnt forwardcomputers/shellcheck -a "$(basename "$1")" ; }
     if [[ "${OSTYPE}" == Darwin ]]; then
         # Use keychain for ssh logins
         # shellcheck disable=SC1003
