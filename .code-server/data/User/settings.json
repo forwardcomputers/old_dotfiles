@@ -13,5 +13,8 @@
         "editor.tabSize": 2,
         "editor.insertSpaces": true
     },
-    "terminal.integrated.fontFamily": "DejaVu Sans Mono for Powerline"
+    "terminal.integrated.fontFamily": "DejaVu Sans Mono for Powerline",
+    "yaml.customTags": [
+    "!secret"
+    ]
 }
