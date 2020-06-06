@@ -7,6 +7,8 @@
 #[[ $- != *i* || $(id -un) = "duser" ]] && return
 [[ $- != *i* ]] && return
 #
+# Functions
+#
 # Is command a docker app
 command_not_found_handle () {
   if [[ -d /media/filer/os/dockerfiles/"${1}" ]]; then
@@ -33,6 +35,7 @@ start_agent () {
     . "${SSH_ENV}" > /dev/null
     get_ssh_key
 }
+#
 get_ssh_key () {
     # Add existing private keys to ssh agent
     SSH_ADD_OPT=""
@@ -67,6 +70,7 @@ send "${LP_KEY_PASS}\\n"
 expect eof
 EOF
 }
+#
 git_delete_history () {
     git checkout --orphan TEMP_BRANCH
     git add -A
@@ -112,6 +116,47 @@ readlinkf() {
   return 1
 }
 #
+# ShellCheck 
+shellcheck() {
+  _fullname=$(readlinkf "$1")
+  _dirname=$(dirname "$_fullname")
+  _filename=$(basename "$1")
+  docker run --rm -v "$_dirname":/mnt forwardcomputers/shellcheck -a "$_filename"
+}
+#
+# `v` with no arguments opens the current directory in Vim, otherwise opens the given location
+v() {
+	if [ $# -eq 0 ]; then
+		vi .
+	else
+		vi "$@"
+	fi
+}
+#
+extract () {
+  if [ -f $1 ] ; then
+    case $1 in
+      *.tar.bz2)   tar xvjf $1       ;;
+      *.tar.gz)    tar xvzf $1       ;;
+      *.tar.xz)    tar xvf $1        ;;
+      *.bz2)       bunzip2 -kv $1    ;;
+      *.rar)       unrar x $1        ;;
+      *.gz)        gunzip -vk $1     ;;
+      *.tar)       tar xvf $1        ;;
+      *.tbz2)      tar xvjf $1       ;;
+      *.tgz)       tar xvzf $1       ;;
+      *.zip)       unzip $1          ;;
+      *.xz)        xz -dkv $1        ;;
+      *.Z)         uncompress -v $1  ;;
+      *.7z)        7z x $1           ;;
+      *)           echo "don't know how to extract '$1'..." ;;
+    esac
+  else
+    echo "'$1' is not a valid file"
+  fi
+}
+
+#
 OSTYPE=$( uname -s )
 #
 # Prefer US English and use UTF-8
@@ -126,6 +171,9 @@ export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 # Don't clear the screen after quitting a `man` page
 export MANPAGER='less -X'
 # Shared data directory
+export DOCKERCOMPOSE='/opt/filer/os/docker-compose'
+export DOCKERFILES='/opt/filer/os/dockerfiles'
+export PXE='/opt/filer/os/pxe'
 export SHARE='/opt/filer/os/lnx/data'
 # ls color, order & XDG options
 if [[ "${OSTYPE}" == Darwin ]]; then
@@ -201,6 +249,9 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias ~='cd ${HOME}'
+alias dockercompose='cd ${DOCKERCOMPOSE}'
+alias dockerfiles='cd ${DOCKERFILES}'
+alias pxe='cd ${PXE}'
 alias share='cd ${SHARE}'
 # ls alias
 alias ls='command ls ${colorflag} ${dirsfirst}'
@@ -217,6 +268,8 @@ alias h='history'
 alias rebash='exec ${SHELL} -l'
 # Reset garbled screen
 alias garbled='echo -e "\033c"'
+# Kill last stopped process
+alias ks='kill -s SIGINT %1'
 # Docker alias
 alias dk='docker'
 alias dkc='dk container ls -a'  # List all Docker containers
@@ -411,11 +464,9 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     # Home Assistant alias
     export LP_HASS_API_TOKEN=$(lpass show LP_HASS_INFO --password)
     export LP_HASS_HOST=$(lpass show LP_HASS_INFO --username)
-    alias doff='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_off'
-    alias don='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_on'
+    alias doff='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.office_desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_off'
+    alias don='curl -s -o /dev/null -X POST -H "Authorization: Bearer ${LP_HASS_API_TOKEN}" -H "Content-Type: application/json" -d '\''{"entity_id": "switch.office_desk"}'\'' "${LP_HASS_HOST}":8123/api/services/switch/turn_on'
     #
-    # shellcheck disable=SC2046
-    shellcheck() { docker run --rm -v "$(dirname $(readlinkf "$1"))":/mnt forwardcomputers/shellcheck -a "$(basename "$1")" ; }
     if [[ "${OSTYPE}" == Darwin ]]; then
         # Use keychain for ssh logins
         # shellcheck disable=SC1003
