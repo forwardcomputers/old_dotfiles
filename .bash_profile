@@ -134,21 +134,21 @@ v() {
 }
 #
 extract () {
-  if [ -f $1 ] ; then
+  if [ -f "$1" ] ; then
     case $1 in
-      *.tar.bz2)   tar xvjf $1       ;;
-      *.tar.gz)    tar xvzf $1       ;;
-      *.tar.xz)    tar xvf $1        ;;
-      *.bz2)       bunzip2 -kv $1    ;;
-      *.rar)       unrar x $1        ;;
-      *.gz)        gunzip -vk $1     ;;
-      *.tar)       tar xvf $1        ;;
-      *.tbz2)      tar xvjf $1       ;;
-      *.tgz)       tar xvzf $1       ;;
-      *.zip)       unzip $1          ;;
-      *.xz)        xz -dkv $1        ;;
-      *.Z)         uncompress -v $1  ;;
-      *.7z)        7z x $1           ;;
+      *.tar.bz2)   tar xvjf "$1"       ;;
+      *.tar.gz)    tar xvzf "$1"       ;;
+      *.tar.xz)    tar xvf "$1"        ;;
+      *.bz2)       bunzip2 -kv "$1"    ;;
+      *.rar)       unrar x "$1"        ;;
+      *.gz)        gunzip -vk "$1"     ;;
+      *.tar)       tar xvf "$1"        ;;
+      *.tbz2)      tar xvjf "$1"       ;;
+      *.tgz)       tar xvzf "$1"       ;;
+      *.zip)       unzip "$1"          ;;
+      *.xz)        xz -dkv "$1"        ;;
+      *.Z)         uncompress -v "$1"  ;;
+      *.7z)        7z x "$1"           ;;
       *)           echo "don't know how to extract '$1'..." ;;
     esac
   else
@@ -263,6 +263,7 @@ alias ll='ls -laF ${colorflag}'
 alias lar='ls -laFR ${colorflag}'
 alias lsd='ls -lF ${colorflag} | grep --color=never '^d''
 alias lsalias='compgen -A alias | column'
+# shellcheck disable=SC2142
 alias lsfunc='compgen -A function | awk "\$1 !~  /^_/ {print \$1}" | column'
 #
 alias h='history'
