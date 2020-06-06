@@ -262,6 +262,8 @@ alias la='ls -laF ${colorflag}'
 alias ll='ls -laF ${colorflag}'
 alias lar='ls -laFR ${colorflag}'
 alias lsd='ls -lF ${colorflag} | grep --color=never '^d''
+alias lsalias='compgen -A alias | column'
+alias lsfunc='compgen -A function | awk "\$1 !~  /^_/ {print \$1}" | column'
 #
 alias h='history'
 # Reload bash
