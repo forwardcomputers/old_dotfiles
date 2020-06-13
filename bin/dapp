@@ -467,7 +467,9 @@ appversions () {
       exit
     fi
     if ! [[ "${APPNEW}" =~ ^[+-]?([0-9]*[.,])?[0-9]+?$ ]]; then
-      if [[ "${APPNEW}" == "apt" ]]; then
+      if [[ "${APPNEW}" == "apk" ]]; then
+        APPNEW=$(curl -sL https://git.alpinelinux.org/aports/plain/main/"${NAME}"/APKBUILD | awk -F= '/pkgver=/ {print $2}')
+      elif [[ "${APPNEW}" == "apt" ]]; then
         until APTNEWPAGE=$(curl --fail --silent --location --url https://packages.ubuntu.com/"${DISTRO}"/"${NAME}"); do
           sleep 1
         done
