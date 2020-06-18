@@ -15,69 +15,69 @@ command_not_found_handle () {
     "${HOME}"/bin/dapp run "$@"
   else
     if [ -x /usr/lib/command-not-found ]; then
-        /usr/lib/command-not-found -- "$1"
-        return $?;
+      /usr/lib/command-not-found -- "$1"
+      return $?;
     else
-        if [ -x /usr/share/command-not-found/command-not-found ]; then
-            /usr/share/command-not-found/command-not-found -- "$1"
-            return $?
-        else
-            printf "%s: command not found\\n" "$1" 1>&2
-            return 127
-        fi;
+      if [ -x /usr/share/command-not-found/command-not-found ]; then
+        /usr/share/command-not-found/command-not-found -- "$1"
+        return $?
+      else
+        printf "%s: command not found\\n" "$1" 1>&2
+        return 127
+      fi;
     fi
   fi
 }
 # Start ssh agent function
 start_agent () {
-    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
-    chmod 600 "${SSH_ENV}"
-    . "${SSH_ENV}" > /dev/null
-    get_ssh_key
+  /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+  chmod 600 "${SSH_ENV}"
+  . "${SSH_ENV}" > /dev/null
+  get_ssh_key
 }
 #
 get_ssh_key () {
-    # Add existing private keys to ssh agent
-    SSH_ADD_OPT=""
-    if [[ "${OSTYPE}" == Darwin ]]; then SSH_ADD_OPT="-K"; fi
-    if ls "${HOME}"/.ssh/LP* 1> /dev/null 2>&1; then
-        for LP_ID in "${HOME}"/.ssh/LP*; do
-            LP_ID=${LP_ID#$HOME/.ssh/}
-            LP_KEY_NAME="${HOME}/.ssh/${LP_ID}"
-            LP_KEY_PASS=$(lpass show "${LP_ID}" --password)
-            add_key_to_ssh_agent
-        done
-    else
-        # Populate private keys from LastPass and add to ssh agent
-        echo "AddKeysToAgent yes" > "${HOME}"/.ssh/config
-        echo "ForwardX11 yes" >> "${HOME}"/.ssh/config
-        # for LP_ID in $(lpass ls --format %an LP_login | sed '1d'); do
-        for LP_ID in $(lpass ls -m LP_login | awk -F'[/ ]' '{print $2}' | sed '1d'); do
-            lpass show "${LP_ID}" --field=pri > "${HOME}/.ssh/${LP_ID}"
-            chmod 600 "${HOME}/.ssh/${LP_ID}"
-            echo "IdentityFile ${HOME}/.ssh/${LP_ID}" >> "${HOME}"/.ssh/config
-            LP_KEY_NAME="${HOME}/.ssh/${LP_ID}"
-            LP_KEY_PASS=$(lpass show "${LP_ID}" --password)
-            add_key_to_ssh_agent
-        done
-    fi
+  # Add existing private keys to ssh agent
+  SSH_ADD_OPT=""
+  if [[ "${OSTYPE}" == Darwin ]]; then SSH_ADD_OPT="-K"; fi
+  if ls "${HOME}"/.ssh/LP* 1> /dev/null 2>&1; then
+    for LP_ID in "${HOME}"/.ssh/LP*; do
+      LP_ID=${LP_ID#$HOME/.ssh/}
+      LP_KEY_NAME="${HOME}/.ssh/${LP_ID}"
+      LP_KEY_PASS=$(lpass show "${LP_ID}" --password)
+      add_key_to_ssh_agent
+    done
+  else
+    # Populate private keys from LastPass and add to ssh agent
+    echo "AddKeysToAgent yes" > "${HOME}"/.ssh/config
+    echo "ForwardX11 yes" >> "${HOME}"/.ssh/config
+    # for LP_ID in $(lpass ls --format %an LP_login | sed '1d'); do
+    for LP_ID in $(lpass ls -m LP_login | awk -F'[/ ]' '{print $2}' | sed '1d'); do
+      lpass show "${LP_ID}" --field=pri > "${HOME}/.ssh/${LP_ID}"
+      chmod 600 "${HOME}/.ssh/${LP_ID}"
+      echo "IdentityFile ${HOME}/.ssh/${LP_ID}" >> "${HOME}"/.ssh/config
+      LP_KEY_NAME="${HOME}/.ssh/${LP_ID}"
+      LP_KEY_PASS=$(lpass show "${LP_ID}" --password)
+      add_key_to_ssh_agent
+    done
+  fi
 }
 add_key_to_ssh_agent () {
-    expect 2>/dev/null <<EOF >/dev/null
-spawn ssh-add ${SSH_ADD_OPT} ${LP_KEY_NAME}
-expect "Enter passphrase"
-send "${LP_KEY_PASS}\\n"
-expect eof
+  expect 2>/dev/null <<-EOF >/dev/null
+    spawn ssh-add ${SSH_ADD_OPT} ${LP_KEY_NAME}
+    expect "Enter passphrase"
+    send "${LP_KEY_PASS}\\n"
+    expect eof
 EOF
 }
 #
 git_delete_history () {
-    git checkout --orphan TEMP_BRANCH
-    git add -A
-    git commit -am "Initial commit"
-    git branch -D master
-    git branch -m master
-    git push -f origin master
+  git checkout --orphan TEMP_BRANCH
+  git add -A
+  git commit -am "Initial commit"
+  git branch -D master
+  git branch -m master
+  git push -f origin master
 }
 # readlink -f for osx - works for linux
 readlinkf() {
@@ -177,26 +177,26 @@ export PXE='/opt/filer/os/pxe'
 export SHARE='/opt/filer/os/lnx/data'
 # ls color, order & XDG options
 if [[ "${OSTYPE}" == Darwin ]]; then
-    export colorflag="-G"
-    export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
-    export dirsfirst=''
-    export FULLNAME=$(id -F)
-    export XDG_RUNTIME_DIR="${TMPDIR}"
-    export XDG_CACHE_HOME="${HOME}/Library/Caches"
-    export XDG_CONFIG_HOME="${HOME}/Library/Preferences"
-    export XDG_DATA_HOME="${HOME}/Library"
-    # add qml to path
-    export PATH="${PATH}:/usr/local/Cellar/qt/5.14.2/libexec/qml.app/Contents/MacOS"
+  export colorflag="-G"
+  export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
+  export dirsfirst=''
+  export FULLNAME=$(id -F)
+  export XDG_RUNTIME_DIR="${TMPDIR}"
+  export XDG_CACHE_HOME="${HOME}/Library/Caches"
+  export XDG_CONFIG_HOME="${HOME}/Library/Preferences"
+  export XDG_DATA_HOME="${HOME}/Library"
+  # add qml to path
+  export PATH="${PATH}:/usr/local/Cellar/qt/5.14.2/libexec/qml.app/Contents/MacOS"
 else
-    export colorflag='--color'
-    export LS_COLORS='no=00:fi=00:di=01;31:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
-    export dirsfirst='--group-directories-first'
-    export FULLNAME=$(grep "^$USER:" /etc/passwd | awk -F[:,] '{print $5}')
-    export XDG_CACHE_HOME="${HOME}/.cache"
-    export XDG_CONFIG_HOME="${HOME}/.config"
-    export XDG_DATA_HOME="${HOME}/.local/share"
-    # add qml to path
-    #export PATH="${PATH}"
+  export colorflag='--color'
+  export LS_COLORS='no=00:fi=00:di=01;31:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
+  export dirsfirst='--group-directories-first'
+  export FULLNAME=$(grep "^$USER:" /etc/passwd | awk -F[:,] '{print $5}')
+  export XDG_CACHE_HOME="${HOME}/.cache"
+  export XDG_CONFIG_HOME="${HOME}/.config"
+  export XDG_DATA_HOME="${HOME}/.local/share"
+  # add qml to path
+  #export PATH="${PATH}"
 fi
 # Check for lastpass username
 if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://filer/os/lpass ); fi
@@ -293,67 +293,67 @@ alias hasstf='tail -f /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant
 # For VMware
 #
 if [[ -d /sys/devices/virtual/dmi/id ]]; then
-    if [[ $(< /sys/devices/virtual/dmi/id/sys_vendor) == "VMware, Inc." ]]; then
-        # Disable OpenGL 3.3 support to have OpenGL 2.1 support. This may be useful to work around application bugs (such as incorrect use of the OpenGL 3.x core profile).
-        export SVGA_VGPU10=0
-    fi
+  if [[ $(< /sys/devices/virtual/dmi/id/sys_vendor) == "VMware, Inc." ]]; then
+    # Disable OpenGL 3.3 support to have OpenGL 2.1 support. This may be useful to work around application bugs (such as incorrect use of the OpenGL 3.x core profile).
+    export SVGA_VGPU10=0
+  fi
 fi
 #
 #
 # For Synology
 #
 if [[ -f /etc/synoinfo.conf ]]; then
-    export SHARE='/volume1/share/os/lnx/data'
-    # cd alias
-    alias -- -='cd -'
-    # grep alias
-    alias grep='grep --color=auto '
-    # Login as root
-    alias root='sudo su -'
-    # Show top 5 CPU hogs
-    alias hogs="ps -eo pid,%cpu,user,args --sort -%cpu | awk 'NR<=6'"
-    # Update all packages
-    alias update='synopkg upgradeall'
-    # Follow the system logfile
-    alias logf='tail -f /var/log/messages'
-    # ls - show long format most recently modified last
-    alias lt='ls -latr --time-style=long-iso'
-    # Essential network location and files
-    alias dhcp='cd /etc/dhcpd'
-    alias vidhcp='vi /etc/dhcpd/dhcpd-eth0-static.conf'
-    alias dhcprestart='/etc/rc.network nat-restart-dhcp'
-    alias dns='cd /var/packages/DNSServer/target/named/etc/zone/master'
-    alias vidnsfwd='vi /var/packages/DNSServer/target/named/etc/zone/master/alihome.com'
-    alias vidnsrev='vi /var/packages/DNSServer/target/named/etc/zone/master/1.168.192.in-addr.arpa'
-    alias dnsrestart='synoservice --restart pkgctl-DNSServer'
-    alias vpn='cd /usr/syno/etc/packages/VPNCenter/openvpn'
-    alias vivpn='vi /usr/syno/etc/packages/VPNCenter/openvpn/openvpn.conf'
-    alias vpnrestart='synoservice --restart pkgctl-VPNCenter'
-    alias pxe='cd /volume1/web/pxe'
-    alias vipxe='vi /volume1/web/pxe/boot.ipxe'
-    alias log='cd /var/packages/LogCenter/target/service/conf'
-    # Copy network settings
-    # shellcheck disable=SC1004
-    alias cpsettings='cp -t /volume1/nas/synology \
-        /etc/dhcpd/dhcpd-eth0-static.conf \
-        /var/packages/DNSServer/target/named/etc/zone/master/alihome.com \
-        /var/packages/DNSServer/target/named/etc/zone/master/1.168.192.in-addr.arpa \
-        /usr/syno/etc/packages/VPNCenter/openvpn/openvpn.conf \
-        /usr/syno/etc/packages/VPNCenter/openvpn/*.confo'
+  export SHARE='/volume1/share/os/lnx/data'
+  # cd alias
+  alias -- -='cd -'
+  # grep alias
+  alias grep='grep --color=auto '
+  # Login as root
+  alias root='sudo su -'
+  # Show top 5 CPU hogs
+  alias hogs="ps -eo pid,%cpu,user,args --sort -%cpu | awk 'NR<=6'"
+  # Update all packages
+  alias update='synopkg upgradeall'
+  # Follow the system logfile
+  alias logf='tail -f /var/log/messages'
+  # ls - show long format most recently modified last
+  alias lt='ls -latr --time-style=long-iso'
+  # Essential network location and files
+  alias dhcp='cd /etc/dhcpd'
+  alias vidhcp='vi /etc/dhcpd/dhcpd-eth0-static.conf'
+  alias dhcprestart='/etc/rc.network nat-restart-dhcp'
+  alias dns='cd /var/packages/DNSServer/target/named/etc/zone/master'
+  alias vidnsfwd='vi /var/packages/DNSServer/target/named/etc/zone/master/alihome.com'
+  alias vidnsrev='vi /var/packages/DNSServer/target/named/etc/zone/master/1.168.192.in-addr.arpa'
+  alias dnsrestart='synoservice --restart pkgctl-DNSServer'
+  alias vpn='cd /usr/syno/etc/packages/VPNCenter/openvpn'
+  alias vivpn='vi /usr/syno/etc/packages/VPNCenter/openvpn/openvpn.conf'
+  alias vpnrestart='synoservice --restart pkgctl-VPNCenter'
+  alias pxe='cd /volume1/web/pxe'
+  alias vipxe='vi /volume1/web/pxe/boot.ipxe'
+  alias log='cd /var/packages/LogCenter/target/service/conf'
+  # Copy network settings
+  # shellcheck disable=SC1004
+  alias cpsettings='cp -t /volume1/nas/synology \
+    /etc/dhcpd/dhcpd-eth0-static.conf \
+    /var/packages/DNSServer/target/named/etc/zone/master/alihome.com \
+    /var/packages/DNSServer/target/named/etc/zone/master/1.168.192.in-addr.arpa \
+    /usr/syno/etc/packages/VPNCenter/openvpn/openvpn.conf \
+    /usr/syno/etc/packages/VPNCenter/openvpn/*.confo'
 #
 fi
 #
 # For OpenWrt
 #
 if [[ -f /etc/openwrt_release ]]; then
-    # cd alias
-    alias -='cd -'
-    # Update the repos and do an upgrade
-    alias upgrade='opkg update && opkg list-upgradable | cut -f 1 -d " " | xargs -r opkg upgrade'
-    # Follow the system logfile
-    alias logf='logread -f'
-    # ls - show long format most recently modified last
-    alias lt='ls -latr --full-time'
+  # cd alias
+  alias -='cd -'
+  # Update the repos and do an upgrade
+  alias upgrade='opkg update && opkg list-upgradable | cut -f 1 -d " " | xargs -r opkg upgrade'
+  # Follow the system logfile
+  alias logf='logread -f'
+  # ls - show long format most recently modified last
+  alias lt='ls -latr --full-time'
 #
 fi
 #
@@ -369,7 +369,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     export LPASS_AGENT_TIMEOUT=0
     export LPASS_HOME="$XDG_CONFIG_HOME/lpass"
     if [[ -z "$TMUX" ]]; then
-        lpass status --quiet || lpass login --trust --force "${FULLNAME}"
+      lpass status --quiet || until lpass login --trust --force "${FULLNAME}" ; do sleep 0.1 ; done
     fi
     # Set up the console
     setupcon 2>/dev/null
