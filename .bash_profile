@@ -518,7 +518,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         # ls - show long format most recently modified last
         alias lt='ls -latr'
         # top alias
-        alias top='"${HOME}"/bin/osx_ytop -c vice'
+        alias top='"${HOME}"/bin/ytop_darwin -c vice'
         alias oldtop="/usr/bin/top"
     else
         if [[ ! -f "/.dockerenv" ]]; then 
@@ -538,7 +538,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         # Clear journal file 
         alias journal_clear='journalctl --merge --vacuum-time=1s'
         # top alias
-        alias top='"${HOME}"/bin/nix_ytop -c vice'
+        alias top='"${HOME}"/bin/ytop_linux -c vice'
         alias oldtop="/usr/bin/top"
     fi
     #
