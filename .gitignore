@@ -66,10 +66,8 @@ Xauthority
 .flutter*
 
 .android/
-amabox1
-amastick1
-mibox3
-shield
+oshield
+nshield
 tab4
 
 Applications/
