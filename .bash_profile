@@ -538,6 +538,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
           alias logboot='journalctl -b'
           alias logf='journalctl -f'
           alias logtoday='journalctl --since today'
+        fi
         # Clear journal file 
         alias journal_clear='journalctl --merge --vacuum-time=1s'
         # top alias
