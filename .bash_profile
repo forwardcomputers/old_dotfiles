@@ -534,7 +534,10 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         # ls - show long format most recently modified last
         alias lt='ls -latr --time-style=long-iso'
         # Follow the system logfile
-        [[ -x "$(command -v journalctl)" ]] && alias logf='journalctl -f'
+        if [[ -x "$(command -v journalctl)" ]]; then
+          alias logboot='journalctl -b'
+          alias logf='journalctl -f'
+          alias logtoday='journalctl --since today'
         # Clear journal file 
         alias journal_clear='journalctl --merge --vacuum-time=1s'
         # top alias
