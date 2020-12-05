@@ -289,7 +289,7 @@ alias hasst='tail /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log
 alias hasstf='tail -f /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log'
 #
 if [[ "${HOSTNAME}" = "docker" ]]; then
-  dcon () { docker exec -it "$1" bash; }
+  dcon () { docker exec -it "$1" sh; }
   dlog () { docker container logs "$1"; }
   docui () {
     if ! [ "$(docker container ls -aq -f status=running -f name=docui)" ]; then
@@ -303,7 +303,7 @@ if [[ "${HOSTNAME}" = "docker" ]]; then
   }
   dupdate () { docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up; } 
 else
-  dcon () { ssh ali@docker docker exec -it "$1" bash; }
+  dcon () { ssh ali@docker docker exec -it "$1" sh; }
 # shellcheck disable=SC2029
   dlog () { ssh ali@docker docker container logs "$1"; }
   dupdate () { ssh ali@docker "docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up"; }
