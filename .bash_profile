@@ -117,7 +117,7 @@ readlinkf() {
 }
 #
 # ShellCheck 
-shellcheck() {
+shellcheck () {
   _fullname=$(readlinkf "$1")
   _dirname=$(dirname "$_fullname")
   _filename=$(basename "$1")
@@ -125,7 +125,7 @@ shellcheck() {
 }
 #
 # `v` with no arguments opens the current directory in Vim, otherwise opens the given location
-v() {
+v () {
 	if [ $# -eq 0 ]; then
 		vi .
 	else
@@ -287,6 +287,24 @@ alias refresh="dki | awk '(NR>1) && (\$2!~/none/) {print \$1\":\"\$2}' | xargs -
 alias hassc='cat /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log'
 alias hasst='tail /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log'
 alias hasstf='tail -f /opt/filer/os/lnx/data/hassio/homeassistant/home-assistant.log'
+#
+if [[ "${HOSTNAME}" = "docker" ]]; then
+  dcon () { docker exec -it "$1" bash; }
+  dlog () { docker container logs "$1"; }
+  docui () {
+    if ! [ "$(docker container ls -aq -f status=running -f name=docui)" ]; then
+      if [ "$(docker container inspect -f '{{.State.Status}}' docui)" == "exited" ]; then
+        docker start docui
+      else
+        docker run --name docui -d -itv /var/run/docker.sock:/var/run/docker.sock skanehira/docui
+      fi
+    fi
+    docker attach docui
+  }
+else
+  dcon () { ssh ali@docker docker exec -it "$1" bash; }
+  dlog () { ssh ali@docker docker container logs "$1"; }
+fi
 #
 #
 #
