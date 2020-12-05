@@ -301,10 +301,12 @@ if [[ "${HOSTNAME}" = "docker" ]]; then
     fi
     docker attach docui
   }
+  dupdate () { docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up; } 
 else
   dcon () { ssh ali@docker docker exec -it "$1" bash; }
 # shellcheck disable=SC2029
   dlog () { ssh ali@docker docker container logs "$1"; }
+  dupdate () { ssh ali@docker "docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up"; }
 fi
 #
 #
