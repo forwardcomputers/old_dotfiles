@@ -303,6 +303,7 @@ if [[ "${HOSTNAME}" = "docker" ]]; then
   }
 else
   dcon () { ssh ali@docker docker exec -it "$1" bash; }
+# shellcheck disable=SC2029
   dlog () { ssh ali@docker docker container logs "$1"; }
 fi
 #
