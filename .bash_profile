@@ -585,6 +585,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         if [[ ! -f "${HOME}/.ssh/authorized_keys" ]]; then
             lpass show LP_ALIM_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
             chmod 600 "${HOME}/.ssh/authorized_keys"
+            cp -a "${HOME}/.ssh/authorized_keys" "${HOME}/.ssh/LP_ALIM_RSA.pub"
         fi
         if [[ -f "${SSH_ENV}" ]]; then
             . "${SSH_ENV}" > /dev/null
