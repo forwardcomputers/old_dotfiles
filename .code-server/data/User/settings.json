@@ -1,6 +1,7 @@
 {
     "editor.renderControlCharacters": true,
     "editor.renderWhitespace": "all",
+    "editor.minimap.enabled": false,
     "editor.rulers" : [80],
     "files.autoSave": "off",
     "git.confirmSync": false,
