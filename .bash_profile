@@ -584,7 +584,6 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         if [[ ! -f "${HOME}/.ssh/authorized_keys" ]]; then
             lpass show LP_ALIM_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
             chmod 600 "${HOME}/.ssh/authorized_keys"
-            cp -a "${HOME}/.ssh/authorized_keys" "${HOME}/.ssh/LP_ALIM_RSA.pub"
         fi
         if [[ -f "${SSH_ENV}" ]]; then
             . "${SSH_ENV}" > /dev/null
@@ -598,6 +597,7 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         if [[ "${OSTYPE}" == Darwin ]]; then
             grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
         fi
+        cp -a "${HOME}/.ssh/authorized_keys" "${HOME}/.ssh/LP_ALIM_RSA.pub"
     fi
     # mount /media/filer in CROS
     if [[ -n "$SOMMELIER_VERSION" ]]; then
