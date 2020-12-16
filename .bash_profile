@@ -41,7 +41,8 @@ get_ssh_key () {
   SSH_ADD_OPT=""
   if [[ "${OSTYPE}" == Darwin ]]; then SSH_ADD_OPT="-K"; fi
   if ls "${HOME}"/.ssh/LP* 1> /dev/null 2>&1; then
-    for LP_ID in "${HOME}"/.ssh/LP*; do
+#    for LP_ID in "${HOME}"/.ssh/LP*; do
+    for LP_ID in $( find "${HOME}"/.ssh -type f -name LP* | xargs -iZ basename Z | cut -d"." -f1 | uniq ); do
       LP_ID=${LP_ID#$HOME/.ssh/}
       LP_KEY_NAME="${HOME}/.ssh/${LP_ID}"
       LP_KEY_PASS=$(lpass show "${LP_ID}" --password)
@@ -498,8 +499,6 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' 'ConnectTimeout 5' . x | ex "${HOME}/.ssh/config"
         # powerline directory
         ln -sfn "${HOME}"/.config/powerline "${HOME}"/Library/Preferences/powerline
-        # Kodi directory
-        ln -sfn /media/filer/os/data/Kodi "${HOME}"/Library/Application\ Support/Kodi
         # Enable subpixel font rendering on non-Apple LCDs
         # Reference: https://github.com/kevinSuttle/macOS-Defaults/issues/17#issuecomment-266633501
         defaults write NSGlobalDomain AppleFontSmoothing -int 1
