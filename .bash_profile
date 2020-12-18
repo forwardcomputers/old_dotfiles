@@ -41,7 +41,7 @@ get_ssh_key () {
   SSH_ADD_OPT=""
   if [[ "${OSTYPE}" == Darwin ]]; then SSH_ADD_OPT="-K"; fi
   if ls "${HOME}"/.ssh/LP* 1> /dev/null 2>&1; then
-#    for LP_ID in "${HOME}"/.ssh/LP*; do
+    # shellcheck disable=SC2038,SC2061
     for LP_ID in $( find "${HOME}"/.ssh -type f -name LP* | xargs -iZ basename Z | cut -d"." -f1 | uniq ); do
       LP_ID=${LP_ID#$HOME/.ssh/}
       LP_KEY_NAME="${HOME}/.ssh/${LP_ID}"
