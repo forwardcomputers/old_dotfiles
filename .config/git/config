@@ -43,3 +43,5 @@
 	required = true
 [gc]
 	auto = 5000
+[pull]
+	rebase = false
