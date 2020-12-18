@@ -542,8 +542,6 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
         alias oldtop="/usr/bin/top"
     else
         if [[ ! -f "/.dockerenv" ]]; then 
-            # Kodi directory
-            ln -sfn /media/filer/os/data/Kodi "${HOME}"/.kodi
             # startx config directory
             alias startx='startx "$XDG_CONFIG_HOME/X11/xinitrc"'
         fi
