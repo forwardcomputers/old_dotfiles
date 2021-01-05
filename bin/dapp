@@ -145,7 +145,7 @@ fi
 #
 main () {
   TARGET="${1-help}"
-  if [[ "${TARGET}" == "help" || ( "${NAME}" == "none" && "${TARGET}" != "info_all" && "${TARGET}" != "rebuild_all" && "${TARGET}" != "upgrade_all" && "${TARGET}" != "upgrade_all_ci" && "${TARGET}" != "desktop_all" && "${TARGET}" != "readme" ) ]]; then
+  if [[ "${TARGET}" == "help" || ( "${NAME}" == "none" && "${TARGET}" != "info_all" && "${TARGET}" != "rebuild_all" && "${TARGET}" != "rebuild_all_ci" && "${TARGET}" != "upgrade_all" && "${TARGET}" != "upgrade_all_ci" && "${TARGET}" != "desktop_all" && "${TARGET}" != "readme" ) ]]; then
     help
   else
     if ! type "${TARGET}" >/dev/null 2>&1; then
@@ -260,9 +260,26 @@ rebuild_all () { ## Rebuild all applications
     build
     push
     printf '%s\n' "${GREEN}Built ${YELLOW}${NAME}${GREEN} to the latest version ${YELLOW}${APPNEW}${NC}"
+    rm -f /tmp/MAKE_REBUILD
   done
   set -e
   readme
+}
+#
+rebuild_all_ci () {
+  printf '%s\n' "Rebuilding all applications"
+  all_apps
+  set +e
+  for NAME in "${APPS[@]}"; do
+    IMG="${CO}/${NAME}"
+    appversions
+    build
+    push
+    printf '%s\n' "${GREEN}Built ${YELLOW}${NAME}${GREEN} to the latest version ${YELLOW}${APPNEW}${NC}"
+    rm -f /tmp/MAKE_REBUILD
+    docker image rm -f $( docker image ls -q --filter reference="${IMG}" )
+  done
+  set -e
 }
 #
 build () { ## Build docker image file
