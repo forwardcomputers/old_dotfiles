@@ -487,7 +487,10 @@ appversions () {
       if [[ "${APPNEW}" == "apk" ]]; then
         APPNEW=$(curl -sL https://git.alpinelinux.org/aports/plain/main/"${NAME}"/APKBUILD | awk -F= '/pkgver=/ {print $2}')
         if ! [[ "${APPNEW}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
-          APPNEW=$(curl -sL https://git.alpinelinux.org/aports/plain/testing/"${NAME}"/APKBUILD | awk -F= '/pkgver=/ {print $2}')
+          APPNEW=$(curl -sL https://git.alpinelinux.org/aports/plain/testing/"${NAME}"/APKBUILD | awk -F= '/^pkgver=/ {print $2}')
+          if ! [[ "${APPNEW}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
+            APPNEW=$(curl -sL https://git.alpinelinux.org/aports/plain/community/"${NAME}"/APKBUILD | awk -F= '/pkgver=/ {print $2}')
+          fi
         fi
       elif [[ "${APPNEW}" == "apt" ]]; then
         until APTNEWPAGE=$(curl --fail --silent --location --url https://packages.ubuntu.com/"${DISTRO}"/"${NAME}"); do
