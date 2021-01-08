@@ -277,6 +277,7 @@ rebuild_all_ci () {
     push
     printf '%s\n' "${GREEN}Built ${YELLOW}${NAME}${GREEN} to the latest version ${YELLOW}${APPNEW}${NC}"
     rm -f /tmp/MAKE_REBUILD
+    #shellcheck disable=SC2046
     docker image rm -f $( docker image ls -q --filter reference="${IMG}" )
   done
   set -e
@@ -375,7 +376,7 @@ desktop () { ## Populate desktop application menu
   if [[ $( perl -nle 'print $& if /(?<=^#DESKTOP).*/' <<< "${DESKTOP_DOCKERFILE}" ) ]]; then
     printf '%s\n' "Populating application menu for ${NAME}"
     # shellcheck disable=SC2086
-    DESKTOP_COUNT="$( perl -nle 'print $& if /(?<=^#DESKTOP_COUNT ).*/' <<< ${DESKTOP_DOCKERFILE} 2> /dev/null || echo '999' )"
+    DESKTOP_COUNT="$( perl -nle 'print $& if /(?<=^#DESKTOP_COUNT ).*/' < ${DESKTOP_DOCKERFILE} 2> /dev/null || echo '999' )"
     for ((i=1; i<="${DESKTOP_COUNT}"; i++)); do
       if [[ "${DESKTOP_COUNT}" = 999 ]]; then
         i=''
