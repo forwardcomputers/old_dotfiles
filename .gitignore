@@ -1,6 +1,7 @@
 
 !acme
 apps/
+.apport-ignore.xml
 .ash_history
 .audacity-data/
 .bash_history
