@@ -1,0 +1,144 @@
+{
+	"name": "chocolatey-vscode",
+	"displayName": "Chocolatey",
+	"publisher": "gep13",
+	"description": "Set of snippets and commands for helping with creating packages for Chocolatey.",
+	"version": "0.7.2",
+	"icon": "images/chocolatey.png",
+	"private": true,
+	"author": {
+		"name": "gep13"
+	},
+	"bugs": {
+		"url": "https://github.com/chocolatey-community/chocolatey-vscode/issues"
+	},
+	"homepage": "https://github.com/chocolatey-community/chocolatey-vscode",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/chocolatey-community/chocolatey-vscode"
+	},
+	"main": "./out/extension",
+	"galleryBanner": {
+		"color": "#DCEBFC",
+		"theme": "light"
+	},
+	"activationEvents": [
+		"onCommand:chocolatey.new",
+		"onCommand:chocolatey.pack",
+		"onCommand:chocolatey.delete",
+		"onCommand:chocolatey.push",
+		"onCommand:chocolatey.installTemplates"
+	],
+	"engines": {
+		"vscode": "^1.24.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"contributes": {
+		"configuration": [
+			{
+				"type": "object",
+				"title": "Chocolatey Configuration",
+				"properties": {
+					"chocolatey.templatePackages": {
+						"type": "object",
+						"default": {
+							"names": [
+								"msi.template",
+								"zip.template"
+							],
+							"source": "https://chocolatey.org/api/v2/"
+						},
+						"properties": {
+							"names": {
+								"type": "array",
+								"description": "The names of the Chocolatey Packages which contain templates which should be installed.",
+								"default": [
+									"msi.template",
+									"zip.template"
+								]
+							},
+							"source": {
+								"type": "string",
+								"description": "The source to install the template packages from.",
+								"default": "https://chocolatey.org/api/v2/"
+							}
+						},
+						"description": "The Chocolatey Template Packages Configuration"
+					}
+				}
+			}
+		],
+		"commands": [
+			{
+				"command": "chocolatey.new",
+				"title": "Chocolatey: Create new Chocolatey package"
+			},
+			{
+				"command": "chocolatey.pack",
+				"title": "Chocolatey: Pack Chocolatey package(s)"
+			},
+			{
+				"command": "chocolatey.delete",
+				"title": "Chocolatey: Delete Chocolatey package(s)"
+			},
+			{
+				"command": "chocolatey.push",
+				"title": "Chocolatey: Push Chocolatey package(s)"
+			},
+			{
+				"command": "chocolatey.installTemplates",
+				"title": "Chocolatey: Install Template package(s)"
+			}
+		],
+		"snippets": [
+			{
+				"language": "powershell",
+				"path": "./snippets/powershell.json"
+			}
+		],
+		"languages": [
+			{
+				"id": "zip",
+				"extensions": [
+					".nupkg"
+				]
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"devDependencies": {
+		"@types/byline": "^4.2.31",
+		"@types/expect": "^1.20.3",
+		"@types/ini": "^1.3.30",
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.12.18",
+		"@types/node-fetch": "^2.1.4",
+		"@types/xml2js": "^0.4.3",
+		"expect": "^23.6.0",
+		"mocha": "^5.2.0",
+		"tslint": "^5.12.1",
+		"typemoq": "^2.1.0",
+		"typescript": "^3.2.4",
+		"vscode": "^1.1.28"
+	},
+	"dependencies": {
+		"xml2js": "^0.4.19"
+	},
+	"extensionPack": [
+		"ms-vscode.PowerShell",
+		"slevesque.vscode-zipexplorer"
+	],
+	"__metadata": {
+		"id": "bd004245-2c8f-473d-a80b-7df434334890",
+		"publisherId": "40910674-fb6a-4fac-a625-2c979be78a81",
+		"publisherDisplayName": "Gary Ewan Park"
+	}
+}
