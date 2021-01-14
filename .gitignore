@@ -50,6 +50,7 @@ OneDrive/
 .pki/
 pulse
 refresh_token
+snap/
 .ssh/
 .ssr/
 .sudo_as_admin_successful
