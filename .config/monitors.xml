@@ -1,6 +1,45 @@
 <monitors version="2">
   <configuration>
     <logicalmonitor>
+      <x>0</x>
+      <y>0</y>
+      <scale>1</scale>
+      <primary>yes</primary>
+      <monitor>
+        <monitorspec>
+          <connector>DP-2-1-8</connector>
+          <vendor>ACR</vendor>
+          <product>Acer B276HUL</product>
+          <serial>LZ2AA0014200</serial>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1200</height>
+          <rate>59.950172424316406</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+    <logicalmonitor>
+      <x>1920</x>
+      <y>0</y>
+      <scale>1</scale>
+      <monitor>
+        <monitorspec>
+          <connector>DP-2-2-8</connector>
+          <vendor>ACR</vendor>
+          <product>Acer B276HUL</product>
+          <serial>LZ2AA0014200</serial>
+        </monitorspec>
+        <mode>
+          <width>1920</width>
+          <height>1200</height>
+          <rate>59.950172424316406</rate>
+        </mode>
+      </monitor>
+    </logicalmonitor>
+  </configuration>
+  <configuration>
+    <logicalmonitor>
       <x>5120</x>
       <y>0</y>
       <scale>1</scale>
@@ -15,43 +54,6 @@
           <width>1600</width>
           <height>900</height>
           <rate>60.007572174072266</rate>
-        </mode>
-      </monitor>
-    </logicalmonitor>
-    <logicalmonitor>
-      <x>2560</x>
-      <y>0</y>
-      <scale>1</scale>
-      <monitor>
-        <monitorspec>
-          <connector>DP-2-2-8</connector>
-          <vendor>ACR</vendor>
-          <product>Acer B276HUL</product>
-          <serial>LZ2AA0014200</serial>
-        </monitorspec>
-        <mode>
-          <width>2560</width>
-          <height>1440</height>
-          <rate>59.950550079345703</rate>
-        </mode>
-      </monitor>
-    </logicalmonitor>
-    <logicalmonitor>
-      <x>0</x>
-      <y>0</y>
-      <scale>1</scale>
-      <primary>yes</primary>
-      <monitor>
-        <monitorspec>
-          <connector>DP-2-1-8</connector>
-          <vendor>ACR</vendor>
-          <product>Acer B276HUL</product>
-          <serial>LZ2AA0014200</serial>
-        </monitorspec>
-        <mode>
-          <width>2560</width>
-          <height>1440</height>
-          <rate>59.950550079345703</rate>
         </mode>
       </monitor>
     </logicalmonitor>
