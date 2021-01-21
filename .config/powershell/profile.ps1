@@ -9,13 +9,13 @@ if (Test-Path($ChocolateyProfile)) {
   Import-Module "$ChocolateyProfile"
 }
 
-if ( $PSVersionTable.PSVersion.Major -gt 5 ) {
+if ( $PSVersionTable.PSVersion.Major -ge 5 ) {
   Import-Module Get-ChildItemColor
   Import-Module posh-git
   Import-Module oh-my-posh
-  if ( (get-Module oh-my-posh).version -lt 3 ) {
+  if ( (get-Module oh-my-posh).Version.Major -lt 3 ) {
     Set-Theme Agnoster
-  else
+  } else {
     Set-PoshPrompt -Theme Agnoster
   }
 }
