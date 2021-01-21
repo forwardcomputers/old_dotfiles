@@ -1,22 +1,45 @@
 {
+    "debug.node.autoAttach": "on",
+    "debug.console.fontSize": 14,
+    "code-runner.enableAppInsights": false,
+    "editor.detectIndentation": false,
+    "editor.fontSize": 14,
     "editor.renderControlCharacters": true,
     "editor.renderWhitespace": "all",
-    "editor.minimap.enabled": false,
     "editor.rulers" : [80],
+    "editor.minimap.enabled": false,
+    "enable-crash-reporter": false,
+    "explorer.confirmDelete": false,
     "files.autoSave": "off",
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
+    "markdown.extension.toc.githubCompatibility": true,
+    "remote.SSH.configFile": "~/.ssh/hosts",
+    "search.useGlobalIgnoreFiles": true,
+    "terminal.integrated.fontFamily": "DejaVu Sans Mono for Powerline",
+    "terminal.integrated.fontSize": 14,
     "terminal.integrated.shell.linux": "/bin/bash",
-    "workbench.iconTheme": "vscode-icons",
+    "terminal.integrated.shell.osx": "/bin/bash",
+    "terminal.integrated.shell.windows": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+    "window.restoreWindows": "all",
+    "window.zoomLevel": 0,
     "workbench.colorTheme": "Default Light+",
+    "workbench.iconTheme": "vscode-icons",
     "workbench.startupEditor": "none",
+    "yaml.customTags": [
+        "!secret"
+    ],
+    "vsicons.dontShowNewVersionMessage": true,
     "[shellscript]": {
         "editor.tabSize": 2,
         "editor.insertSpaces": true
     },
-    "terminal.integrated.fontFamily": "DejaVu Sans Mono for Powerline",
-    "vsicons.dontShowNewVersionMessage": true,
-    "yaml.customTags": [
-    "!secret"
-    ]
+
+    "git.autofetch": false,
+    "extensions.ignoreRecommendations": true,
+    "npm.fetchOnlinePackageInfo": false,
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "update.showReleaseNotes": false,
+    "workbench.enableExperiments": false
 }
