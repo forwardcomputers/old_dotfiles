@@ -34,7 +34,6 @@ $env:SHARE = "$env:systemdrive\opt\filer\os"
 $env:DOCKERCOMPOSE = "$env:share\docker-compose"
 $env:DOCKERFILES = "$env:share\dockerfiles"
 $env:PXE = "$env:share\pxe"
-$env:PSV = $PSVersionTable.PSVersion.ToString()
 
 function upgrade {
   Write-Output "`nUpgrading Chocolatey packages"
@@ -64,5 +63,5 @@ function ... { Set-Location -Path ..\.. }
 function .... { Set-Location -Path ..\..\.. }
 function ..... { Set-Location -Path ..\..\..\.. }
 Function ~ { Set-Location -Path $HOME }
-Function share { Set-Location -Path $env:SystemDrive\opt\filer\os }
+Function share { Set-Location -Path $env:SHARE }
 
