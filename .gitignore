@@ -95,6 +95,8 @@ Templates/
 Videos/
 Virtual Machines.localized/
 VirtualBox VMs/
+.vmware/
+vmware/
 .vscode-server/
 .Trash/
 .Xauthority
