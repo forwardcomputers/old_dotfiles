@@ -487,9 +487,9 @@ appversions () {
     if ! [[ "${APPNEW}" =~ ^[+-]?[0-9]+\.?[0-9]*$ ]]; then
       if [[ "${APPNEW}" == "apk" ]]; then
         APPNEW=$(curl -sL https://git.alpinelinux.org/aports/plain/main/"${NAME}"/APKBUILD | awk -F= '/pkgver=/ {print $2}')
-        if ! [[ -n "${APPNEW}" ]]; then
+        if [[ -z "${APPNEW}" ]]; then
           APPNEW=$(curl -sL https://git.alpinelinux.org/aports/plain/community/"${NAME}"/APKBUILD | awk -F= '/pkgver=/ {print $2}')
-          if ! [[ -n "${APPNEW}" ]]; then
+          if [[ -z "${APPNEW}" ]]; then
             APPNEW=$(curl -sL https://git.alpinelinux.org/aports/plain/testing/"${NAME}"/APKBUILD | awk -F= '/^pkgver=/ {print $2}')
           fi
         fi
