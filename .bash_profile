@@ -486,6 +486,9 @@ if [[ -f /etc/lsb-release || -f /etc/os-release || "${OSTYPE}" = Darwin ]]; then
     alias tm='tmux -f "$XDG_CONFIG_HOME/tmux/tmux.conf" new-session -AD -s $USER'
     # VSCode directory
     if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
+    # Package updates
+    alias dupdate="sudo bash -c 'apt-get update && apt-get full-upgrade -y && echo && apt-get autoremove --purge -y && echo && apt-get autoclean -y'"
+    alias wupdate="sudo bash -c 'apt-get update && echo && apt list --upgradable'"
     # Home Assistant alias
     export LP_HASS_API_TOKEN=$(lpass show LP_HASS_INFO --password)
     export LP_HASS_HOST=$(lpass show LP_HASS_INFO --username)
