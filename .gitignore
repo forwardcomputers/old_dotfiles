@@ -6,6 +6,7 @@ apps/
 .audacity-data/
 .bash_history
 .cache/
+.CFUserTextEncoding
 .circleci/
 .code-server/*
 !.code-server/data
@@ -43,9 +44,11 @@ items.sqlite3
 .kodi
 .local/share/*
 !.local/share/fonts
+.lpass
 lpass
 .mozilla
 .mozilla/
+.netrwhist
 .npm/
 OneDrive/
 .openshot_qt/
