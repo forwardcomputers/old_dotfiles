@@ -40,7 +40,7 @@ get_ssh_key () {
   SSH_ADD_OPT="-K"
   if ls "${HOME}"/.ssh/LP* 1> /dev/null 2>&1; then
     # shellcheck disable=SC2038,SC2061
-    for LP_ID in $( find "${HOME}"/.ssh -type f -name LP* | xargs -iZ basename Z | cut -d"." -f1 | uniq ); do
+    for LP_ID in $( find "${HOME}"/.ssh -type f -name LP* | xargs -IZ basename Z | cut -d"." -f1 | uniq ); do
       LP_ID=${LP_ID#$HOME/.ssh/}
       LP_KEY_NAME="${HOME}/.ssh/${LP_ID}"
       LP_KEY_PASS=$(lpass show "${LP_ID}" --password)
@@ -161,7 +161,7 @@ _update_ps1() {
 # macos
 # Enable subpixel font rendering on non-Apple LCDs
 # Reference: https://github.com/kevinSuttle/macOS-Defaults/issues/17#issuecomment-266633501
-defaults write NSGlobalDomain AppleFontSmoothing -int 1
+defaults write NSGlobalDomain AppleFontSmoothing -bool true
 # Stop creating .DS_Store files on shared network shares
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
@@ -172,11 +172,11 @@ defaults write com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
 # Check for software updates daily, not just once per week
 defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 # Download newly available updates in background
-defaults write com.apple.SoftwareUpdate AutomaticDownload -int 1
+defaults write com.apple.SoftwareUpdate AutomaticDownload -bool true
 # Install System data files & security updates
-defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 1
+defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -bool true
 # Automatically download apps purchased on other Macs
-defaults write com.apple.SoftwareUpdate ConfigDataInstall -int 1
+defaults write com.apple.SoftwareUpdate ConfigDataInstall -bool true
 # Turn on app auto-update
 defaults write com.apple.commerce AutoUpdate -bool true
 # Allow the App Store to reboot machine on macOS updates
@@ -184,14 +184,12 @@ defaults write com.apple.commerce AutoUpdateRestartRequired -bool false
 #
 # base definitions
 export FULLNAME=$(id -F)
-if [[ "${FULLNAME}" != *"@"* ]]; then FULLNAME=$(curl --silent --url http://filer/os/lpass ); fi
+[[ "${FULLNAME}" != *"@"* ]] && FULLNAME=$( curl --silent --url http://filer/os/lpass )
 # Prefer US English and use UTF-8
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 # Make new shells get the history lines from all previous
 export PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-# Don't clear the screen after quitting a `man` page
-export MANPAGER='less -X'
 # directories
 export XDG_RUNTIME_DIR="${TMPDIR}"
 export XDG_CACHE_HOME="${HOME}/Library/Caches"
@@ -214,7 +212,7 @@ export DOCKERFILES='/opt/filer/os/dockerfiles'
 export PXE='/opt/filer/os/pxe'
 export SHARE='/opt/filer/os/lnx/data'
 # add to path
-export PATH="${HOME}/bin:${PATH}:/opt/homebrew/bin"
+export PATH="${HOME}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
 # vim
 export EDITOR='vim'
 [[ ! -e "${XDG_CACHE_HOME}"/vim ]] && mkdir -p "${XDG_CACHE_HOME}"/vim
@@ -259,8 +257,8 @@ export LESS_TERMCAP_us=${UL_WHITE}      # begin underline
 export LESS_TERMCAP_mr=${CO_REVERSE}    # begin reverse
 export LESS_TERMCAP_mh=${CO_DIM}        # begin dim
 #
-export PAGER='less'
-export colorflag="-G"
+# Don't clear the screen after quitting a `man` page
+export MANPAGER='less -isX'
 export CLICOLOR=1
 export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
 export LESS_TERMCAP_ZN=$(tput ssubm)  # begin subscript mode
@@ -302,14 +300,14 @@ alias dockerfiles='cd ${DOCKERFILES}'
 alias pxe='cd ${PXE}'
 alias share='cd ${SHARE}'
 # ls
-alias ls='command ls ${colorflag}'
-alias dir='command dir ${colorflag}'
-alias vdir='command vdir ${colorflag}'
-alias l='ls -AF ${colorflag}'
-alias la='ls -laF ${colorflag}'
-alias ll='ls -laF ${colorflag}'
-alias lar='ls -laFR ${colorflag}'
-alias lsd='ls -lF ${colorflag} | grep --color=never '^d''
+alias ls='command ls -G'
+alias l='ls -AF'
+alias la='ls -laF'
+alias ll='ls -laF'
+alias lar='ls -laFR'
+alias lsd='ls -lF | grep --color=never '^d''
+# ls - show long format most recently modified last
+alias lt='ls -latr'
 alias lsalias='compgen -A alias | column'
 # shellcheck disable=SC2142
 alias lsfunc='compgen -A function | awk "\$1 !~  /^_/ {print \$1}" | column'
@@ -364,45 +362,40 @@ alias wapp='qml -f "${HOME}"/bin/wapp.qml --'
 # wget history directory
 alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 #
-dcon () { ssh ali@docker docker exec -it "$1" sh; }
+dcon () { ssh -t ali@docker docker exec -it "$1" sh; }
 # shellcheck disable=SC2029
 dlog () { ssh ali@docker docker container logs "$1"; }
+dlogf () { ssh ali@docker docker container logs -f "$1"; }
 dupdate () { ssh ali@docker "docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up"; }
 # grep alias
 alias grep='grep --color=auto '
 alias egrep='egrep --color=auto'
 #
 # Get macOS Software Updates, and update installed Homebrew, and their installed packages
-alias update='sudo softwareupdate -i -a; brew update; brew upgrade; brew cleanup'
+alias dupdate='brew update && brew upgrade && brew cleanup ; brew doctor'
 # Flush Directory Service cache
-alias flush="dscacheutil -flushcache && killall -HUP mDNSResponder"
+alias flush="sudo bash -c 'dscacheutil -flushcache && killall -HUP mDNSResponder'"
 # Airport CLI alias
 alias airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport'
 # Stuff I never really use but cannot delete either because of http://xkcd.com/530/
 alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume output volume 100'"
 # Lock the screen (when going AFK)
-alias afk="/System/Library/CoreServices/Menu\\ Extras/User.menu/Contents/Resources/CGSession -suspend"
+alias afk="pmset displaysleepnow"
 # Show top 5 CPU hogs
 alias hogs='ps -Ao pid,%cpu,user,tty,command -r | head -n 6'
-# ls - show long format most recently modified last
-alias lt='ls -latr'
 # top alias
 alias top='"${HOME}"/bin/ytop_darwin -c vice'
 alias oldtop="/usr/bin/top"
-# Package updates
-alias dupdate="sudo bash -c 'apt-get update && apt-get full-upgrade -y && echo && apt-get autoremove --purge -y && echo && apt-get autoclean -y'"
-alias wupdate="sudo bash -c 'apt-get update && echo && apt list --upgradable'"
 #
 # 
 ln -s -f "${HOME}"/.config/git "${XDG_CONFIG_HOME}"
 ln -s -f "${HOME}"/.config/vim "${XDG_CONFIG_HOME}"
 ln -s -f "${HOME}"/.config/X11 "${XDG_CONFIG_HOME}"
 ln -s -f "${HOME}"/.config/Code/User/settings.json "${HOME}"/Library/Application\ Support/Code/User/
-if [[ ! -f "/.dockerenv" ]]; then ln -sfn "${XDG_CONFIG_HOME}"/code "${HOME}"/code; fi
 # Bash completions
 for f in "${HOME}"/bin/*-completion.bash; do
-    . "${f}"
+  . "${f}"
 done
 # powerline
 # shellcheck disable=SC2230
@@ -410,27 +403,25 @@ done
 PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 # lastpass
 lpass status --quiet || until lpass login --trust --force "${FULLNAME}" ; do sleep 0.1 ; done
+# ssh
 # Source SSH settings, if applicable
 export SSH_ENV="${HOME}/.ssh/environment"
-grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' 'ConnectTimeout 5' . x | ex "${HOME}/.ssh/config"
-if [[ -f /usr/bin/ssh-add ]]; then
-    # Populate authorized_keys with public key
-    if [[ ! -f "${HOME}/.ssh/authorized_keys" ]]; then
-        lpass show LP_ALIM_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
-        chmod 600 "${HOME}/.ssh/authorized_keys"
-    fi
-    if [[ -f "${SSH_ENV}" ]]; then
-        . "${SSH_ENV}" > /dev/null
-        # check if ssh-agent is running
-        ps "${SSH_AGENT_PID}" | grep ssh-agent$ > /dev/null || {
-            start_agent
-        }
-    else
-        start_agent
-    fi
-        grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
-    cp -a "${HOME}/.ssh/authorized_keys" "${HOME}/.ssh/LP_ALIM_RSA.pub"
+# Populate authorized_keys with public key
+if [[ ! -f "${HOME}/.ssh/authorized_keys" ]]; then
+  lpass show LP_ALIM_RSA --field=pub > "${HOME}/.ssh/authorized_keys"
+  chmod 600 "${HOME}/.ssh/authorized_keys"
 fi
+if [[ -f "${SSH_ENV}" ]]; then
+  . "${SSH_ENV}" > /dev/null
+  # check if ssh-agent is running
+  ps "${SSH_AGENT_PID}" | grep ssh-agent$ > /dev/null || {
+    start_agent
+  }
+else
+  start_agent
+fi
+grep -q "^UseKeychain" "${HOME}/.ssh/config" || printf '%s\n' 0a 'UseKeychain yes' . x | ex "${HOME}/.ssh/config"
+cp -a "${HOME}/.ssh/authorized_keys" "${HOME}/.ssh/LP_ALIM_RSA.pub"
 # Home Assistant alias
 export LP_HASS_API_TOKEN=$(lpass show LP_HASS_INFO --password)
 export LP_HASS_HOST=$(lpass show LP_HASS_INFO --username)
