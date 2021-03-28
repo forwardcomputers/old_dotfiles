@@ -155,7 +155,7 @@ extract () {
   fi
 }
 _update_ps1() {
-    PS1="$( powerline-go )"
+    PS1="$( powerline-go -error 0 )"
 }
 #
 # macos
