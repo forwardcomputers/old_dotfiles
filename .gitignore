@@ -68,6 +68,7 @@ Xauthority
 .xinputrc
 .xorgxrdp.*.log*
 .xsession-errors
+.zsh_history
 
 .flutter*
 

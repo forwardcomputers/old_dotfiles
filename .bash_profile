@@ -183,6 +183,7 @@ defaults write com.apple.commerce AutoUpdate -bool true
 defaults write com.apple.commerce AutoUpdateRestartRequired -bool false
 #
 # base definitions
+export BASH_SILENCE_DEPRECATION_WARNING=1
 export FULLNAME=$(id -F)
 [[ "${FULLNAME}" != *"@"* ]] && FULLNAME=$( curl --silent --url http://filer/os/lpass )
 # Prefer US English and use UTF-8
@@ -366,7 +367,7 @@ dcon () { ssh -t ali@docker docker exec -it "$1" sh; }
 # shellcheck disable=SC2029
 dlog () { ssh ali@docker docker container logs "$1"; }
 dlogf () { ssh ali@docker docker container logs -f "$1"; }
-dupdate () { ssh ali@docker "docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up"; }
+watchtower () { ssh ali@docker "docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up"; }
 # grep alias
 alias grep='grep --color=auto '
 alias egrep='egrep --color=auto'
@@ -397,9 +398,10 @@ ln -s -f "${HOME}"/.config/Code/User/settings.json "${HOME}"/Library/Application
 for f in "${HOME}"/bin/*-completion.bash; do
   . "${f}"
 done
-# powerline
+# completions
 # shellcheck disable=SC2230
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+# powerline
 PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 # lastpass
 lpass status --quiet || until lpass login --trust --force "${FULLNAME}" ; do sleep 0.1 ; done
