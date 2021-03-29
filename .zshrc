@@ -272,10 +272,10 @@ export LESS_TERMCAP_mh=${CO_DIM}        # begin dim
 export MANPAGER='less -isX'
 export CLICOLOR=1
 export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
-export LESS_TERMCAP_ZN=$(tput ssubm)  # begin subscript mode
-export LESS_TERMCAP_ZV=$(tput rsubm)  # reset subscript mode
-export LESS_TERMCAP_ZO=$(tput ssupm)  # begin superscript mode
-export LESS_TERMCAP_ZW=$(tput rsupm)  # reset superscript mode
+export LESS_TERMCAP_ZN=$(tput ssubm 2>/dev/null)  # begin subscript mode
+export LESS_TERMCAP_ZV=$(tput rsubm 2>/dev/null)  # reset subscript mode
+export LESS_TERMCAP_ZO=$(tput ssupm 2>/dev/null)  # begin superscript mode
+export LESS_TERMCAP_ZW=$(tput rsupm 2>/dev/null)  # reset superscript mode
 # Causes "raw" control characters to be displayed in less
 export LESS='--RAW-CONTROL-CHARS'
 # Disable "sgr escape sequences" for man
