@@ -388,6 +388,8 @@ alias hogs='ps -Ao pid,%cpu,user,tty,command -r | head -n 6'
 # top alias
 alias top='"${HOME}"/bin/ytop_darwin -c vice'
 alias oldtop="/usr/bin/top"
+# graphical man
+gman() { man -t "$@" | open -f -a Preview; }
 #
 # 
 ln -s -f "${HOME}"/.config/git "${XDG_CONFIG_HOME}"
