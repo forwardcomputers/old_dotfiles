@@ -30,6 +30,11 @@
         "!secret"
     ],
     "vsicons.dontShowNewVersionMessage": true,
+
+    "[javascript]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
     "[shellscript]": {
         "editor.tabSize": 2,
         "editor.insertSpaces": true
