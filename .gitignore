@@ -50,10 +50,13 @@ lpass
 .mozilla/
 .netrwhist
 .node_repl_history
+node_modules/
 .npm/
 OneDrive/
 .openshot_qt/
 .pki/
+package.json
+package-lock.json
 pulse
 refresh_token
 snap/
