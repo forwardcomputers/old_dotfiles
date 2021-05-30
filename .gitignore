@@ -49,6 +49,7 @@ lpass
 .mozilla
 .mozilla/
 .netrwhist
+.node_repl_history
 .npm/
 OneDrive/
 .openshot_qt/
