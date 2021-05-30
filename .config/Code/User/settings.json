@@ -1,19 +1,16 @@
 {
-    "debug.node.autoAttach": "on",
     "debug.console.fontSize": 14,
-    "code-runner.enableAppInsights": false,
     "editor.detectIndentation": false,
     "editor.fontSize": 14,
+    "editor.matchBrackets": "never",
     "editor.renderControlCharacters": true,
     "editor.renderWhitespace": "all",
     "editor.rulers" : [80],
     "editor.minimap.enabled": false,
-    "enable-crash-reporter": false,
     "explorer.confirmDelete": false,
     "files.autoSave": "off",
     "git.confirmSync": false,
     "git.enableSmartCommit": true,
-    "markdown.extension.toc.githubCompatibility": true,
     "remote.SSH.configFile": "~/.ssh/hosts",
     "search.useGlobalIgnoreFiles": true,
     "terminal.integrated.fontFamily": "DejaVu Sans Mono for Powerline",
@@ -23,7 +20,7 @@
     "terminal.integrated.shell.windows": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
     "window.restoreWindows": "all",
     "window.zoomLevel": 0,
-    "workbench.colorTheme": "Default Light+",
+    "workbench.colorTheme": "Visual Studio Dark",
     "workbench.iconTheme": "vscode-icons",
     "workbench.startupEditor": "none",
     "yaml.customTags": [
@@ -31,6 +28,12 @@
     ],
     "vsicons.dontShowNewVersionMessage": true,
 
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    "[html]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
     "[javascript]": {
         "editor.tabSize": 2,
         "editor.insertSpaces": true
@@ -46,5 +49,20 @@
     "telemetry.enableTelemetry": false,
     "telemetry.enableCrashReporter": false,
     "update.showReleaseNotes": false,
-    "workbench.enableExperiments": false
+    "workbench.enableExperiments": false,
+    "workbench.preferredDarkColorTheme": "Visual Studio Dark",
+
+    "editor.codeActionsOnSave": {
+        "source.fixAll": false,
+        "source.organizeImports": false
+    },
+
+    "blockhighlight.background": [
+        "200",
+        "100",
+        "255",
+        ".1"
+    ]
+
 }
+
