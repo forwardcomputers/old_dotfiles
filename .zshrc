@@ -223,7 +223,7 @@ export DOCKERFILES='/opt/filer/os/dockerfiles'
 export PXE='/opt/filer/os/pxe'
 export SHARE='/opt/filer/os/lnx/data'
 # add to path
-export PATH="${HOME}/bin:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
+export PATH="${HOME}/bin:/opt/filer/os/lnx/apps:/opt/homebrew/bin:/opt/homebrew/sbin:${PATH}"
 # vim
 export EDITOR='vim'
 [[ ! -e "${XDG_CACHE_HOME}"/vim ]] && mkdir -p "${XDG_CACHE_HOME}"/vim

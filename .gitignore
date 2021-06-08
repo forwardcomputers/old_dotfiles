@@ -59,6 +59,7 @@ package.json
 package-lock.json
 pulse
 refresh_token
+secrets
 snap/
 .ssh/
 .ssr/
