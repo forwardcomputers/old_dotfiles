@@ -14,9 +14,27 @@
     "search.useGlobalIgnoreFiles": true,
     "terminal.integrated.fontFamily": "DejaVu Sans Mono for Powerline",
     "terminal.integrated.fontSize": 14,
-    "terminal.integrated.shell.linux": "/bin/bash",
-    "terminal.integrated.shell.osx": "/bin/bash",
-    "terminal.integrated.shell.windows": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+    // "terminal.integrated.shell.linux": "/bin/bash",
+    // "terminal.integrated.shell.osx": "/bin/zsh",
+    // "terminal.integrated.shell.windows": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
+    "terminal.integrated.profiles.linux": {
+      "zsh (login)": {
+        "path": "bash",
+        "args": ["-l"]
+    }
+    },
+    "terminal.integrated.profiles.osx": {
+     "zsh (login)": {
+        "path": "zsh",
+        "args": ["-l"]
+    }
+    },
+    "terminal.integrated.profiles.windows": {
+      "PowerShell -NoProfile": {
+        "source": "PowerShell",
+        "args": ["-NoProfile"]
+    }
+    },
     "window.restoreWindows": "all",
     "window.zoomLevel": 0,
     "workbench.iconTheme": "vscode-icons",
@@ -25,6 +43,8 @@
         "!secret"
     ],
     "vsicons.dontShowNewVersionMessage": true,
+
+    "eslint.lintTask.options": "-c ~/.eslintrc.js",
 
     "editor.defaultFormatter": "esbenp.prettier-vscode",
 
