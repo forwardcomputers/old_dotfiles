@@ -44,7 +44,14 @@
     ],
     "vsicons.dontShowNewVersionMessage": true,
 
+    "eslint.alwaysShowStatus": true,
     "eslint.lintTask.options": "-c ~/.eslintrc.js",
+    "eslint.validate": [  "html", "javascript",  "jsdoc" ],
+
+    "css.validate": false,
+    "less.validate": false,
+    "scss.validate": false,
+    "stylelint.configFile": "/Users/ali/.stylelintrc.js",
 
     "editor.defaultFormatter": "esbenp.prettier-vscode",
 
