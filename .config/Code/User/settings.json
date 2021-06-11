@@ -80,6 +80,7 @@
         "100",
         "255",
         ".1"
-    ]
+    ],
+    "security.workspace.trust.untrustedFiles": "open"
 }
 
