@@ -88,6 +88,23 @@
         "255",
         ".1"
     ],
-    "security.workspace.trust.untrustedFiles": "open"
+    "security.workspace.trust.untrustedFiles": "open",
+    "editor.renderIndentGuides": false,
+    "editor.highlightActiveIndentGuide": false,
+    "workbench.colorCustomizations": {
+        "editor.lineHighlightBackground": "#1073cf2d",
+        "editor.lineHighlightBorder": "#9fced11f"
+    },
+    "editor.wordWrap": "off",
+    "diffEditor.wordWrap": "off",
+    "[markdown]": {
+        "editor.wordWrap": "off",
+        "editor.quickSuggestions": false
+    },
+    "blockman.n23AnalyzeSquareBrackets": true,
+    "blockman.n24AnalyzeRoundBrackets": true,
+    "blockman.n27AlsoRenderBlocksInsideSingleLineAreas": true,
+    "editor.inlineSuggest.enabled": true,
+    "livePreview.notifyOnOpenLooseFile": false
 }
 
