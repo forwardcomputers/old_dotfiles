@@ -454,7 +454,7 @@ readme () { ## Create readme file
     printf '%s' \
       "| [![](https://img.shields.io/badge/${APP}-grey.svg)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
       "| [![](https://img.shields.io/badge/dynamic/json.svg?query=$.Labels['org.opencontainers.image.created']&label=&url=https://api.microbadger.com/v1/images/forwardcomputers/${APP})](https://hub.docker.com/r/forwardcomputers/${APP}) " \
-      "| [![](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/dockerfiles/tree/master/${APP}) " \
+      "| [![](https://img.shields.io/badge/github--grey.svg?label=&logo=github&logoColor=white)](https://github.com/forwardcomputers/dockerfiles/tree/main/${APP}) " \
       "| [![](https://img.shields.io/badge/docker--E5E5E5.svg?label=&logo=docker)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
       "| [![](https://img.shields.io/docker/v/forwardcomputers/${APP}/latest?color=blue&label=)](https://hub.docker.com/r/forwardcomputers/${APP}) " \
       "| [![](https://img.shields.io/docker/image-size/forwardcomputers/${APP}/latest?label=)](http://microbadger.com/images/forwardcomputers/${APP}) " \
