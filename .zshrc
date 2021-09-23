@@ -68,9 +68,9 @@ git_delete_history () {
   git checkout --orphan TEMP_BRANCH
   git add -A
   git commit -am "Initial commit"
-  git branch -D master
-  git branch -m master
-  git push -f origin master
+  git branch -D main
+  git branch -m main
+  git push -f origin main
 }
 # readlink -f for osx - works for linux
 readlinkf() {
@@ -334,15 +334,17 @@ alias hasstf='tail -f /opt/filer/os/lnx/data/homeassistant/home-assistant.log'
 alias g='git'
 # Create new GitHub repo
 export LP_GITHUB_API_TOKEN=$(lpass show LP_GITHUB_API_TOKEN --password)
-alias gnewr='curl https://api.github.com/user/repos -u forwardcomputers:$LP_GITHUB_API_TOKEN -d {\"name\":\""${PWD##*/}"\"}'
+alias gnewrpub='curl https://api.github.com/user/repos -u forwardcomputers:$LP_GITHUB_API_TOKEN -d "{\"name\": "\"${PWD##*/}\"", \"private\": false}"'
+alias gnewrpri='curl https://api.github.com/user/repos -u forwardcomputers:$LP_GITHUB_API_TOKEN -d "{\"name\": "\"${PWD##*/}\"", \"private\": true}"' 
+
 # Create new GitHub repo, add, commit and push files
-alias gnew='gnewr && g init && g add . && g commit -m "Initial commit" && g remote add origin ssh://git@github.com/forwardcomputers/${PWD##*/}.git && g push --set-upstream origin master'
+alias gnew='gnewr && g init -b main && g add . && g commit -m "Initial commit" && g remote add origin ssh://git@github.com/forwardcomputers/${PWD##*/}.git && g push --set-upstream origin main'
 # Add, commit and push files
 alias gpush='g add . && g commit --short ; g commit -a -m "updates" && g push origin'
 # Add, commit and push files no circleci
 alias gci='g add . && g commit --short ; g commit -a -m "updates [skip ci]" && g push origin'
 # Pull files
-alias gpull='g pull origin master && g submodule sync && g submodule update --remote --recursive'
+alias gpull='g pull origin main && g submodule sync && g submodule update --remote --recursive'
 # List ignored files
 alias gignored='g status --ignored'
 # Submodule update 
