@@ -108,6 +108,7 @@
     "livePreview.notifyOnOpenLooseFile": false,
     "editor.inlayHints.enabled": false,
     "redhat.telemetry.enabled": false,
-    "editor.guides.indentation": false
+    "editor.guides.indentation": false,
+    "editor.guides.bracketPairs": false
 }
 

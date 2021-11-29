@@ -147,12 +147,12 @@ endif
 
 set t_Co=256
 
-try
-"    colorscheme desert
-    colorscheme molokai
-    let g:rehash256 = 1
-catch
-endtry
+"try
+""    colorscheme desert
+"    colorscheme molokai
+"    let g:rehash256 = 1
+"catch
+"endtry
 
 set background=dark
 
@@ -170,6 +170,7 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
+colors zenburn
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo

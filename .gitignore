@@ -31,6 +31,7 @@ apps/
 !.config/user-dirs.dirs
 !.config/wgetrc
 !.config/monitors.xml
+Calibre Library
 code
 .dbus/
 .docker/
@@ -58,6 +59,7 @@ OneDrive/
 package.json
 package-lock.json
 pulse
+.python_history
 refresh_token
 secrets
 snap/
