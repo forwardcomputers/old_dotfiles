@@ -2,7 +2,6 @@
     "debug.console.fontSize": 14,
     "editor.detectIndentation": false,
     "editor.fontSize": 14,
-    "editor.minimap.enabled": false,
     "editor.renderControlCharacters": true,
     "editor.renderWhitespace": "all",
     "editor.rulers" : [80],
@@ -109,6 +108,8 @@
     "editor.inlayHints.enabled": false,
     "redhat.telemetry.enabled": false,
     "editor.guides.indentation": false,
-    "editor.guides.bracketPairs": false
+    "editor.guides.bracketPairs": false,
+    "blockman.n01LineHeight": 0,
+    "liveServer.settings.donotShowInfoMsg": true
 }
 
