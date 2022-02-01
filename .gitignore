@@ -49,6 +49,7 @@ items.sqlite3
 lpass
 .mozilla
 .mozilla/
+.netrc
 .netrwhist
 .node_repl_history
 node_modules/
