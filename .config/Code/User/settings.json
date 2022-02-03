@@ -110,6 +110,7 @@
     "editor.guides.indentation": false,
     "editor.guides.bracketPairs": false,
     "blockman.n01LineHeight": 0,
-    "liveServer.settings.donotShowInfoMsg": true
+    "liveServer.settings.donotShowInfoMsg": true,
+    "debug.javascript.autoAttachFilter": "disabled"
 }
 
