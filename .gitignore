@@ -54,6 +54,7 @@ lpass
 .node_repl_history
 node_modules/
 .npm/
+.npmrc
 OneDrive/
 .openshot_qt/
 .pki/
