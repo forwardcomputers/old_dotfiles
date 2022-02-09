@@ -5,11 +5,14 @@ module.exports = {
   },
   plugins: [
     'html',
-    'jsdoc'
+    'jsdoc',
+    '@typescript-eslint'
   ],
   extends: [
     'standard',
-    'plugin:jsdoc/recommended'
+    'plugin:jsdoc/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended'
   ],
   parserOptions: {
     ecmaVersion: 12,
