@@ -6,13 +6,20 @@ module.exports = {
   plugins: [
     'html',
     'jsdoc',
-    '@typescript-eslint'
+    'svelte3'
+//    '@typescript-eslint'
+  ],
+  overrides: [
+    {
+      files: ['*.svelte'],
+      processor: 'svelte3/svelte3'
+    }
   ],
   extends: [
     'standard',
-    'plugin:jsdoc/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended'
+    'plugin:jsdoc/recommended'
+//    'plugin:@typescript-eslint/eslint-recommended',
+//    'plugin:@typescript-eslint/recommended'
   ],
   parserOptions: {
     ecmaVersion: 12,
