@@ -66,6 +66,10 @@
         "editor.tabSize": 2,
         "editor.insertSpaces": true
     },
+    "[svelte]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
+    },
 
     "git.autofetch": false,
     "extensions.ignoreRecommendations": true,
