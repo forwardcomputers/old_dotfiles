@@ -380,12 +380,12 @@ alias airport='/System/Library/PrivateFrameworks/Apple80211.framework/Versions/C
 alias stfu="osascript -e 'set volume output muted true'"
 alias pumpitup="osascript -e 'set volume output volume 100'"
 # Lock the screen (when going AFK)
-alias afk="pmset displaysleepnow"
+alias afk='pmset displaysleepnow'
 # Show top 5 CPU hogs
 alias hogs='ps -Ao pid,%cpu,user,tty,command -r | head -n 6'
 # top alias
-alias top='"${HOME}"/bin/ytop_darwin -c vice'
-alias oldtop="/usr/bin/top"
+alias top='btm --battery'
+alias oldtop='/usr/bin/top'
 # graphical man
 gman() { man -t "$@" | open -f -a Preview; }
 #
