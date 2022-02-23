@@ -119,6 +119,7 @@
     "sync.gist": "9175286b7ed29ae9c85a23347fe0e731",
     "sync.forceUpload": false,
     "sync.autoUpload": true,
-    "sync.quietSync": true
+    "sync.quietSync": true,
+    "editor.minimap.enabled": false
 }
 
