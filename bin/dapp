@@ -61,7 +61,7 @@ if [[ -d "${ROOT}" ]]; then
   fi
 fi
 if [[ ! -d ~/.local/share/applications ]]; then
-  mkdir --parents ~/.local/share/applications
+  mkdir -p ~/.local/share/applications
 fi
 #
 # shellcheck disable=SC2034
@@ -344,32 +344,32 @@ shell () { ## Run shell in docker application
   printf '%s\n' "Runing shell in ${NAME}"
   checklocalimage
   xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
-  if [[ $(uname -s) == Darwin ]]; then
-    pulseaudio --kill || true
-    pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
-    PREFFERED_SINK=$( pacmd list-sinks | awk '/index:/ {print $1 $2 $3} /card:/ {print $0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print $1}' | cut -d ':' -f2 )
-    pacmd set-default-sink "${PREFFERED_SINK}"
-  fi
+#  if [[ $(uname -s) == Darwin ]]; then
+#    pulseaudio --kill || true
+#    pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
+#    PREFFERED_SINK=$( pacmd list-sinks | awk '/index:/ {print $1 $2 $3} /card:/ {print $0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print $1}' | cut -d ':' -f2 )
+#    pacmd set-default-sink "${PREFFERED_SINK}"
+#  fi
   docker container run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/sh "${DOCKER_OPT[@]}" "${DOCKER_OPT_DUSER[@]}" "${IMG}"
-  if [[ $(uname -s) == Darwin ]]; then
-    pulseaudio --kill || true
-  fi
+#  if [[ $(uname -s) == Darwin ]]; then
+#    pulseaudio --kill || true
+#  fi
 }
 #
 root () { ## Run shell in docker application as root
   printf '%s\n' "Runing shell in ${NAME}"
   checklocalimage
   xhost + LOCAL: 127.0.0.1 > /dev/null 2>&1 || true
-  if [[ $(uname -s) == Darwin ]]; then
-    pulseaudio --kill || true
-    pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
-    PREFFERED_SINK=$( pacmd list-sinks | awk '/index:/ {print $1 $2 $3} /card:/ {print $0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print $1}' | cut -d ':' -f2 )
-    pacmd set-default-sink "${PREFFERED_SINK}"
-  fi
+#  if [[ $(uname -s) == Darwin ]]; then
+#    pulseaudio --kill || true
+#    pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
+#    PREFFERED_SINK=$( pacmd list-sinks | awk '/index:/ {print $1 $2 $3} /card:/ {print $0};' | grep -m1 -B1 'Jabra_SPEAK_510_USB' | grep index | awk '{print $1}' | cut -d ':' -f2 )
+#    pacmd set-default-sink "${PREFFERED_SINK}"
+#  fi
   docker container run --interactive --tty --name "${NAME}"_shell --entrypoint /bin/sh "${DOCKER_OPT[@]}" "${DOCKER_OPT_ROOT[@]}" "${IMG}"
-  if [[ $(uname -s) == Darwin ]]; then
-    pulseaudio --kill || true
-  fi
+#  if [[ $(uname -s) == Darwin ]]; then
+#    pulseaudio --kill || true
+#  fi
 }
 #
 desktop () { ## Populate desktop application menu
