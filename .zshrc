@@ -114,7 +114,8 @@ shellcheck () {
   _fullname=$(readlinkf "$1")
   _dirname=$(dirname "$_fullname")
   _filename=$(basename "$1")
-  docker run --rm -v "$_dirname":/mnt forwardcomputers/shellcheck -a "$_filename"
+  echo $_fullname
+  docker run --platform linux/amd64 --rm -v "$_dirname":/mnt forwardcomputers/shellcheck -a "$_filename"
 }
 #
 # `v` with no arguments opens the current directory in Vim, otherwise opens the given location

@@ -294,11 +294,13 @@ build () { ## Build docker image file
   fi
   local BUILD_DATE
   BUILD_DATE="$(date +'%-d-%-m-%G %r')"
+  PLATFORM="$(perl -nle 'print $& if /(?<=^#PLATFORM ).*/' "${ROOT}${NAME}"/Dockerfile || true)"
   printf '%s\n' "Building ${NAME}"
   # docker image build --rm --force-rm --squash \
   # docker image build --rm --force-rm --compress \
   # docker image build --rm --force-rm \
-  docker image build \
+  # docker image build \
+  docker buildx build "${PLATFORM}" --output=type=docker \
     --build-arg NAME="${NAME}" \
     --build-arg CO="${CO}" \
     --build-arg APPNEW="${APPNEW}" \
