@@ -301,7 +301,7 @@ build () { ## Build docker image file
   # docker image build --rm --force-rm --compress \
   # docker image build --rm --force-rm \
   # docker image build \
-  docker buildx build "${PLATFORM}" --output=type=docker \
+  docker buildx build ${PLATFORM} --output=type=docker \
     --build-arg NAME="${NAME}" \
     --build-arg CO="${CO}" \
     --build-arg APPNEW="${APPNEW}" \
