@@ -292,7 +292,6 @@ build () { ## Build docker image file
     printf '%s\n' "${RED}Cannot build ${GREEN}${NAME}${RED} missing dockerfile${NC}"
     exit
   fi
-  set -x
   local BUILD_DATE
   BUILD_DATE="$(date +'%-d-%-m-%G %r')"
   PLATFORM="$(perl -nle 'print $& if /(?<=^#PLATFORM ).*/' "${ROOT}${NAME}"/Dockerfile || true)"
