@@ -433,3 +433,6 @@ export LP_T_CONSUMER_KEY=$(lpass show LP_T_CONSUMER_KEY --password)
 export LP_T_CONSUMER_SECRET=$(lpass show LP_T_CONSUMER_SECRET --password)
 export LP_T_OAUTH_TOKEN=$(lpass show LP_T_OAUTH_TOKEN --password)
 export LP_T_OAUTH_SECRET=$(lpass show LP_T_OAUTH_SECRET --password)
+# Ansible config
+export ANSIBLE_CONFIG=~/.ansible/ansible.cfg
+
