@@ -362,11 +362,32 @@ alias wapp='qml -f "${HOME}"/bin/wapp.qml --'
 # wget history directory
 alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 #
-dcon () { ssh -t ali@docker docker exec -it "$1" sh; }
-# shellcheck disable=SC2029
-dlog () { ssh ali@docker docker container logs "$1"; }
-dlogf () { ssh ali@docker docker container logs -f "$1"; }
-watchtower () { ssh ali@docker "docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up"; }
+dcon () { docker exec -it "$1" bash; }
+dlog () { docker container logs "$1"; }
+dlogf () { docker container logs -f "$1"; }
+ddown () { docker-compose -f /opt/filer/os/docker-compose/"$1"/docker-compose.yml down; }
+dup () {
+  IMAGE=$( awk '/image:/ {print $2}' /opt/filer/os/docker-compose/"$1"/docker-compose.yml )
+  LOCV=$( docker inspect --format='{{index .RepoDigests 0}}' "${IMAGE}"  2>/dev/null | cut -d':' -f2 )
+  HUBV=$( curl -sl https://registry.hub.docker.com/v2/repositories/"${IMAGE}"/tags/latest | jq -r '.images[0].digest | split(":") | .[1]' )
+  if [ "${LOCV}" != "${HUBV}" ]; then docker image rm -f "${IMAGE}"  2>/dev/null ; fi 
+  docker-compose -f /opt/filer/os/docker-compose/"$1"/docker-compose.yml up -d
+}
+drestart () {
+  ddown "$1"
+  dup "$1"
+}
+lazy () {
+  if ! [ "$(docker container ls -aq -f status=running -f name=lazydocker)" ]; then
+    if [ "$(docker container inspect -f '{{.State.Status}}' lazydocker 2>/dev/null)" == "exited" ]; then
+      docker start lazydocker
+    else
+      dup lazydocker
+    fi
+  fi
+  docker attach lazydocker
+}
+watchtower () { docker-compose -f /opt/filer/os/docker-compose/watchtower/docker-compose.yml up; }
 # grep alias
 alias grep='grep --color=auto '
 alias egrep='egrep --color=auto'
