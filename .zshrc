@@ -379,8 +379,8 @@ drestart () {
 }
 lazy () {
   if ! [ "$(docker container ls -aq -f status=running -f name=lazydocker)" ]; then
-    if [ "$(docker container inspect -f '{{.State.Status}}' lazydocker 2>/dev/null)" == "exited" ]; then
-      docker start lazydocker
+    if [ "$(docker container inspect -f '{{.State.Status}}' lazydocker 2>/dev/null)" = "exited" ]; then
+      docker start lazydocker &> /dev/null
     else
       dup lazydocker
     fi
