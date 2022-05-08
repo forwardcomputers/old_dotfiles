@@ -92,8 +92,6 @@
         ".1"
     ],
     "security.workspace.trust.untrustedFiles": "open",
-    "editor.renderIndentGuides": false,
-    "editor.highlightActiveIndentGuide": false,
     "workbench.colorCustomizations": {
         "editor.lineHighlightBackground": "#1073cf2d",
         "editor.lineHighlightBorder": "#9fced11f"
@@ -120,6 +118,7 @@
     "sync.forceUpload": false,
     "sync.autoUpload": true,
     "sync.quietSync": true,
-    "editor.minimap.enabled": false
+    "editor.minimap.enabled": false,
+    "editor.guides.highlightActiveIndentation": false
 }
 
