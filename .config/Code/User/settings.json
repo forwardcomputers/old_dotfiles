@@ -100,7 +100,11 @@
     "diffEditor.wordWrap": "off",
     "[markdown]": {
         "editor.wordWrap": "off",
-        "editor.quickSuggestions": false
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
     },
     "blockman.n23AnalyzeSquareBrackets": true,
     "blockman.n24AnalyzeRoundBrackets": true,
