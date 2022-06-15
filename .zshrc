@@ -362,6 +362,7 @@ alias wapp='qml -f "${HOME}"/bin/wapp.qml --'
 # wget history directory
 alias wget='wget --hsts-file="$XDG_CACHE_HOME/wget-hsts"'
 #
+alias linux="docker exec -it linux zsh"
 dcon () { docker exec -it "$1" bash; }
 dlog () { docker container logs "$1"; }
 dlogf () { docker container logs -f "$1"; }
