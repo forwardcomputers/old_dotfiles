@@ -45,3 +45,5 @@
 	auto = 5000
 [pull]
 	rebase = false
+[safe]
+	directory = /opt/filer/os/win/apps/chocolatey-packages
