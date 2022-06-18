@@ -460,3 +460,5 @@ export ANSIBLE_CONFIG=~/ansible/ansible.cfg
 #
 docker context create pve --docker "host=ssh://root@pve" &> /dev/null
 docker context use pve &> /dev/null
+#
+precmd () { print -Pn "\e]0;%n@%m: %~\a" }
