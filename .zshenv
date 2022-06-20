@@ -1,1 +1,1 @@
-SHELL_SESSIONS_DISABLE=1
+. ~/.config/zsh/.zshenv
